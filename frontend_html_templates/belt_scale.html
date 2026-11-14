@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belt Scale Test Report Form</title>
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#0284c7">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/html2canvas.min.js"></script>
+    <meta name="app-build-version" content="{{ build_version }}">
+    <style>
+        .pdf-download-banner {
+            background: linear-gradient(135deg, #0284c7, #0ea5e9);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #ffffff;
+            box-shadow: 0 10px 25px rgba(0, 158, 227, 0.3);
+        }
+
+        .section-box {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 28px 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+            display: none;
+        }
+
+        .section-box.active-step,
+        .section-box.active {
+            display: block;
+        }
+
+        .section-box-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: #0284c7;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1.5px solid #f1f5f9;
+            padding-bottom: 12px;
+        }
+
+        .table-input {
+            width: 100%;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 13px;
+        }
+
+        /* Wizard Stepper Progress Bar */
+        .stepper-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            background: #ffffff;
+            padding: 12px 18px;
+            border-radius: 16px;
+            border: 1.5px solid #e2e8f0;
+            gap: 8px;
+        }
+
+        .step-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #94a3b8;
+        }
+
+        .step-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .step-item.active .step-num {
+            background: linear-gradient(135deg, #009ee3, #0284c7);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 158, 227, 0.3);
+        }
+
+        .step-item.active {
+            color: #0284c7;
+        }
+
+        .step-item.completed .step-num {
+            background: #10b981;
+            color: #ffffff;
+        }
+
+        .wizard-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1.5px solid #f1f5f9;
+        }
+
+        .btn-wizard-prev {
+            padding: 12px 22px;
+            border-radius: 12px;
+            background: #f1f5f9;
+            border: 1.5px solid #cbd5e1;
+            color: #0f172a;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-wizard-prev:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-wizard-next {
+            padding: 12px 24px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #009ee3, #0284c7);
+            border: none;
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0, 158, 227, 0.25);
+            transition: all 0.2s ease;
+        }
+
+        .btn-wizard-next:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 158, 227, 0.35);
+        }
+
+        /* System & Calibration Toggle Buttons */
+        .btn-toggle-opt {
+            flex: 1;
+            padding: 9px 14px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: #475569;
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        .btn-toggle-opt:hover {
+            color: #0284c7;
+        }
+        .btn-toggle-opt.active {
+            background: #0284c7;
+            color: #ffffff;
+            box-shadow: 0 3px 10px rgba(0, 158, 227, 0.35);
+        }
+
+        @media (max-width: 768px) {
+            .stepper-bar {
+                flex-wrap: wrap;
+                gap: 6px;
+                padding: 10px;
+            }
+            .step-item {
+                font-size: 11px;
+                gap: 4px;
+            }
+            .step-item span {
+                display: none;
+            }
+            .step-item.active span {
+                display: inline;
+            }
+            .step-num {
+                width: 24px;
+                height: 24px;
+                font-size: 11px;
+            }
+            .section-box {
+                padding: 16px 12px;
+            }
+            .grid-col-2 {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
+</head>
+
+<body style="padding: 16px;">
+
+    <div class="app-container" style="max-width: 960px; margin: 0 auto;">
+
+        <!-- TOP HEADER -->
+        <header class="app-header">
+            <div class="app-title">
+                <h1>Belt Scale System Test Report</h1>
+            </div>
+            <div class="header-actions" style="display: flex; align-items: center; gap: 10px;">
+                <button type="button" id="btnAutoFillHeader" class="header-nav-link btnFillDemoDataGlobal" onclick="if(typeof triggerUniversalAutoFill==='function'){triggerUniversalAutoFill();}else if(typeof fillDemoData==='function'){fillDemoData();}" style="background: linear-gradient(135deg, #0284c7, #0369a1); color: #ffffff !important; border: none; font-weight: 800; cursor: pointer; padding: 10px 18px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Auto-Fill Demo
+                </button>
+                <a href="/portal" class="header-nav-link">
+                    <i class="fa-solid fa-house"></i> Home
+                </a>
+            </div>
+        </header>
+
+        <!-- MAIN FORM -->
+        <main class="tab-content active">
+            <form id="recordForm" autocomplete="off">
+                <input type="hidden" name="report_type" value="belt_scale">
+                <div class="glass-form" style="padding: 28px;">
+
+                    <!-- QUICK ACTION AUTO-FILL BAR -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1.5px solid #86efac; border-radius: 12px; padding: 12px 18px; margin-bottom: 20px;">
+                        <div style="display: flex; align-items: center; gap: 10px; color: #166534; font-weight: 700; font-size: 14px;">
+                            <i class="fa-solid fa-circle-check" style="font-size: 18px; color: #16a34a;"></i>
+                            <span>Production Test Template Ready</span>
+                        </div>
+                        <button type="button" id="btnTopAutoFill" class="btnFillDemoDataGlobal" onclick="if(typeof triggerUniversalAutoFill==='function'){triggerUniversalAutoFill();}else if(typeof fillDemoData==='function'){fillDemoData();}" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #ffffff !important; border: none; font-weight: 800; font-size: 14px; cursor: pointer; padding: 10px 22px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);">
+                            <i class="fa-solid fa-bolt"></i> Auto-Fill Everything
+                        </button>
+                    </div>
+
+                    <!-- STEP PROGRESS BAR -->
+                    <div class="stepper-bar" id="stepperBar" style="margin-top: 20px; margin-bottom: 24px;">
+                        <div class="step-item active" id="st-1" onclick="goToStep(1)" style="cursor: pointer;">
+                            <div class="step-num">1</div>
+                            <span>System</span>
+                        </div>
+                        <div class="step-item" id="st-2" onclick="goToStep(2)" style="cursor: pointer;">
+                            <div class="step-num">2</div>
+                            <span>Components</span>
+                        </div>
+                        <div class="step-item" id="st-3" onclick="goToStep(3)" style="cursor: pointer;">
+                            <div class="step-num">3</div>
+                            <span>Checklist</span>
+                        </div>
+                        <div class="step-item" id="st-4" onclick="goToStep(4)" style="cursor: pointer;">
+                            <div class="step-num">4</div>
+                            <span>Calibration Matrix</span>
+                        </div>
+                        <div class="step-item" id="st-5" onclick="goToStep(5)" style="cursor: pointer;">
+                            <div class="step-num">5</div>
+                            <span>Sign-Off</span>
+                        </div>
+                    </div>
+
+                                        <!-- SECTION 1: SYSTEM -->
+                    <div class="section-box active-step" id="step-box-1" style="margin-top: 24px;">
+                        <div class="section-box-title"><i class="fa-solid fa-server" style="color: #0284c7;"></i> 1. System Configuration</div>
+
+                        <!-- SYSTEM CONFIGURATION (LOAD CELLS & ANALOG OUTPUTS) -->
+                        <div class="sys-config-card" style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 18px 20px; margin-bottom: 22px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; align-items: start;">
+                            <input type="hidden" name="lc_system" id="lc_system" value="4">
+                            <input type="hidden" name="num_outputs" id="num_outputs" value="1">
+
+                            <!-- LOAD CELL SYSTEM SELECTOR -->
+                            <div>
+                                <label style="display: block; font-family: 'Outfit', sans-serif; font-size: 11.5px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px;">
+                                    <i class="fa-solid fa-microchip" style="color: #0284c7; margin-right: 4px;"></i> Number of Load Cells
+                                </label>
+                                <div style="display: flex; background: #e2e8f0; padding: 4px; border-radius: 10px; gap: 4px;">
+                                    <button type="button" id="btnLc4" class="btn-toggle-opt active" onclick="setLcSystem('4')">
+                                        <i class="fa-solid fa-weight-hanging"></i> 4 Load Cells
+                                    </button>
+                                    <button type="button" id="btnLc8" class="btn-toggle-opt" onclick="setLcSystem('8')">
+                                        <i class="fa-solid fa-cubes-stacked"></i> 8 Load Cells
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- ANALOG OUTPUTS SELECTOR -->
+                            <div>
+                                <label style="display: block; font-family: 'Outfit', sans-serif; font-size: 11.5px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px;">
+                                    <i class="fa-solid fa-wave-square" style="color: #0284c7; margin-right: 4px;"></i> Number of Analog Outputs
+                                </label>
+                                <div style="display: flex; background: #e2e8f0; padding: 4px; border-radius: 10px; gap: 4px;">
+                                    <button type="button" id="btnAo1" class="btn-toggle-opt active" onclick="setNumOutputs('1')">
+                                        1 Output (AO1)
+                                    </button>
+                                    <button type="button" id="btnAo2" class="btn-toggle-opt" onclick="setNumOutputs('2')">
+                                        2 Outputs (AO1, 2)
+                                    </button>
+                                    <button type="button" id="btnAo3" class="btn-toggle-opt" onclick="setNumOutputs('3')">
+                                        3 Outputs (AO1..3)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid-col-2">
+                            <div class="input-group">
+                                <label>JOB No.</label>
+                                <input type="text" name="job_no" id="job_no" placeholder="Enter Job No (e.g. SY1234)">
+                            </div>
+                            <div class="input-group"><label>CUSTOMER</label><input type="text" name="customer" id="customer"></div>
+                            <div class="input-group"><label>CAPACITY (TPH)</label><input type="text" name="capacity" id="capacity"></div>
+                            <div class="input-group"><label>CONVEYOR NO</label><input type="text" name="conveyor_no" id="conveyor_no"></div>
+                        </div>
+                        <div class="wizard-actions">
+                            <div></div>
+                            <button type="button" class="btn-wizard-next" onclick="goToStep(2)">Next: Components</button>
+                        </div>
+                    </div>
+
+                                        <!-- SECTION 2: SYSTEM COMPONENTS -->
+                    <div class="section-box" id="step-box-2">
+                        <div class="section-box-title">2. System Components</div>
+
+                        <div class="grid-col-2" style="margin-bottom: 14px;">
+                            <div style="background: #f8fafc; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                                <h4 style="font-size: 13px; font-weight: 800; color: #0f172a; margin-bottom: 8px; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px;">BELT SCALE</h4>
+                                <div class="input-group" style="margin-bottom: 8px;"><label>Version</label><input type="text" name="version" id="version"></div>
+                                <div class="input-group" style="margin-bottom: 8px;"><label>Model No.</label><input type="text" name="bs_model" id="bs_model"></div>
+                                <div class="input-group"><label>Serial No.</label><input type="text" name="bs_serial" id="bs_serial"></div>
+                            </div>
+                            <div style="background: #f8fafc; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                                <h4 style="font-size: 13px; font-weight: 800; color: #0f172a; margin-bottom: 8px; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px;">REMOTE</h4>
+                                <div class="input-group" style="margin-bottom: 8px;"><label>Model No.</label><input type="text" name="remote_model" id="remote_model"></div>
+                                <div class="input-group"><label>Serial No.</label><input type="text" name="remote_serial" id="remote_serial"></div>
+                            </div>
+                        </div>
+
+                        <div style="background: #f8fafc; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 14px;">
+                            <h4 style="font-size: 13px; font-weight: 800; color: #0f172a; margin-bottom: 8px; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px;">LOAD CELL</h4>
+                            <div class="grid-col-2" style="margin-bottom: 8px;">
+                                <div class="input-group"><label>Model No.</label><input type="text" name="sensor_model" id="sensor_model"></div>
+                            </div>
+                            <div class="grid-col-2">
+                                <div class="input-group"><label>Serial No. 1)</label><input type="text" name="s1" id="s1"></div>
+                                <div class="input-group"><label>Serial No. 2)</label><input type="text" name="s2" id="s2"></div>
+                                <div class="input-group"><label>Serial No. 3)</label><input type="text" name="s3" id="s3"></div>
+                                
+                                <div class="input-group"><label>Serial No. 4)</label><input type="text" name="s4" id="s4"></div>
+                                <div class="input-group extra-lc" style="display:none;"><label>Serial No. 5)</label><input type="text" name="s5" id="s5"></div>
+                                <div class="input-group extra-lc" style="display:none;"><label>Serial No. 6)</label><input type="text" name="s6" id="s6"></div>
+                                <div class="input-group extra-lc" style="display:none;"><label>Serial No. 7)</label><input type="text" name="s7" id="s7"></div>
+                                <div class="input-group extra-lc" style="display:none;"><label>Serial No. 8)</label><input type="text" name="s8" id="s8"></div>
+
+                            </div>
+                        </div>
+
+                        <div style="background: #f8fafc; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 14px;">
+                            <h4 style="font-size: 13px; font-weight: 800; color: #0f172a; margin-bottom: 8px; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px;">SPEED SENSOR</h4>
+                            <div class="grid-col-2" style="margin-bottom: 8px;">
+                                <div class="input-group">
+                                    <label>Sensor</label>
+                                    <input type="text" name="tacho_type" id="tacho_type" value=""  value="" placeholder="e.g. Proximity">
+                                </div>
+                                <div class="input-group"><label>Model No.</label><input type="text" name="tacho_model" id="tacho_model"></div>
+                            </div>
+                            <div class="grid-col-2">
+                                <div class="input-group"><label>Serial No.</label><input type="text" name="tacho_serial" id="tacho_serial"></div>
+                                <div class="input-group"><label>Pulley Diameter (m)</label><input type="text" name="pulley_diameter" id="pulley_diameter" value=""></div>
+                            </div>
+                        </div>
+
+                        <div style="background: #f8fafc; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 14px;">
+                            <h4 style="font-size: 13px; font-weight: 800; color: #0f172a; margin-bottom: 8px; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px;">ANGLE SENSOR</h4>
+                            <div class="grid-col-2">
+                                <div class="input-group"><label>Model No.</label><input type="text" name="angle_sensor_model" id="angle_sensor_model" placeholder="e.g. AS-300"></div>
+                                <div class="input-group"><label>Serial No.</label><input type="text" name="angle_sensor_serial" id="angle_sensor_serial" placeholder="e.g. SN-AS-101"></div>
+                            </div>
+                        </div>
+
+                        <div style="background: #f8fafc; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                            <h4 style="font-size: 13px; font-weight: 800; color: #0f172a; margin-bottom: 8px; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px;">JUNCTION BOX</h4>
+                            <div class="grid-col-2" style="margin-bottom: 8px;">
+                                <div class="input-group"><label>1) Model No.</label><input type="text" name="jbox_model1" id="jbox_model1"></div>
+                                <div class="input-group"><label>Serial No.</label><input type="text" name="jbox_serial1" id="jbox_serial1"></div>
+                            </div>
+                            <div class="grid-col-2" style="margin-bottom: 8px;">
+                                <div class="input-group"><label>2) Model No.</label><input type="text" name="jbox_model2" id="jbox_model2"></div>
+                                <div class="input-group"><label>Serial No.</label><input type="text" name="jbox_serial2" id="jbox_serial2"></div>
+                            </div>
+                            <div class="grid-col-2">
+                                <div class="input-group"><label>3) Model No.</label><input type="text" name="jbox_model3" id="jbox_model3"></div>
+                                <div class="input-group"><label>Serial No.</label><input type="text" name="jbox_serial3" id="jbox_serial3"></div>
+                            </div>
+                        </div>
+
+                        <div class="wizard-actions">
+                            <button type="button" class="btn-wizard-prev" onclick="goToStep(1)">Previous</button>
+                            <button type="button" class="btn-wizard-next" onclick="goToStep(3)">Next: Checklist</button>
+                        </div>
+                    </div>
+
+                    <!-- ======================================================= -->
+                    <!-- STEP 3: ROUTINE TEST CHECKLIST -->
+                    <!-- ======================================================= -->
+                    <div class="section-box" id="step-box-3">
+                            <div class="section-box-title">
+                                3. Routine Test Checklist
+                            </div>
+                            <div class="input-group" style="margin-bottom: 14px;">
+                                <label id="short_check_label">Short Circuit Insulation Check (Line & Neutral, Neutral & Earth, Line & Earth)</label>
+                                <input type="text" name="short_check" id="short_check" value="CHECKED AND FOUND OK" placeholder="CHECKED AND FOUND OK">
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 40px; text-align: center;">Sl.</th>
+                                            <th>Test Performed</th>
+                                            <th>Specified Value</th>
+                                            <th>Actual Measured Value</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="text-align: center;">1</td>
+                                            <td>Input Supply Voltage (+/-10%)</td>
+                                            <td><input type="text" name="spec_1" id="spec_1" class="table-input" value="230V"></td>
+                                            <td><input type="text" name="act_1" id="act_1" class="table-input" value="230V"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;">2</td>
+                                            <td>Derived DC Voltages (+/-5%)</td>
+                                            <td><input type="text" name="spec_2" id="spec_2" class="table-input" value="24V"></td>
+                                            <td><input type="text" name="act_2" id="act_2" class="table-input" value="24V"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;">3</td>
+                                            <td>Display and Keypad Functionality</td>
+                                            <td><input type="text" name="spec_3" id="spec_3" class="table-input" value="OK"></td>
+                                            <td><input type="text" name="act_3" id="act_3" class="table-input" value="OK"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;">4</td>
+                                            <td>Belt Load as specified in G.A.</td>
+                                            <td><input type="text" name="spec_4" id="spec_4" class="table-input" value="5.00 mV" placeholder="e.g. 5.00 mV"></td>
+                                            <td><input type="text" name="act_4" id="act_4" class="table-input" value="" placeholder="e.g. 133.33"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;">5</td>
+                                            <td>Belt Speed as specified in G.A.</td>
+                                            <td><input type="text" name="spec_5" id="spec_5" class="table-input" value="" placeholder="e.g. 31.83 Hz"></td>
+                                            <td><input type="text" name="act_5" id="act_5" class="table-input" value="" placeholder="e.g. 2.50"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;">6</td>
+                                            <td>Number of PF Contacts</td>
+                                            <td><input type="text" name="spec_6" id="spec_6" class="table-input" value="4"></td>
+                                            <td><input type="text" name="act_6" id="act_6" class="table-input" value="4"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;">7</td>
+                                            <td>Communication Output</td>
+                                            <td><input type="text" name="spec_7" id="spec_7" class="table-input" value="RS 485"></td>
+                                            <td><input type="text" name="act_7" id="act_7" class="table-input" value="RS 485"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;">8</td>
+                                            <td>Analog Output</td>
+                                            <td><input type="text" name="spec_8" id="spec_8" class="table-input" value="4-20mA"></td>
+                                            <td><input type="text" name="act_8" id="act_8" class="table-input" value="4-20mA"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;">9</td>
+                                            <td>Wiring Check</td>
+                                            <td><input type="text" name="spec_9" id="spec_9" class="table-input" value="OK"></td>
+                                            <td><input type="text" name="act_9" id="act_9" class="table-input" value="OK"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <!-- Resolution Inputs -->
+                            <div style="margin-top: 20px; background: #f8fafc; padding: 16px; border-radius: 10px; border: 1.5px solid #cbd5e1;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px;">
+                                    <h4 style="margin: 0; font-size: 14px; font-weight: 800; color: #0284c7;">Resolution Settings (Auto-Calculated from Load & Rate)</h4>
+                                    <span style="font-size: 11px; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 6px; font-weight: 700;">Live Auto-Calc</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                                    <div class="input-group">
+                                        <label style="font-weight: 700;">Load (L) Resolution</label>
+                                        <input type="text" name="res_l" id="res_l" placeholder="e.g. 0.01">
+                                    </div>
+                                    <div class="input-group">
+                                        <label style="font-weight: 700;">Speed (S) Resolution</label>
+                                        <input type="text" name="res_s" id="res_s" placeholder="e.g. 0.01">
+                                    </div>
+                                    <div class="input-group">
+                                        <label style="font-weight: 700;">Rate (R) Resolution</label>
+                                        <input type="text" name="res_r" id="res_r" placeholder="e.g. 0.1">
+                                    </div>
+                                    <div class="input-group">
+                                        <label style="font-weight: 700;">Totaliser (T) Resolution</label>
+                                        <input type="text" name="res_t" id="res_t" placeholder="e.g. 0.1">
+                                    </div>
+                                </div>
+                                <p style="margin: 10px 0 0 0; font-size: 12px; color: #475569; font-weight: 500;">* Load & Rate Resolutions auto-scale (≤99 → 0.01, ≤999 → 0.1, >999 → 1) based on Capacity TPH and Belt Load kg/m.</p>
+                            </div>
+                            
+                            <div class="wizard-actions">
+                                <button type="button" class="btn-wizard-prev" onclick="goToStep(2)">
+                                    Previous
+                                </button>
+                                <button type="button" class="btn-wizard-next" onclick="goToStep(4)">
+                                    Next: Calibration Matrix </button>
+                            </div>
+                        </div>
+
+                        <!-- ======================================================= -->
+                        <!-- STEP 4: CALIBRATION & LOAD TEST MATRIX -->
+                        <!-- ======================================================= -->
+                        <div class="section-box" id="step-box-4">
+                            <div
+                                style="margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between;">
+                                <div class="section-box-title" style="margin-bottom: 0;"><i
+                                        class="fa-solid fa-chart-line"></i> 4. Calibration & Load Test Matrix (0% to
+                                    110%)</div>
+                                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                                    <label style="font-size: 12.5px; font-weight: 700; color: #475569; margin: 0;"><i class="fa-solid fa-microchip" style="color: #0284c7;"></i> Load Cells:</label>
+                                    <select id="lc_system_sync" onchange="setLcSystem(this.value)" style="background: #ffffff; border: 1.5px solid #cbd5e1; color: #0f172a; padding: 5px 12px; border-radius: 8px; font-size: 13px; font-weight: 700; margin-right: 12px;">
+                                        <option value="4">4 Load Cells</option>
+                                        <option value="8">8 Load Cells</option>
+                                    </select>
+                                    <label style="font-size: 12.5px; font-weight: 700; color: #475569; margin: 0;"><i class="fa-solid fa-wave-square" style="color: #0284c7;"></i> Analog Outputs:</label>
+                                    <select id="num_outputs_sync" onchange="setNumOutputs(this.value)"
+                                        style="background: #ffffff; border: 1.5px solid #cbd5e1; color: #0f172a; padding: 5px 12px; border-radius: 8px; font-size: 13px; font-weight: 700;">
+                                        <option value="1">1 Output (AO1)</option>
+                                        <option value="2">2 Outputs (AO1, AO2)</option>
+                                        <option value="3">3 Outputs (AO1, 2, 3)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Load cell (kg)</th>
+                                            <th>Belt load (Kg/m)</th>
+                                            <th>Speed (m/s)</th>
+                                            <th>Rate (tph)</th>
+                                            <th>Totalizer (Tonnes/6min)</th>
+                                            <th id="th_ao">Current O/P (mA)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><input type="text" name="g1_0" id="g1_0" class="table-input" value=""></td>
+                                            <td><input type="text" name="g1_1" id="g1_1" class="table-input" value=""></td>
+                                            <td><input type="text" name="g1_2" id="g1_2" class="table-input" value=""></td>
+                                            <td><input type="text" name="g1_3" id="g1_3" class="table-input" value=""></td>
+                                            <td><input type="text" name="g1_4" id="g1_4" class="table-input" value=""></td>
+                                            <td class="ao-cell">
+                                                <div style="display: flex; gap: 4px;">
+                                                    <input type="text" name="g1_5_ao1" id="g1_5_ao1" class="table-input" value=""
+                                                        placeholder="AO1">
+                                                    <input type="text" name="g1_5_ao2" id="g1_5_ao2" class="table-input ao2-input"
+                                                        placeholder="AO2"
+                                                        style="display: none; border-left: 1px solid #334155;">
+                                                    <input type="text" name="g1_5_ao3" id="g1_5_ao3" class="table-input ao3-input" placeholder="AO3" style="display: none; border-left: 1px solid #334155;">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="g2_0" id="g2_0" class="table-input" value=""></td>
+                                            <td><input type="text" name="g2_1" id="g2_1" class="table-input" value=""></td>
+                                            <td><input type="text" name="g2_2" id="g2_2" class="table-input" value=""></td>
+                                            <td><input type="text" name="g2_3" id="g2_3" class="table-input" value=""></td>
+                                            <td><input type="text" name="g2_4" id="g2_4" class="table-input" value=""></td>
+                                            <td class="ao-cell">
+                                                <div style="display: flex; gap: 4px;">
+                                                    <input type="text" name="g2_5_ao1" id="g2_5_ao1" class="table-input" value=""
+                                                        placeholder="AO1">
+                                                    <input type="text" name="g2_5_ao2" id="g2_5_ao2" class="table-input ao2-input"
+                                                        placeholder="AO2"
+                                                        style="display: none; border-left: 1px solid #334155;">
+                                                    <input type="text" name="g2_5_ao3" id="g2_5_ao3" class="table-input ao3-input" placeholder="AO3" style="display: none; border-left: 1px solid #334155;">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="g3_0" id="g3_0" class="table-input" value=""></td>
+                                            <td><input type="text" name="g3_1" id="g3_1" class="table-input" value=""></td>
+                                            <td><input type="text" name="g3_2" id="g3_2" class="table-input" value=""></td>
+                                            <td><input type="text" name="g3_3" id="g3_3" class="table-input" value=""></td>
+                                            <td><input type="text" name="g3_4" id="g3_4" class="table-input" value=""></td>
+                                            <td class="ao-cell">
+                                                <div style="display: flex; gap: 4px;">
+                                                    <input type="text" name="g3_5_ao1" id="g3_5_ao1" class="table-input" value=""
+                                                        placeholder="AO1">
+                                                    <input type="text" name="g3_5_ao2" id="g3_5_ao2" class="table-input ao2-input"
+                                                        placeholder="AO2"
+                                                        style="display: none; border-left: 1px solid #334155;">
+                                                    <input type="text" name="g3_5_ao3" id="g3_5_ao3" class="table-input ao3-input" placeholder="AO3" style="display: none; border-left: 1px solid #334155;">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="g4_0" id="g4_0" class="table-input" value=""></td>
+                                            <td><input type="text" name="g4_1" id="g4_1" class="table-input" value=""></td>
+                                            <td><input type="text" name="g4_2" id="g4_2" class="table-input" value=""></td>
+                                            <td><input type="text" name="g4_3" id="g4_3" class="table-input" value=""></td>
+                                            <td><input type="text" name="g4_4" id="g4_4" class="table-input" value=""></td>
+                                            <td class="ao-cell">
+                                                <div style="display: flex; gap: 4px;">
+                                                    <input type="text" name="g4_5_ao1" id="g4_5_ao1" class="table-input" value=""
+                                                        placeholder="AO1">
+                                                    <input type="text" name="g4_5_ao2" id="g4_5_ao2" class="table-input ao2-input"
+                                                        placeholder="AO2"
+                                                        style="display: none; border-left: 1px solid #334155;">
+                                                    <input type="text" name="g4_5_ao3" id="g4_5_ao3" class="table-input ao3-input" placeholder="AO3" style="display: none; border-left: 1px solid #334155;">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="g5_0" id="g5_0" class="table-input" value=""></td>
+                                            <td><input type="text" name="g5_1" id="g5_1" class="table-input" value=""></td>
+                                            <td><input type="text" name="g5_2" id="g5_2" class="table-input" value=""></td>
+                                            <td><input type="text" name="g5_3" id="g5_3" class="table-input" value=""></td>
+                                            <td><input type="text" name="g5_4" id="g5_4" class="table-input" value=""></td>
+                                            <td class="ao-cell">
+                                                <div style="display: flex; gap: 4px;">
+                                                    <input type="text" name="g5_5_ao1" id="g5_5_ao1" class="table-input" value=""
+                                                        placeholder="AO1">
+                                                    <input type="text" name="g5_5_ao2" id="g5_5_ao2" class="table-input ao2-input"
+                                                        placeholder="AO2"
+                                                        style="display: none; border-left: 1px solid #334155;">
+                                                    <input type="text" name="g5_5_ao3" id="g5_5_ao3" class="table-input ao3-input" placeholder="AO3" style="display: none; border-left: 1px solid #334155;">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="g6_0" id="g6_0" class="table-input" value=""></td>
+                                            <td><input type="text" name="g6_1" id="g6_1" class="table-input" value=""></td>
+                                            <td><input type="text" name="g6_2" id="g6_2" class="table-input" value=""></td>
+                                            <td><input type="text" name="g6_3" id="g6_3" class="table-input" value=""></td>
+                                            <td><input type="text" name="g6_4" id="g6_4" class="table-input" value=""></td>
+                                            <td class="ao-cell">
+                                                <div style="display: flex; gap: 4px;">
+                                                    <input type="text" name="g6_5_ao1" id="g6_5_ao1" class="table-input" value=""
+                                                        placeholder="AO1">
+                                                    <input type="text" name="g6_5_ao2" id="g6_5_ao2" class="table-input ao2-input"
+                                                        placeholder="AO2"
+                                                        style="display: none; border-left: 1px solid #334155;">
+                                                    <input type="text" name="g6_5_ao3" id="g6_5_ao3" class="table-input ao3-input" placeholder="AO3" style="display: none; border-left: 1px solid #334155;">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+
+                            
+                            <div class="wizard-actions">
+                                <button type="button" class="btn-wizard-prev" onclick="goToStep(3)">
+                                    Previous
+                                </button>
+                                <button type="button" class="btn-wizard-next" onclick="goToStep(5)">
+                                    Next: Sign-Off </button>
+                            </div>
+                        </div>
+
+                        <!-- ======================================================= -->
+                        <!-- STEP 5: FINAL SIGN-OFF & SAVE/PREVIEW PDF -->
+                        <!-- ======================================================= -->
+                        <div class="section-box" id="step-box-5">
+                            <div class="section-box-title">
+                                5. Test Equipment & Final Sign-Off
+                            </div>
+                            <div class="grid-col-2">
+                                <div class="input-group">
+                                    <label>Instrument Used (Multimeter / Calibrator)</label>
+                                    <input type="text" name="instrument_used" id="instrument_used">
+                                </div>
+                                <div class="input-group">
+                                    <label>Testing Date</label>
+                                    <input type="date" name="date" id="date">
+                                </div>
+                                <div class="input-group">
+                                    <label>Tested By</label>
+                                    <input type="text" name="tested_by" id="tested_by" value="{{ user.full_name or user.username if user else '' }}">
+                                </div>
+                                <div class="input-group">
+                                    <label>Approved By</label>
+                                    <input type="text" name="approved_by" id="approved_by">
+                                </div>
+                            </div>
+
+                            <div class="wizard-actions">
+                                <button type="button" class="btn-wizard-prev" onclick="goToStep(4)">
+                                    Previous
+                                </button>
+                                <button type="submit" id="btnSubmitPDF" class="btn-primary"
+                                    style="display: inline-flex; padding: 12px 24px; font-size: 14px; border-radius: 12px; box-shadow: 0 4px 14px rgba(0, 158, 227, 0.3);">
+                                    Submit Report
+                                </button>
+                            </div>
+                        </div>
+                </div>
+                <input type="file" id="gaFileInput" accept=".dwg,.dxf,.json" style="display:none;">
+            </form>
+
+            <!-- DOWNLOAD SUCCESS BANNER -->
+            <div id="downloadBanner" class="pdf-download-banner"
+                style="display: none; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+                <div>
+                    <h4 style="font-size: 16px; font-weight: 800; margin: 0 0 4px 0; color: #ffffff;">Report Generated
+                        Successfully!</h4>
+                    <p id="downloadFilename" style="font-size: 13px; opacity: 0.9; margin: 0; color: #e0f2fe;"></p>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button type="button" id="btnBannerPreviewPDF" class="btn-secondary"
+                        style="padding: 10px 18px; font-size: 14px; font-weight: 700; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35); color: #ffffff; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+                        Preview PDF
+                    </button>
+                    <a id="btnDownloadDOCX" href="#" target="_blank" class="btn-primary"
+                        style="background: #e0f2fe; color: #0369a1; font-weight: 800; padding: 10px 18px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-file-word"></i> Word (.docx)
+                    </a>
+                    <a id="btnDownloadPDF" href="#" target="_blank" class="btn-primary"
+                        style="background: #ffffff; color: #0284c7; font-weight: 800; padding: 10px 18px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-file-pdf"></i> PDF (.pdf)
+                    </a>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- PDF PREVIEW MODAL -->
+    <div id="pdfPreviewModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(6px); z-index: 9999; justify-content: center; align-items: center;">
+        <div style="background: #1e293b; width: 92%; max-width: 900px; height: 88vh; border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; border: 1px solid #334155;">
+            <div style="padding: 14px 20px; background: #0f172a; display: flex; justify-content: space-between; align-items: center;">
+                <h3 id="modalPreviewTitle" style="color: #fff; margin: 0; font-size: 16px;">PDF Document Preview</h3>
+                <div style="display: flex; gap: 10px;">
+                    <a id="btnModalDownloadPDF" href="#" download class="btn" style="background: #0284c7; color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none;">
+                        Download
+                    </a>
+                    <button type="button" id="btnClosePreviewModal" style="background: transparent; border: none; color: #94a3b8; font-size: 20px; cursor: pointer;">
+                        &times;</button>
+                </div>
+            </div>
+            <iframe id="pdfPreviewIframe" style="width: 100%; height: 100%; border: none;"></iframe>
+        </div>
+    </div>
+
+    <script>
+        function getLoadCellModelCode(capStr, rawText) {
+            let txt = (rawText || '').toUpperCase();
+            if (txt.includes('BR32') || txt.includes('BR-32') || txt.includes('BR3200')) return 'BR3200H0';
+            if (txt.includes('BR52') || txt.includes('BR-52') || txt.includes('BR5200')) return 'BR5200H0';
+            if (txt.includes('BR')) {
+                let m = txt.match(/BR[A-Z0-9\-]+/);
+                if (m) return m[0];
+            }
+
+            if (!capStr) return 'BR3200H0';
+            let capNum = parseFloat(String(capStr).replace(/[^0-9.]/g, ''));
+
+            // BR & CR Load Cell Series mapping
+            if (capNum === 300 || capStr.includes('300')) return 'BR3200H0';
+            if (capNum === 500 || capStr.includes('500')) return 'BR5200H0';
+            if (capNum === 700 || capStr.includes('700')) return 'BR7200H0';
+            if (capNum === 1000 || capStr.includes('1000') || capStr.includes('1T')) return 'BR1000H0';
+            if (capNum === 2000 || capStr.includes('2000') || capStr.includes('2T')) return 'BR2000H0';
+            if (capNum > 0) return `BR3200H0-${capNum}KG`;
+
+            return 'BR3200H0';
+        }
+
+        function openGaModal() {
+            const modal = document.getElementById('gaUploadModal');
+            if (modal) modal.style.display = 'flex';
+        }
+        function closeGaModal() {
+            const modal = document.getElementById('gaUploadModal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function autoCalculateCalibrationMatrix(capVal, speedVal, pulsesVal, diameterVal) {
+            let capEl = document.getElementById('capacity');
+            let speedEl = document.getElementById('belt_speed');
+            let diameterEl = document.getElementById('pulley_diameter');
+
+            let rawCap = capVal || (capEl ? capEl.value.trim() : '');
+            let rawSpeed = speedVal || (speedEl ? speedEl.value.trim() : '');
+
+            // Only calculate if the user has provided capacity and speed
+            if (!rawCap || !rawSpeed) return;
+
+            let cap = parseFloat(String(rawCap).replace(/[^0-9.]/g, ''));
+            let speed = parseFloat(String(rawSpeed).replace(/[^0-9.]/g, ''));
+            let pulses = parseFloat(String(pulsesVal || '12').replace(/[^0-9.]/g, '')) || 12;
+            let diameter = (diameterEl && diameterEl.value) ? parseFloat(diameterEl.value) : (parseFloat(String(diameterVal || '0.16').replace(/[^0-9.]/g, '')) || 0.16);
+
+            if (!cap || isNaN(cap) || cap <= 0) return;
+            if (!speed || isNaN(speed) || speed <= 0) return;
+            if (!diameter || isNaN(diameter) || diameter <= 0) diameter = 0.16;
+
+            // 1. Full Belt Load (kg/m) = (Capacity TPH * 1000) / (3600 * Speed m/s)
+            let fullLoad = (cap * 1000.0) / (3600.0 * speed);
+            let speedStr = speed.toFixed(2);
+
+            // 2. Speed Frequency (Hz) = (Speed m/s * Pulses) / (PI * Diameter)
+            let hzVal = (speed * pulses) / (Math.PI * diameter);
+            let hzStr = hzVal.toFixed(2);
+
+            // 3. Dynamic Resolution Calculations:
+            // Load (res_l) & Rate (res_r): <= 99 -> 0.01 | 99-999 -> 0.1 | > 999 -> 1
+            function getRes(val) {
+                let v = Math.abs(parseFloat(val) || 0);
+                if (v <= 99) return { str: '0.01', dec: 2 };
+                if (v <= 999) return { str: '0.1', dec: 1 };
+                return { str: '1', dec: 0 };
+            }
+
+            let loadRes = getRes(fullLoad);
+            let rateRes = getRes(cap);
+            let speedRes = { str: '0.01', dec: 2 };
+            let totalizerRes = { str: '0.1', dec: 1 };
+
+            setFieldValue('res_l', loadRes.str);
+            setFieldValue('res_s', speedRes.str);
+            setFieldValue('res_r', rateRes.str);
+            setFieldValue('res_t', totalizerRes.str);
+
+            // 4. Populate Routine Test Table Row 4 & Row 5 (Clean numbers without appended unit strings)
+            setFieldValue('spec_4', '5.00 mV');
+            setFieldValue('act_4', fullLoad.toFixed(loadRes.dec));
+
+            setFieldValue('spec_5', `${hzStr} Hz`);
+            setFieldValue('act_5', `${speedStr}`);
+
+            // 5. Populate 6-Step Calibration Matrix (Rows 1 to 6: 0%, 20%, 40%, 60%, 80%, 100%)
+            const pcts = [
+                { row: 1, pct: 0.00, mv: '3.00', ma: '4.00' },
+                { row: 2, pct: 0.20, mv: '3.40', ma: '7.20' },
+                { row: 3, pct: 0.40, mv: '3.80', ma: '10.40' },
+                { row: 4, pct: 0.60, mv: '4.20', ma: '13.60' },
+                { row: 5, pct: 0.80, mv: '4.60', ma: '16.80' },
+                { row: 6, pct: 1.00, mv: '5.00', ma: '20.00' }
+            ];
+
+            pcts.forEach(item => {
+                let r = item.row;
+                let calcLoad = (fullLoad * item.pct).toFixed(loadRes.dec);
+                let calcRate = (cap * item.pct).toFixed(rateRes.dec);
+                let calcTotalizer = (calcRate / 10.0).toFixed(totalizerRes.dec);
+
+                setFieldValue(`g${r}_0`, item.mv);
+                setFieldValue(`g${r}_1`, calcLoad);
+                setFieldValue(`g${r}_2`, speedStr);
+                setFieldValue(`g${r}_3`, calcRate);
+                setFieldValue(`g${r}_4`, calcTotalizer);
+                setFieldValue(`g${r}_5_ao1`, item.ma);
+                setFieldValue(`g${r}_5_ao2`, item.ma);
+                setFieldValue(`g${r}_5_ao3`, item.ma);
+            });
+        }
+
+        function handleSupplyVoltageChange() {
+            const spec1El = document.getElementById('spec_1');
+            const act1El = document.getElementById('act_1');
+            const spec2El = document.getElementById('spec_2');
+            const act2El = document.getElementById('act_2');
+            const scLabel = document.getElementById('short_check_label');
+            const scInput = document.getElementById('short_check');
+
+            const val1 = ((spec1El ? spec1El.value : '') + ' ' + (act1El ? act1El.value : '')).toUpperCase();
+            const is24v = val1.includes('24');
+
+            if (is24v) {
+                if (scLabel) scLabel.textContent = 'Pre-check: Check for 24V DC';
+                if (scInput) scInput.value = 'CHECKED AND FOUND OK';
+                if (spec2El) spec2El.value = 'NA';
+                if (act2El) act2El.value = 'NA';
+            } else {
+                if (scLabel) scLabel.textContent = 'Short Circuit Insulation Check (Line & Neutral, Neutral & Earth, Line & Earth)';
+                if (scInput) scInput.value = 'CHECKED AND FOUND OK';
+                if (spec2El && (spec2El.value === 'NA' || !spec2El.value)) spec2El.value = '24V';
+                if (act2El && (act2El.value === 'NA' || !act2El.value)) act2El.value = '24V';
+            }
+        }
+
+        window.setLcSystem = function(count) {
+            const val = String(count || '4').trim();
+            const hidden = document.getElementById('lc_system');
+            if (hidden) hidden.value = val;
+
+            const syncSelect = document.getElementById('lc_system_sync');
+            if (syncSelect) syncSelect.value = val;
+
+            const btn4 = document.getElementById('btnLc4');
+            const btn8 = document.getElementById('btnLc8');
+            const is8 = (val === '8');
+
+            if (is8) {
+                if (btn8) btn8.classList.add('active');
+                if (btn4) btn4.classList.remove('active');
+            } else {
+                if (btn4) btn4.classList.add('active');
+                if (btn8) btn8.classList.remove('active');
+            }
+
+            document.querySelectorAll('.extra-lc').forEach(el => {
+                el.style.display = is8 ? 'flex' : 'none';
+            });
+        };
+
+        window.setNumOutputs = function(count) {
+            const val = parseInt(count) || 1;
+            const hidden = document.getElementById('num_outputs');
+            if (hidden) hidden.value = String(val);
+
+            const syncSelect = document.getElementById('num_outputs_sync');
+            if (syncSelect) syncSelect.value = String(val);
+
+            const btn1 = document.getElementById('btnAo1');
+            const btn2 = document.getElementById('btnAo2');
+            const btn3 = document.getElementById('btnAo3');
+
+            [btn1, btn2, btn3].forEach((b, idx) => {
+                if (b) {
+                    if (idx + 1 === val) b.classList.add('active');
+                    else b.classList.remove('active');
+                }
+            });
+
+            document.querySelectorAll('.ao2-input').forEach(el => {
+                el.style.display = (val >= 2) ? 'block' : 'none';
+            });
+            document.querySelectorAll('.ao3-input').forEach(el => {
+                el.style.display = (val >= 3) ? 'block' : 'none';
+            });
+
+            // Automatically sync valid mA readings from AO1 to AO2 & AO3 if empty or non-numeric
+            for (let r = 1; r <= 6; r++) {
+                const ao1El = document.getElementById(`g${r}_5_ao1`);
+                const ao2El = document.getElementById(`g${r}_5_ao2`);
+                const ao3El = document.getElementById(`g${r}_5_ao3`);
+                const ao1Val = (ao1El && !isNaN(parseFloat(ao1El.value)) && !String(ao1El.value).toLowerCase().includes('ok')) ? ao1El.value.trim() : '';
+
+                if (val >= 2 && ao2El && ao1Val) {
+                    if (!ao2El.value || isNaN(parseFloat(ao2El.value)) || String(ao2El.value).toLowerCase().includes('ok')) {
+                        ao2El.value = ao1Val;
+                    }
+                }
+                if (val >= 3 && ao3El && ao1Val) {
+                    if (!ao3El.value || isNaN(parseFloat(ao3El.value)) || String(ao3El.value).toLowerCase().includes('ok')) {
+                        ao3El.value = ao1Val;
+                    }
+                }
+            }
+        };
+
+        window.setFieldValue = function(id, val) {
+            if (val === undefined || val === null || val === '') return;
+            if (id === 'lc_system') {
+                window.setLcSystem(val);
+                return;
+            }
+            if (id === 'num_outputs') {
+                window.setNumOutputs(val);
+                return;
+            }
+
+            // Sanitize mA current output fields so 'OK', 'Passed', 'OK / Passed' are never assigned
+            if (/_5_ao[123]$/.test(id)) {
+                const sVal = String(val).trim().toLowerCase();
+                if (sVal.includes('ok') || sVal.includes('pass') || isNaN(parseFloat(sVal))) {
+                    const rowMatch = id.match(/g(\d+)_5_ao/);
+                    if (rowMatch) {
+                        const r = rowMatch[1];
+                        const ao1El = document.getElementById(`g${r}_5_ao1`);
+                        val = (ao1El && !isNaN(parseFloat(ao1El.value)) && !String(ao1El.value).toLowerCase().includes('ok')) ? ao1El.value : '';
+                        if (!val) return;
+                    }
+                }
+            }
+
+            const el = document.getElementById(id) || document.getElementsByName(id)[0] || document.querySelector(`input[name="${id}"]`);
+            if (el) {
+                el.value = val;
+                try { el.dispatchEvent(new Event('input', { bubbles: true })); } catch(e){}
+                try { el.dispatchEvent(new Event('change', { bubbles: true })); } catch(e){}
+                el.style.transition = 'all 0.3s ease';
+                el.style.border = '2px solid #10b981';
+                el.style.background = '#ecfdf5';
+                setTimeout(() => {
+                    el.style.border = '';
+                    el.style.background = '';
+                }, 3500);
+            }
+        };
+
+        window.applyExtractedBeltScaleSpecs = function(data) {
+            if (!data) return;
+            if (data.lc_system) window.setLcSystem(data.lc_system);
+            if (data.num_outputs) window.setNumOutputs(data.num_outputs);
+
+            setFieldValue('job_no', data.job_no);
+            setFieldValue('customer', data.customer || data.customer_name);
+            setFieldValue('capacity', data.capacity);
+            setFieldValue('material', data.material);
+            setFieldValue('conveyor_no', data.conveyor_no || data.conveyor_tag || data.tag_no);
+            setFieldValue('belt_speed', data.belt_speed);
+            setFieldValue('tacho_belt_speed', data.belt_speed);
+            setFieldValue('belt_width', data.belt_width);
+            setFieldValue('troughing_angle', data.troughing_angle);
+            setFieldValue('idler_spacing', data.idler_spacing);
+            if (data.pulley_diameter) setFieldValue('pulley_diameter', data.pulley_diameter);
+            if (data.date) setFieldValue('date', data.date);
+
+            if (data.version) setFieldValue('version', data.version);
+            if (data.bs_model || data.indicator_model) setFieldValue('bs_model', data.bs_model || data.indicator_model);
+            if (data.bs_serial) setFieldValue('bs_serial', data.bs_serial);
+            if (data.remote_model || data.remote_display_model) setFieldValue('remote_model', data.remote_model || data.remote_display_model);
+            if (data.remote_serial) setFieldValue('remote_serial', data.remote_serial);
+
+            let modelCode = data.sensor_model || data.lc_model || data.load_cell_model || (data.lc_capacity && typeof getLoadCellModelCode === 'function' ? getLoadCellModelCode(data.lc_capacity) : '');
+            if (modelCode) setFieldValue('sensor_model', modelCode);
+
+            for (let i = 1; i <= 8; i++) {
+                if (data[`s${i}`]) setFieldValue(`s${i}`, data[`s${i}`]);
+            }
+
+            if (data.tacho_type) setFieldValue('tacho_type', data.tacho_type);
+            if (data.tacho_make || data.tacho_model) {
+                setFieldValue('tacho_model', data.tacho_model || data.tacho_make);
+            }
+            if (data.tacho_serial) setFieldValue('tacho_serial', data.tacho_serial);
+
+            if (data.angle_sensor_model) setFieldValue('angle_sensor_model', data.angle_sensor_model);
+            if (data.angle_sensor_serial) setFieldValue('angle_sensor_serial', data.angle_sensor_serial);
+
+            if (data.jbox_model1 || data.jbox_model) setFieldValue('jbox_model1', data.jbox_model1 || data.jbox_model);
+            if (data.jbox_serial1) setFieldValue('jbox_serial1', data.jbox_serial1);
+            if (data.jbox_model2) setFieldValue('jbox_model2', data.jbox_model2);
+            if (data.jbox_serial2) setFieldValue('jbox_serial2', data.jbox_serial2);
+            if (data.jbox_model3) setFieldValue('jbox_model3', data.jbox_model3);
+            if (data.jbox_serial3) setFieldValue('jbox_serial3', data.jbox_serial3);
+
+            if (data.short_check) setFieldValue('short_check', data.short_check);
+            if (data.res_l) setFieldValue('res_l', data.res_l);
+            if (data.res_s) setFieldValue('res_s', data.res_s);
+            if (data.res_r) setFieldValue('res_r', data.res_r);
+            if (data.res_t) setFieldValue('res_t', data.res_t);
+
+            for (let i = 1; i <= 9; i++) {
+                if (data[`spec_${i}`]) setFieldValue(`spec_${i}`, data[`spec_${i}`]);
+                if (data[`act_${i}`]) setFieldValue(`act_${i}`, data[`act_${i}`]);
+            }
+
+            const isNumericMa = (v) => v !== undefined && v !== null && !isNaN(parseFloat(v)) && String(v).toLowerCase().indexOf('ok') === -1 && String(v).toLowerCase().indexOf('pass') === -1;
+
+            for (let r = 1; r <= 6; r++) {
+                for (let c = 0; c <= 5; c++) {
+                    if (data[`g${r}_${c}`] !== undefined) setFieldValue(`g${r}_${c}`, data[`g${r}_${c}`]);
+                }
+                let ao1 = isNumericMa(data[`g${r}_5_ao1`]) ? data[`g${r}_5_ao1`] : (isNumericMa(data[`g${r}_5`]) ? data[`g${r}_5`] : '');
+                let ao2 = isNumericMa(data[`g${r}_5_ao2`]) ? data[`g${r}_5_ao2`] : ao1;
+                let ao3 = isNumericMa(data[`g${r}_5_ao3`]) ? data[`g${r}_5_ao3`] : ao1;
+
+                if (ao1) setFieldValue(`g${r}_5_ao1`, ao1);
+                if (ao2) setFieldValue(`g${r}_5_ao2`, ao2);
+                if (ao3) setFieldValue(`g${r}_5_ao3`, ao3);
+            }
+
+            if (data.instrument_used) setFieldValue('instrument_used', data.instrument_used);
+            if (data.tested_by) setFieldValue('tested_by', data.tested_by);
+            if (data.approved_by) setFieldValue('approved_by', data.approved_by);
+
+            if (typeof autoCalculateCalibrationMatrix === 'function' && data.capacity) {
+                autoCalculateCalibrationMatrix(data.capacity, data.belt_speed);
+            }
+        };
+
+        async function handleGaFileUpload(file) {
+            if (!file) return;
+
+            const btnHeader = document.getElementById('btnUploadGAHeader');
+            const statusDiv = document.getElementById('gaModalStatus');
+            const statusText = document.getElementById('gaModalStatusText');
+
+            if (btnHeader) {
+                btnHeader.disabled = true;
+                btnHeader.innerHTML = 'Extracting GA...';
+            }
+            if (statusDiv) statusDiv.style.display = 'block';
+            if (statusText) statusText.textContent = `Extracting parameters from ${file.name}...`;
+
+            const formData = new FormData();
+            formData.append('ga_file', file);
+
+            try {
+                const res = await fetch('/api/extract-ga', {
+                    method: 'POST',
+                    body: formData
+                });
+                const json = await res.json();
+
+                if (btnHeader) {
+                    btnHeader.disabled = false;
+                    btnHeader.innerHTML = 'Upload GA (.dwg)';
+                }
+                if (statusDiv) statusDiv.style.display = 'none';
+
+                if (json.status === 'success' && json.extracted) {
+                    const ext = json.extracted;
+                    window.applyExtractedBeltScaleSpecs(ext);
+
+                    if (json.has_multiple_systems && json.multi_systems && typeof window.renderMultiSystemSelector === 'function') {
+                        window.renderMultiSystemSelector(json.multi_systems, (sysData, sysName) => {
+                            window.applyExtractedBeltScaleSpecs(sysData);
+                            if (typeof showToast === 'function') showToast(`✅ Switched to ${sysName}`, 'info');
+                        }, json.systems_meta);
+                    }
+
+                    closeGaModal();
+                    if (typeof showToast === 'function') {
+                        showToast(`✅ GA Drawing Extracted (${json.filename})`, 'success');
+                    } else {
+                        alert(`✅ GA Drawing Extracted Successfully!\n\nExtracted from: ${json.filename}\n• Job No: ${ext.job_no}\n• Customer: ${ext.customer}\n• Capacity: ${ext.capacity}`);
+                    }
+                } else {
+                    alert('Error extracting GA file: ' + (json.message || 'Unknown error'));
+                }
+            } catch (err) {
+                if (btnHeader) {
+                    btnHeader.disabled = false;
+                    btnHeader.innerHTML = 'Upload GA (.dwg)';
+                }
+                if (statusDiv) statusDiv.style.display = 'none';
+            }
+        }
+
+        window.fillDemoData = function() {
+            const setVal = (idOrName, val) => {
+                if (val === undefined || val === null) return;
+                const el = document.getElementById(idOrName) || document.querySelector(`[name="${idOrName}"]`);
+                if (el) {
+                    el.value = val;
+                    try { el.dispatchEvent(new Event('change')); } catch(e){}
+                    try { el.dispatchEvent(new Event('input')); } catch(e){}
+                }
+            };
+
+            const customers = ['Titan Cement Ltd', 'UltraTech Minerals', 'JSW Steel Plant', 'Tata Steel Mining', 'Adani Power Thermal'];
+            const randCust = customers[Math.floor(Math.random() * customers.length)];
+            const randJobNum = Math.floor(100 + Math.random() * 900);
+            const randCap = [1000, 1200, 1500, 2000][Math.floor(Math.random() * 4)];
+            const randSpeed = (1.5 + Math.random() * 1.5).toFixed(2);
+            const dia = 0.16;
+
+            const currentLc = (document.getElementById('lc_system') && document.getElementById('lc_system').value) || '8';
+            const currentAo = (document.getElementById('num_outputs') && document.getElementById('num_outputs').value) || '3';
+            window.setLcSystem(currentLc);
+            window.setNumOutputs(currentAo);
+
+            // Step 1: System
+            setVal('job_no', `JOB-2026-${randJobNum}`);
+            setVal('customer', randCust);
+            setVal('conveyor_no', `CV-${Math.floor(10 + Math.random() * 90)}B`);
+            setVal('capacity', randCap.toString());
+            setVal('belt_speed', randSpeed + " m/s");
+            setVal('tacho_belt_speed', randSpeed);
+            setVal('date', new Date().toISOString().split('T')[0]);
+
+            // Step 2: System Components
+            setVal('bs_model', `BS-MODEL-${randJobNum}`);
+            setVal('bs_serial', `SN-BS-${7000 + randJobNum}`);
+            setVal('remote_model', `RM-UNIT-01`);
+            setVal('remote_serial', `SN-RM-${5000 + randJobNum}`);
+
+            setVal('sensor_model', `LC-${randCap / 4}KG`);
+            setVal('s1', `LC1-00${randJobNum % 10}`);
+            setVal('s2', `LC2-00${randJobNum % 10}`);
+            setVal('s3', `LC3-00${randJobNum % 10}`);
+            setVal('s4', `LC4-00${randJobNum % 10}`);
+            setVal('s5', `LC5-00${randJobNum % 10}`);
+            setVal('s6', `LC6-00${randJobNum % 10}`);
+            setVal('s7', `LC7-00${randJobNum % 10}`);
+            setVal('s8', `LC8-00${randJobNum % 10}`);
+
+            setVal('tacho_model', `TACHO-SENS-PRO`);
+            setVal('tacho_serial', `TS-${8000 + randJobNum}`);
+            setVal('pulley_diameter', dia.toString());
+
+            setVal('angle_sensor_model', `AS-300-TILT`);
+            setVal('angle_sensor_serial', `SN-AS-${9000 + randJobNum}`);
+
+            setVal('jbox_model1', `JBOX-IP67`);
+            setVal('jbox_serial1', `JB-SN-${100 + randJobNum}`);
+            setVal('jbox_model2', `JBOX-IP67`);
+            setVal('jbox_serial2', `JB-SN-${200 + randJobNum}`);
+            setVal('jbox_model3', `JBOX-IP67`);
+            setVal('jbox_serial3', `JB-SN-${300 + randJobNum}`);
+
+            // Step 3: Routine Tests & Resolutions
+            const demoFullLoad = (randCap * 1000.0) / (3600.0 * parseFloat(randSpeed || 1.0));
+            const calcResRule = (v) => {
+                const num = Math.abs(parseFloat(v) || 0);
+                if (num <= 99) return { str: '0.01', dec: 2 };
+                if (num <= 999) return { str: '0.1', dec: 1 };
+                return { str: '1', dec: 0 };
+            };
+            const resL = calcResRule(demoFullLoad);
+            const resR = calcResRule(randCap);
+            const resS = { str: '0.01', dec: 2 };
+            const resT = { str: '0.1', dec: 1 };
+
+            setVal('short_check', `CHECKED AND FOUND OK`);
+            setVal('res_l', resL.str);
+            setVal('res_s', resS.str);
+            setVal('res_r', resR.str);
+            setVal('res_t', resT.str);
+
+            setVal('spec_1', '230V'); setVal('act_1', '230V');
+            setVal('spec_2', '24V'); setVal('act_2', '24V');
+            setVal('spec_3', 'OK'); setVal('act_3', 'OK');
+            setVal('spec_4', '5.00 mV'); setVal('act_4', demoFullLoad.toFixed(resL.dec));
+            const demoHz = ((parseFloat(randSpeed) * 12) / (Math.PI * dia)).toFixed(2);
+            setVal('spec_5', demoHz + " Hz"); setVal('act_5', parseFloat(randSpeed).toFixed(resS.dec));
+            setVal('spec_6', '4'); setVal('act_6', '4');
+            setVal('spec_7', 'RS 485'); setVal('act_7', 'RS 485');
+            setVal('spec_8', '4-20mA'); setVal('act_8', '4-20mA');
+            setVal('spec_9', 'OK'); setVal('act_9', 'OK');
+
+            // Step 4: Calibration Grid
+            for (let r = 1; r <= 6; r++) {
+                const stepRatio = (r - 1) / 5.0;
+                const loadKg = (3.0 + stepRatio * 2.0).toFixed(2);
+                const beltKgM = (stepRatio * demoFullLoad).toFixed(resL.dec);
+                const rateTph = (stepRatio * randCap).toFixed(resR.dec);
+                const totT = (stepRatio * (randCap / 10.0)).toFixed(resT.dec);
+                const mA = (4.0 + stepRatio * 16.0).toFixed(2);
+
+                setVal(`g${r}_0`, loadKg);
+                setVal(`g${r}_1`, beltKgM);
+                setVal(`g${r}_2`, parseFloat(randSpeed).toFixed(resS.dec));
+                setVal(`g${r}_3`, rateTph);
+                setVal(`g${r}_4`, totT);
+                setVal(`g${r}_5`, mA);
+                setVal(`g${r}_5_ao1`, mA);
+                setVal(`g${r}_5_ao2`, mA);
+                setVal(`g${r}_5_ao3`, mA);
+            }
+
+            // Step 5: Sign-Off
+            setVal('instrument_used', `Fluke 87V Digital Multimeter & 50kg Calibrated Class F Weights`);
+            setVal('tested_by', 'Alex River');
+            setVal('approved_by', 'HOD-PDN');
+
+            if (typeof autoCalculateCalibrationMatrix === 'function') {
+                autoCalculateCalibrationMatrix(randCap.toString(), randSpeed);
+            }
+        };
+
+        window.goToStep = function(stepNum) {
+        const hasStepBoxes = document.getElementById('step-box-1') || document.getElementById('step-box-2');
+        if (hasStepBoxes) {
+            for (let i = 1; i <= 10; i++) {
+                const box = document.getElementById('step-box-' + i) || document.getElementById('step-' + i);
+                const st = document.getElementById('st-' + i) || document.querySelector(`.step-indicator[data-step="${i}"]`);
+                if (box) {
+                    if (i === stepNum) {
+                        box.classList.add('active-step');
+                        box.classList.add('active');
+                        box.style.display = 'block';
+                    } else {
+                        box.classList.remove('active-step');
+                        box.classList.remove('active');
+                        box.style.display = 'none';
+                    }
+                }
+                if (st) {
+                    if (i === stepNum) {
+                        st.classList.add('active');
+                        st.classList.remove('completed');
+                    } else if (i < stepNum) {
+                        st.classList.remove('active');
+                        st.classList.add('completed');
+                    } else {
+                        st.classList.remove('active');
+                        st.classList.remove('completed');
+                    }
+                }
+            }
+        } else {
+            const panels = document.querySelectorAll('.step-panel');
+            panels.forEach((p, idx) => {
+                if (idx + 1 === stepNum) {
+                    p.classList.add('active');
+                    p.style.display = 'block';
+                } else {
+                    p.classList.remove('active');
+                    p.style.display = 'none';
+                }
+            });
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.goToStep(1);
+
+            const gaInput = document.getElementById('gaFileInput');
+            const modalFileInput = document.getElementById('gaFileInputModal');
+            if (gaInput) {
+                gaInput.dataset.gaBound = '1';
+                gaInput.addEventListener('change', (e) => handleGaFileUpload(e.target.files[0]));
+            }
+            if (modalFileInput) modalFileInput.addEventListener('change', (e) => handleGaFileUpload(e.target.files[0]));
+
+            const capEl = document.getElementById('capacity');
+            const speedEl = document.getElementById('belt_speed');
+            const diaEl = document.getElementById('pulley_diameter');
+
+            const recalculate = () => {
+                if (capEl && capEl.value.trim() && speedEl && speedEl.value.trim()) {
+                    autoCalculateCalibrationMatrix(capEl.value, speedEl.value, '12', diaEl ? diaEl.value : '0.16');
+                }
+            };
+            if (capEl) { capEl.addEventListener('input', recalculate); capEl.addEventListener('change', recalculate); }
+            if (speedEl) { speedEl.addEventListener('input', recalculate); speedEl.addEventListener('change', recalculate); }
+            if (diaEl) { diaEl.addEventListener('input', recalculate); diaEl.addEventListener('change', recalculate); }
+        });
+    </script>
+
+<!-- Universal Job Data Auto-Fill & Sync Engine -->
+<script>
+    async function fetchJobNoData() {
+        const jobNoInput = document.querySelector('input[name="job_no"], input[name="job_number"], input[id="job_no"]');
+        if (!jobNoInput || !jobNoInput.value.trim()) {
+            if (typeof showToast === 'function') showToast('Please enter a Job Number first.', 'warning');
+            return;
+        }
+        const jobNo = jobNoInput.value.trim();
+
+        try {
+            const res = await fetch(`/api/fetch-job-data?job_no=${encodeURIComponent(jobNo)}`);
+            const json = await res.json();
+
+            if (json.status === 'success' && json.extracted) {
+                const ext = json.extracted;
+                window.applyExtractedBeltScaleSpecs(ext);
+
+                if (json.has_multiple_systems && json.multi_systems && typeof window.renderMultiSystemSelector === 'function') {
+                    window.renderMultiSystemSelector(json.multi_systems, (sysData, sysName) => {
+                        window.applyExtractedBeltScaleSpecs(sysData);
+                        if (typeof showToast === 'function') showToast(`✅ Switched to ${sysName}`, 'info');
+                    }, json.systems_meta);
+                }
+
+                if (typeof showToast === 'function') {
+                    showToast(`✅ Auto-filled from ${json.filename} (${(json.source || '').toUpperCase()})`, 'success');
+                }
+            } else if (json.status === 'success' && json.source === 'excel' && json.data) {
+                const data = json.data;
+                const mappings = {
+                    "CUSTOMER": "customer",
+                    "RATED CAPACITY": "capacity",
+                    "CONVEYOR NO / TAG": "conveyor_no",
+                    "BELT SPEED": "belt_speed",
+                    "BELT WIDTH": "belt_width",
+                    "MATERIAL HANDLED": "material",
+                    "INDICATOR MODEL": "bs_model",
+                    "SENSOR / LOAD CELL MODEL": "sensor_model",
+                    "TACHO / SPEED SENSOR MODEL": "tacho_model",
+                    "JUNCTION BOX MODEL": "jbox_model1",
+                    "REMOTE DISPLAY MODEL": "remote_model"
+                };
+                for (const [excelKey, formId] of Object.entries(mappings)) {
+                    if (data[excelKey] !== undefined) setFieldValue(formId, data[excelKey]);
+                }
+                const capEl = document.getElementById('capacity');
+                const speedEl = document.getElementById('belt_speed');
+                if (capEl && capEl.value) {
+                    autoCalculateCalibrationMatrix(capEl.value, speedEl ? speedEl.value : null);
+                }
+                if (typeof showToast === 'function') showToast('✅ Auto-filled from Excel', 'success');
+            } else {
+                if (typeof showToast === 'function') showToast(json.message || 'No job data found.', 'warning');
+            }
+        } catch (e) {
+            console.error("Job Data Fetch error:", e);
+            if (typeof showToast === 'function') showToast('Error fetching data: ' + e.message, 'error');
+        }
+    }
+
+    // Alias for backwards compatibility
+    window.fetchJobNoData = fetchJobNoData;
+    window.fetchExcelData = fetchJobNoData;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const jobNoInput = document.querySelector('input[name="job_no"], input[name="job_number"], input[id="job_no"]');
+        if (jobNoInput) {
+            let lastFetched = '';
+            let isFetching = false;
+            const triggerFetch = async () => {
+                const v = jobNoInput.value.trim();
+                if (v && v !== lastFetched && !isFetching) {
+                    lastFetched = v;
+                    isFetching = true;
+                    try {
+                        await fetchJobNoData();
+                    } finally {
+                        isFetching = false;
+                    }
+                }
+            };
+            jobNoInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    triggerFetch();
+                }
+            });
+            jobNoInput.addEventListener('blur', triggerFetch);
+            jobNoInput.addEventListener('change', triggerFetch);
+        }
+
+        const spec1El = document.getElementById('spec_1');
+        const act1El = document.getElementById('act_1');
+        if (spec1El) {
+            spec1El.addEventListener('input', () => {
+                if (act1El && (act1El.value === '230V' || act1El.value === '24V' || !act1El.value)) {
+                    act1El.value = spec1El.value;
+                }
+                if (typeof handleSupplyVoltageChange === 'function') handleSupplyVoltageChange();
+            });
+            spec1El.addEventListener('change', () => {
+                if (typeof handleSupplyVoltageChange === 'function') handleSupplyVoltageChange();
+            });
+        }
+        if (act1El) {
+            act1El.addEventListener('input', () => {
+                if (typeof handleSupplyVoltageChange === 'function') handleSupplyVoltageChange();
+            });
+            act1El.addEventListener('change', () => {
+                if (typeof handleSupplyVoltageChange === 'function') handleSupplyVoltageChange();
+            });
+        }
+
+        const currentLc = (document.getElementById('lc_system') && document.getElementById('lc_system').value) || '4';
+        const currentAo = (document.getElementById('num_outputs') && document.getElementById('num_outputs').value) || '1';
+        window.setLcSystem(currentLc);
+        window.setNumOutputs(currentAo);
+    });
+</script>
+
+    <script src="/static/js/app.js?v=20260914_v12_HOME"></script>
+</body>
+
+
+</html>
+
+

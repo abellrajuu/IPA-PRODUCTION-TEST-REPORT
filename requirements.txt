@@ -1,0 +1,11 @@
+flask>=2.0.0
+werkzeug>=2.0.0
+python-docx>=0.8.11
+python-dotenv>=0.19.2
+qrcode>=7.0
+openpyxl>=3.0.0
+ezdxf>=1.0.0
+pywin32>=305; sys_platform == "win32"
+pythonnet>=3.0.0; sys_platform == "win32"
+docx2pdf>=0.1.8; sys_platform == "win32"
+gunicorn>=21.2.0; sys_platform != "win32"

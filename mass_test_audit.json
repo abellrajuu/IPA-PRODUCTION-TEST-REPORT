@@ -1,0 +1,1161 @@
+{
+  "timestamp": "2026-10-08T01:28:11.213791",
+  "total_test_cases": 230,
+  "passed": 0,
+  "failed": 230,
+  "duration_seconds": 0.12,
+  "target_output_dir": "C:\\Users\\abell\\Desktop\\testing",
+  "files_exported_count": 0,
+  "bugs_found": [
+    {
+      "system": "job_traveller_card",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "job_traveller_card",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "job_traveller_card",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "job_traveller_card",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "job_traveller_card",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "job_traveller_card",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "job_traveller_card",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "job_traveller_card",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "job_traveller_card",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "job_traveller_card",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "batching_system",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "batching_system",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "batching_system",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "batching_system",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "batching_system",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "batching_system",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "batching_system",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "batching_system",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "batching_system",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "batching_system",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "remote_indicator",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "remote_indicator",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "remote_indicator",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "remote_indicator",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "remote_indicator",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "remote_indicator",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "remote_indicator",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "remote_indicator",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "remote_indicator",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "remote_indicator",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "digital_indicator",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "digital_indicator",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "digital_indicator",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "digital_indicator",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "digital_indicator",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "digital_indicator",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "digital_indicator",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "digital_indicator",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "digital_indicator",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "digital_indicator",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "weigh_feeder",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "weigh_feeder",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "weigh_feeder",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "weigh_feeder",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "weigh_feeder",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "weigh_feeder",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "weigh_feeder",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "weigh_feeder",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "weigh_feeder",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "weigh_feeder",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "crane_scale",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "crane_scale",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "crane_scale",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "crane_scale",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "crane_scale",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "crane_scale",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "crane_scale",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "crane_scale",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "crane_scale",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "crane_scale",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "signal_conditioner",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "signal_conditioner",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "signal_conditioner",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "signal_conditioner",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "signal_conditioner",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "signal_conditioner",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "signal_conditioner",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "signal_conditioner",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "signal_conditioner",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "signal_conditioner",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "trip_safe",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "trip_safe",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "trip_safe",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "trip_safe",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "trip_safe",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "trip_safe",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "trip_safe",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "trip_safe",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "trip_safe",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "trip_safe",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_switch",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_switch",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_switch",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_switch",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_switch",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_switch",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_switch",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_switch",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_switch",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_switch",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_mv",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_mv",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_mv",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_mv",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_mv",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_mv",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_mv",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_mv",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_mv",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_mv",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_charge",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_charge",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_charge",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_charge",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_charge",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_charge",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_charge",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_charge",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_charge",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "acc_charge",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_meter",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_meter",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_meter",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_meter",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_meter",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_meter",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_meter",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_meter",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_meter",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "vibration_meter",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "charge_amplifier",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "charge_amplifier",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "charge_amplifier",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "charge_amplifier",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "charge_amplifier",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "charge_amplifier",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "charge_amplifier",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "charge_amplifier",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "charge_amplifier",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "charge_amplifier",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "inprocess",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "inprocess",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "inprocess",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "inprocess",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "inprocess",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "inprocess",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "inprocess",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "inprocess",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "inprocess",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "inprocess",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "odd_system",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "odd_system",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "odd_system",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "odd_system",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "odd_system",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "odd_system",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "odd_system",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "odd_system",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "odd_system",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "odd_system",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "dd_system",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "dd_system",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "dd_system",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "dd_system",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "dd_system",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "dd_system",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "dd_system",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "dd_system",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "dd_system",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "dd_system",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "work_instructions",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "work_instructions",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "work_instructions",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "work_instructions",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "work_instructions",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "work_instructions",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "work_instructions",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "work_instructions",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "work_instructions",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "work_instructions",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_index",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_index",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_index",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_index",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_index",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_index",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_index",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_index",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_index",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_index",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_delay",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_delay",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_delay",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_delay",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_delay",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_delay",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_delay",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_delay",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_delay",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "performance_delay",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "equipment_list",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "equipment_list",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "equipment_list",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "equipment_list",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "equipment_list",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "equipment_list",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "equipment_list",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "equipment_list",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "equipment_list",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "equipment_list",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "loss_in_weigh_feeder",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "loss_in_weigh_feeder",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "loss_in_weigh_feeder",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "loss_in_weigh_feeder",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "loss_in_weigh_feeder",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "loss_in_weigh_feeder",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "loss_in_weigh_feeder",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "loss_in_weigh_feeder",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "loss_in_weigh_feeder",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "loss_in_weigh_feeder",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "misc",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "misc",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "misc",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "misc",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "misc",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "misc",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "misc",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "misc",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "misc",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "misc",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "belt_scale",
+      "test_idx": 1,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "belt_scale",
+      "test_idx": 2,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "belt_scale",
+      "test_idx": 3,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "belt_scale",
+      "test_idx": 4,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "belt_scale",
+      "test_idx": 5,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "belt_scale",
+      "test_idx": 6,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "belt_scale",
+      "test_idx": 7,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "belt_scale",
+      "test_idx": 8,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "belt_scale",
+      "test_idx": 9,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    },
+    {
+      "system": "belt_scale",
+      "test_idx": 10,
+      "error": "HTTP 401: {\"message\":\"Authentication required\",\"status\":\"error\"}\n"
+    }
+  ]
+}

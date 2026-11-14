@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Miscellaneous Test Report Form</title>
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#0284c7">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .pdf-download-banner { background: linear-gradient(135deg, #0284c7, #0ea5e9); border-radius: 16px; padding: 20px 24px; margin-top: 24px; display: flex; justify-content: space-between; align-items: center; color: #ffffff; box-shadow: 0 10px 25px rgba(0, 158, 227, 0.3); }
+        .section-box { display: block !important; visibility: visible !important; opacity: 1 !important; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(15,23,42,0.03); }
+        .section-box.active-step, .section-box.active { display: block !important; visibility: visible !important; opacity: 1 !important; }
+        .section-box-title { font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 800; color: #0f172a; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 8px; }
+        .table-input { width: 100%; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; font-size: 13px; font-weight: 600; }
+        
+        /* Clean Checkbox Tick Bar */
+        .tick-option-bar {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tick-checkbox-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: #1e293b;
+            cursor: pointer;
+            user-select: none;
+        }
+        .tick-checkbox-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #0284c7;
+            cursor: pointer;
+        }
+
+        .sub-panel {
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 18px;
+            margin-top: 16px;
+        }
+            .section-box-title i {
+            color: #009ee3;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body style="padding: 16px;">
+
+    <div class="app-container" style="max-width: 1000px; margin: 0 auto;">
+
+        <header class="app-header">
+            <div class="app-title">
+                <h1>Miscellaneous Items Test Report</h1>
+            </div>
+            <div class="header-actions">
+                <button type="button" id="btnAutoFillHeader" class="header-nav-link btnFillDemoDataGlobal" onclick="triggerUniversalAutoFill();" style="background: linear-gradient(135deg, #0284c7, #0369a1); color: #ffffff !important; border: none; font-weight: 800; cursor: pointer; padding: 10px 18px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Auto-Fill Form
+                </button>
+                <a href="/portal" class="header-nav-link">
+                    <i class="fa-solid fa-house"></i> Home
+                </a>
+            </div>
+        </header>
+
+        <main class="tab-content active">
+            <form id="recordForm" autocomplete="off">
+                <input type="hidden" name="report_type" value="misc_report">
+                <input type="hidden" name="misc_type" id="misc_type" value="general">
+                
+                <div class="glass-form" style="padding: 24px;">
+
+                    <!-- SECTION 1: HEADER & TICK OPTIONS -->
+                    <div class="section-box active active-step">
+                        <div class="section-box-title">1. Basic Details & Subsystem Selection</div>
+                        
+                        <div class="grid-col-2" style="margin-bottom: 16px;">
+                            <div class="input-group"><label>Job No.</label><input type="text" name="job_no" id="job_no" value=""></div>
+                            <div class="input-group"><label>Customer</label><input type="text" name="customer" id="customer" value=""></div>
+                            <div class="input-group"><label>Model No. / Name</label><input type="text" name="model_no" id="model_no" oninput="updateObservations()"></div>
+                            <div class="input-group"><label>Sl. No.(s)</label><input type="text" name="sl_no" id="sl_no" value="" oninput="updateObservations()"></div>
+                            <div class="input-group"><label>Item Description</label><input type="text" name="item_desc" id="item_desc"></div>
+                            <div class="input-group"><label>Quantity</label><input type="text" name="qty" id="qty" value=""></div>
+                            <div class="input-group" style="grid-column: span 2;"><label>Tracking No. (Optional)</label><input type="text" name="tracking_no" id="tracking_no" placeholder="e.g. TRK-2026-001"></div>
+                        </div>
+
+                        <!-- TICK CHECKBOXES ROW -->
+                        <div class="tick-option-bar">
+                            <span style="font-family: 'Outfit', sans-serif; font-size: 13.5px; font-weight: 800; color: #0284c7; margin-right: 8px;">Select Subsystem(s):</span>
+                            
+                            <label class="tick-checkbox-label">
+                                <input type="checkbox" id="chk_jbox" name="chk_jbox" value="1" checked onchange="toggleSubsystemPanels()">
+                                Junction Box
+                            </label>
+                            
+                            <label class="tick-checkbox-label">
+                                <input type="checkbox" id="chk_loadcell" name="chk_loadcell" value="1" onchange="toggleSubsystemPanels()">
+                                Load Cell
+                            </label>
+
+                            <label class="tick-checkbox-label">
+                                <input type="checkbox" id="chk_remote" name="chk_remote" value="1" onchange="toggleSubsystemPanels()">
+                                Remote Display
+                            </label>
+
+                            <label class="tick-checkbox-label">
+                                <input type="checkbox" id="chk_indicator" name="chk_indicator" value="1" onchange="toggleSubsystemPanels()">
+                                Indicator
+                            </label>
+
+                            <label class="tick-checkbox-label">
+                                <input type="checkbox" id="chk_custom" name="chk_custom" value="1" onchange="toggleSubsystemPanels()">
+                                Custom Equipment / Table (N×M)
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 2: DYNAMIC SUBSYSTEM ENTRY PANELS -->
+                    <div class="section-box active active-step">
+                        <div class="section-box-title">2. Subsystem Entry & Measurements</div>
+
+                        <!-- A. JUNCTION BOX PANEL -->
+                        <div id="sub-panel-jbox" class="sub-panel" style="display: block;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <h4 style="font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 800; color: #0369a1; margin: 0;">Junction Box Details (Multiple Types Supported)</h4>
+                                <button type="button" onclick="addJBoxRow()" style="background: #e0f2fe; border: 1.5px solid #bae6fd; color: #0369a1; padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer;">
+                                    + Add Another J-Box Model
+                                </button>
+                            </div>
+                            <div id="jboxRowsContainer">
+                                <div class="jbox-row grid-col-2" style="margin-bottom: 10px;">
+                                    <div class="input-group"><label>Junction Box Model / Type</label><input type="text" name="jbox_model_1" class="table-input jbox-model" value="" oninput="updateObservations()"></div>
+                                    <div class="input-group"><label>Serial Numbers (Comma Separated)</label><input type="text" name="jbox_serials_1" class="table-input jbox-serials" value="" oninput="updateObservations()"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- B. LOAD CELL PANEL (3 BOXES / RESISTANCE MATRIX) -->
+                        <div id="sub-panel-loadcell" class="sub-panel" style="display: none;">
+                            <h4 style="font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 800; color: #7e22ce; margin: 0 0 12px 0;">Load Cell Parameters (Input/Output Resistance & Zero Unbalance)</h4>
+                            <div style="display: flex; gap: 12px; margin-bottom: 14px; align-items: center;">
+                                <label style="font-size: 13px; font-weight: 700; color: #581c87;">Number of Load Cells:</label>
+                                <select id="lcCountSelect" name="lc_count" onchange="renderLCTable()" style="padding: 6px 12px; border-radius: 8px; border: 1.5px solid #c084fc; font-weight: 700;">
+                                    <option value="1">1 Load Cell</option>
+                                    <option value="2">2 Load Cells</option>
+                                    <option value="3">3 Load Cells</option>
+                                    <option value="4" selected>4 Load Cells</option>
+                                    <option value="5">5 Load Cells</option>
+                                    <option value="8">8 Load Cells</option>
+                                </select>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table" style="font-size: 13px;">
+                                    <thead>
+                                        <tr style="background: #e9d5ff; color: #581c87; font-weight: 800;">
+                                            <th style="width: 40px;">#</th>
+                                            <th>Load Cell Serial No.</th>
+                                            <th>Input Resistance (Ω)</th>
+                                            <th>Output Resistance (Ω)</th>
+                                            <th>Initial Zero Unbalance (mV/V)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="lcRowsBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- C. REMOTE DISPLAY PANEL -->
+                        <div id="sub-panel-remote" class="sub-panel" style="display: none;">
+                            <h4 style="font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 800; color: #b45309; margin: 0 0 12px 0;">Remote Display Details</h4>
+                            <div class="grid-col-2">
+                                <div class="input-group"><label>Remote Display Model</label><input type="text" name="remote_model" id="remote_model_input" class="table-input" value="" oninput="updateObservations()"></div>
+                                <div class="input-group"><label>Remote Display Serial No.</label><input type="text" name="remote_serial" id="remote_serial_input" class="table-input" value="" oninput="updateObservations()"></div>
+                                <div class="input-group" style="grid-column: span 2;"><label>Tested with Indicator Model</label><input type="text" name="remote_ind_ref" id="remote_ind_ref" class="table-input" value="" oninput="updateObservations()"></div>
+                            </div>
+                        </div>
+
+                        <!-- D. INDICATOR PANEL -->
+                        <div id="sub-panel-indicator" class="sub-panel" style="display: none;">
+                            <h4 style="font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 800; color: #0284c7; margin: 0 0 12px 0;">Digital Indicator Details</h4>
+                            <div class="grid-col-2">
+                                <div class="input-group"><label>Indicator Model</label><input type="text" name="ind_model" id="ind_model_input" class="table-input" value="" oninput="updateObservations()"></div>
+                                <div class="input-group"><label>Indicator Serial No.</label><input type="text" name="ind_serial" id="ind_serial_input" class="table-input" value="" oninput="updateObservations()"></div>
+                            </div>
+                        </div>
+
+                        <!-- E. CUSTOM EQUIPMENT & N x M TABLE PANEL -->
+                        <div id="sub-panel-custom" class="sub-panel" style="display: none; border: 1.5px solid #99f6e4; background: #f0fdfa;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+                                <h4 style="font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 800; color: #0f766e; margin: 0; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fa-solid fa-table-cells" style="color: #0f766e;"></i> Custom Equipment Details & N × M Table Builder
+                                </h4>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <label style="font-size: 12px; font-weight: 700; color: #134e4a;">Preset Template:</label>
+                                    <select id="custom_preset_select" onchange="applyCustomPreset(this.value)" style="padding: 6px 12px; border-radius: 8px; border: 1.5px solid #5eead4; font-size: 12px; font-weight: 700; background: #ffffff;">
+                                        <option value="standard4">4-Cols: SL NO | Item / Parameter | Specification | Result</option>
+                                        <option value="standard3">3-Cols: SL NO | Description / Parameter | Status / Remarks</option>
+                                        <option value="inspection5">5-Cols: SL NO | Test Parameter | Rated Spec | Observed Value | Status</option>
+                                        <option value="blank">Blank Table (N × M)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Custom Item Details Inputs -->
+                            <div class="grid-col-2" style="background: #ffffff; padding: 14px; border-radius: 10px; border: 1.5px solid #ccfbf1; margin-bottom: 16px;">
+                                <div class="input-group">
+                                    <label style="font-size: 12px; font-weight: 800; color: #0f766e;">Custom Item Description</label>
+                                    <input type="text" id="custom_desc_input" name="custom_desc" class="table-input" placeholder="e.g. Speed Sensor Transducer / Rig Assembly" oninput="syncCustomDetails()">
+                                </div>
+                                <div class="input-group">
+                                    <label style="font-size: 12px; font-weight: 800; color: #0f766e;">Custom Model No.</label>
+                                    <input type="text" id="custom_model_input" name="custom_model" class="table-input" placeholder="e.g. CS-900 / PR-01" oninput="syncCustomDetails()">
+                                </div>
+                                <div class="input-group">
+                                    <label style="font-size: 12px; font-weight: 800; color: #0f766e;">Serial Number(s) (Comma Separated)</label>
+                                    <input type="text" id="custom_sl_input" name="custom_sl" class="table-input" placeholder="e.g. SN-8821, SN-8822" oninput="syncCustomDetails()">
+                                </div>
+                                <div class="input-group">
+                                    <label style="font-size: 12px; font-weight: 800; color: #0f766e;">Quantity</label>
+                                    <input type="text" id="custom_qty_input" name="custom_qty" class="table-input" placeholder="e.g. 2 Nos" oninput="syncCustomDetails()">
+                                </div>
+                            </div>
+
+                            <!-- Table Dimension Controls -->
+                            <div style="background: #ffffff; border: 1.5px solid #ccfbf1; border-radius: 10px; padding: 12px 16px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                                    <div style="display: flex; align-items: center; gap: 6px;">
+                                        <label style="font-size: 13px; font-weight: 800; color: #0f766e;">Rows (N):</label>
+                                        <input type="number" id="custom_n_rows" min="1" max="15" value="4" style="width: 60px; padding: 6px; border: 1.5px solid #99f6e4; border-radius: 8px; font-weight: 800; text-align: center;">
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 6px;">
+                                        <label style="font-size: 13px; font-weight: 800; color: #0f766e;">Cols (M):</label>
+                                        <input type="number" id="custom_m_cols" min="1" max="8" value="4" style="width: 60px; padding: 6px; border: 1.5px solid #99f6e4; border-radius: 8px; font-weight: 800; text-align: center;">
+                                    </div>
+                                    <button type="button" onclick="generateNxMTableFromInputs()" style="background: #0d9488; color: #ffffff; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 800; font-size: 12.5px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                                        <i class="fa-solid fa-arrows-rotate"></i> Set Table (N × M)
+                                    </button>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    <button type="button" onclick="addCustomRow()" style="background: #e6fffa; border: 1.5px solid #5eead4; color: #0f766e; padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer;">
+                                        <i class="fa-solid fa-plus"></i> Add Row
+                                    </button>
+                                    <button type="button" onclick="removeCustomRow()" style="background: #fff1f2; border: 1.5px solid #fecdd3; color: #be123c; padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer;">
+                                        <i class="fa-solid fa-minus"></i> Del Row
+                                    </button>
+                                    <button type="button" onclick="addCustomCol()" style="background: #e6fffa; border: 1.5px solid #5eead4; color: #0f766e; padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer;">
+                                        <i class="fa-solid fa-plus"></i> Add Col
+                                    </button>
+                                    <button type="button" onclick="removeCustomCol()" style="background: #fff1f2; border: 1.5px solid #fecdd3; color: #be123c; padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer;">
+                                        <i class="fa-solid fa-minus"></i> Del Col
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Interactive Table Container -->
+                            <div class="table-responsive" style="border: 1.5px solid #cbd5e1; border-radius: 10px; overflow-x: auto; background: #ffffff;">
+                                <table id="customNxMTable" class="data-table" style="font-size: 13px; width: 100%; border-collapse: collapse;">
+                                    <thead id="customTableHead" style="background: #e2e8f0; font-weight: 800; color: #1e293b;"></thead>
+                                    <tbody id="customTableBody"></tbody>
+                                </table>
+                            </div>
+
+                            <input type="hidden" name="custom_table_json" id="custom_table_json" value="">
+                        </div>
+                    </div>
+
+                    <!-- SECTION 3: OBSERVATIONS & SIGN-OFF -->
+                    <div class="section-box active active-step">
+                        <div class="section-box-title">3. Test Observations & Sign-Off</div>
+                        
+                        <div class="input-group" style="margin-bottom: 20px;">
+                            <label style="font-weight: 800; color: #0284c7;">Final Observations Text *</label>
+                            <textarea name="readings_result" id="readings_result" rows="6" style="width: 100%; padding: 14px; border-radius: 10px; border: 1.5px solid #cbd5e1; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 700; line-height: 1.6;" required></textarea>
+                        </div>
+
+                        <div class="grid-col-2">
+                            <div class="input-group"><label>Testing Date</label><input type="date" name="date" id="date"></div>
+                            <div class="input-group"><label>Tested By</label><input type="text" name="tested_by" id="tested_by" value=""></div>
+                            <div class="input-group" style="grid-column: span 2;"><label>Approved By (HOD-PDN)</label><input type="text" name="approved_by" id="approved_by" value=""></div>
+                        </div>
+
+                        <div class="form-actions" style="margin-top: 24px; display: flex; justify-content: flex-end;">
+                            <button type="submit" id="btnSubmitPDF" class="btn-primary" style="display: inline-flex; padding: 14px 28px; font-size: 15px; border-radius: 12px;">Submit & Generate Report</button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+
+            <div id="downloadBanner" class="pdf-download-banner" style="display: none; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+                <div>
+                    <h4 style="font-size: 16px; font-weight: 800; margin: 0 0 4px 0; color: #ffffff;">Report Generated Successfully!</h4>
+                    <p id="downloadFilename" style="font-size: 13px; opacity: 0.9; margin: 0; color: #e0f2fe;"></p>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <a id="btnDownloadPDF" href="#" target="_blank" class="btn-primary" style="background: #ffffff; color: #0284c7; font-weight: 800; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">Download PDF</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        
+        function addJBoxRow() {
+            const container = document.getElementById('jboxRowsContainer');
+            const rowCount = container.querySelectorAll('.jbox-row').length + 1;
+            const row = document.createElement('div');
+            row.className = 'jbox-row grid-col-2';
+            row.style.marginTop = '10px';
+            row.style.paddingTop = '10px';
+            row.style.borderTop = '1px dashed #cbd5e1';
+            row.innerHTML = `
+                <div class="input-group"><label>Junction Box Model / Type #${rowCount}</label><input type="text" name="jbox_model_${rowCount}" class="table-input jbox-model" value="" oninput="updateObservations()"></div>
+                <div class="input-group"><label>Serial Numbers #${rowCount} (Comma Separated)</label><input type="text" name="jbox_serials_${rowCount}" class="table-input jbox-serials" value="" oninput="updateObservations()"></div>
+            `;
+            container.appendChild(row);
+            updateObservations();
+        }
+
+        function toggleSubsystemPanels() {
+            const jbox = document.getElementById('chk_jbox').checked;
+            const loadcell = document.getElementById('chk_loadcell').checked;
+            const remote = document.getElementById('chk_remote').checked;
+            const indicator = document.getElementById('chk_indicator').checked;
+            const custom = document.getElementById('chk_custom').checked;
+
+            document.getElementById('sub-panel-jbox').style.display = jbox ? 'block' : 'none';
+            document.getElementById('sub-panel-loadcell').style.display = loadcell ? 'block' : 'none';
+            document.getElementById('sub-panel-remote').style.display = remote ? 'block' : 'none';
+            document.getElementById('sub-panel-indicator').style.display = indicator ? 'block' : 'none';
+            document.getElementById('sub-panel-custom').style.display = custom ? 'block' : 'none';
+
+            if (loadcell && document.getElementById('lcRowsBody').children.length === 0) {
+                renderLCTable();
+            }
+            if (custom && document.getElementById('customTableBody').children.length === 0) {
+                applyCustomPreset('standard4');
+            }
+
+            updateObservations();
+        }
+
+        const CUSTOM_PRESETS = {
+            standard4: {
+                headers: ['SL NO', 'ITEM / PARAMETER', 'SPECIFICATION', 'OBSERVED RESULT'],
+                rows: [
+                    ['1', 'Insulation Resistance', '> 100 MΩ @ 500VDC', '500 MΩ (PASS)'],
+                    ['2', 'Ground Continuity', '< 0.1 Ω', '0.02 Ω (OK)'],
+                    ['3', 'Operating Power Stability', 'Rated +/- 10%', 'Stable (OK)'],
+                    ['4', 'Signal Transmission Test', 'No Loss / Clean Output', 'Verified OK']
+                ]
+            },
+            standard3: {
+                headers: ['SL NO', 'DESCRIPTION / PARAMETER', 'STATUS / REMARKS'],
+                rows: [
+                    ['1', 'Visual & Mechanical Inspection', 'Found Clean, No Damage (OK)'],
+                    ['2', 'Electrical Continuity & Isolation', 'Verified & Satisfactory'],
+                    ['3', 'Functional Operational Test', 'Normal Operation Verified']
+                ]
+            },
+            inspection5: {
+                headers: ['SL NO', 'TEST PARAMETER', 'RATED SPEC', 'OBSERVED VALUE', 'STATUS'],
+                rows: [
+                    ['1', 'Power Supply Voltage', '24 VDC +/- 10%', '24.0 VDC', 'PASS'],
+                    ['2', 'Signal Output Level', '4 - 20 mA / Pulse', 'Within Limits', 'PASS'],
+                    ['3', 'Insulation Resistance', '> 100 MΩ', '450 MΩ', 'PASS'],
+                    ['4', 'Full Load Response', 'Linear within 0.1%', '0.04% Deviation', 'PASS']
+                ]
+            },
+            blank: {
+                headers: ['COL 1', 'COL 2', 'COL 3', 'COL 4'],
+                rows: [
+                    ['', '', '', ''],
+                    ['', '', '', ''],
+                    ['', '', '', ''],
+                    ['', '', '', '']
+                ]
+            }
+        };
+
+        function applyCustomPreset(presetKey) {
+            const preset = CUSTOM_PRESETS[presetKey] || CUSTOM_PRESETS.standard4;
+            document.getElementById('custom_n_rows').value = preset.rows.length;
+            document.getElementById('custom_m_cols').value = preset.headers.length;
+            buildCustomTable(preset.headers, preset.rows);
+        }
+
+        function generateNxMTableFromInputs() {
+            let n = parseInt(document.getElementById('custom_n_rows').value, 10) || 4;
+            let m = parseInt(document.getElementById('custom_m_cols').value, 10) || 4;
+            if (n < 1) n = 1;
+            if (n > 15) n = 15;
+            if (m < 1) m = 1;
+            if (m > 8) m = 8;
+            document.getElementById('custom_n_rows').value = n;
+            document.getElementById('custom_m_cols').value = m;
+
+            const curHeaders = getCurrentHeaders();
+            const curRows = getCurrentRows();
+
+            const newHeaders = [];
+            for (let j = 0; j < m; j++) {
+                newHeaders.push(curHeaders[j] || (j === 0 ? 'SL NO' : `COL ${j+1}`));
+            }
+
+            const newRows = [];
+            for (let i = 0; i < n; i++) {
+                const row = [];
+                for (let j = 0; j < m; j++) {
+                    const existingVal = (curRows[i] && curRows[i][j]) ? curRows[i][j] : (j === 0 ? String(i + 1) : '');
+                    row.push(existingVal);
+                }
+                newRows.push(row);
+            }
+
+            buildCustomTable(newHeaders, newRows);
+        }
+
+        function getCurrentHeaders() {
+            const headers = [];
+            document.querySelectorAll('#customTableHead th input').forEach(inp => headers.push(inp.value.trim()));
+            return headers;
+        }
+
+        function getCurrentRows() {
+            const rows = [];
+            document.querySelectorAll('#customTableBody tr').forEach(tr => {
+                const rVals = [];
+                tr.querySelectorAll('td input').forEach(inp => rVals.push(inp.value.trim()));
+                rows.push(rVals);
+            });
+            return rows;
+        }
+
+        function buildCustomTable(headers, rows) {
+            const thead = document.getElementById('customTableHead');
+            const tbody = document.getElementById('customTableBody');
+            if (!thead || !tbody) return;
+            thead.innerHTML = '';
+            tbody.innerHTML = '';
+
+            const headerTr = document.createElement('tr');
+            headers.forEach((h, colIdx) => {
+                const th = document.createElement('th');
+                th.style.padding = '8px 10px';
+                th.style.border = '1px solid #cbd5e1';
+                th.style.background = '#e2e8f0';
+                th.innerHTML = `<input type="text" value="${h.replace(/"/g, '&quot;')}" class="table-input" style="font-weight: 800; text-align: center; background: #ffffff;" placeholder="Header ${colIdx+1}" oninput="serializeCustomTable()">`;
+                headerTr.appendChild(th);
+            });
+            thead.appendChild(headerTr);
+
+            rows.forEach((rowVals, rIdx) => {
+                const tr = document.createElement('tr');
+                headers.forEach((_, colIdx) => {
+                    const td = document.createElement('td');
+                    td.style.padding = '6px 8px';
+                    td.style.border = '1px solid #cbd5e1';
+                    const val = (rowVals[colIdx] !== undefined) ? rowVals[colIdx] : (colIdx === 0 ? String(rIdx+1) : '');
+                    const align = (colIdx === 0) ? 'center' : 'left';
+                    td.innerHTML = `<input type="text" value="${val.replace(/"/g, '&quot;')}" class="table-input" style="text-align: ${align}; font-weight: ${colIdx === 0 ? '700' : '500'};" oninput="serializeCustomTable()">`;
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('custom_n_rows').value = rows.length;
+            document.getElementById('custom_m_cols').value = headers.length;
+            serializeCustomTable();
+        }
+
+        function addCustomRow() {
+            const headers = getCurrentHeaders();
+            const curRows = getCurrentRows();
+            const newRow = [];
+            headers.forEach((_, colIdx) => {
+                newRow.push(colIdx === 0 ? String(curRows.length + 1) : '');
+            });
+            curRows.push(newRow);
+            buildCustomTable(headers, curRows);
+        }
+
+        function removeCustomRow() {
+            const headers = getCurrentHeaders();
+            const curRows = getCurrentRows();
+            if (curRows.length > 1) {
+                curRows.pop();
+                buildCustomTable(headers, curRows);
+            }
+        }
+
+        function addCustomCol() {
+            const headers = getCurrentHeaders();
+            const curRows = getCurrentRows();
+            const colNum = headers.length + 1;
+            headers.push(`COL ${colNum}`);
+            curRows.forEach(r => r.push(''));
+            buildCustomTable(headers, curRows);
+        }
+
+        function removeCustomCol() {
+            const headers = getCurrentHeaders();
+            const curRows = getCurrentRows();
+            if (headers.length > 1) {
+                headers.pop();
+                curRows.forEach(r => r.pop());
+                buildCustomTable(headers, curRows);
+            }
+        }
+
+        function syncCustomDetails() {
+            const custom = document.getElementById('chk_custom').checked;
+            if (!custom) return;
+
+            const cDesc = document.getElementById('custom_desc_input').value.trim();
+            const cModel = document.getElementById('custom_model_input').value.trim();
+            const cSl = document.getElementById('custom_sl_input').value.trim();
+            const cQty = document.getElementById('custom_qty_input').value.trim();
+
+            if (cDesc) document.getElementById('item_desc').value = cDesc;
+            if (cModel) document.getElementById('model_no').value = cModel;
+            if (cSl) document.getElementById('sl_no').value = cSl;
+            if (cQty) document.getElementById('qty').value = cQty;
+
+            updateObservations();
+        }
+
+        function serializeCustomTable() {
+            const headers = getCurrentHeaders();
+            const rows = getCurrentRows();
+            const dataObj = { headers, rows };
+            document.getElementById('custom_table_json').value = JSON.stringify(dataObj);
+            updateObservations();
+        }
+
+        function renderLCTable() {
+            const count = parseInt(document.getElementById('lcCountSelect').value, 10);
+            const tbody = document.getElementById('lcRowsBody');
+            tbody.innerHTML = '';
+
+            for (let i = 1; i <= count; i++) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-weight:700; color:#0284c7;">${i}</td>
+                    <td><input type="text" name="lc_serial_${i}" class="table-input lc-sl" value="" oninput="updateObservations()"></td>
+                    <td><input type="text" name="lc_in_res_${i}" class="table-input lc-rin" value="" oninput="updateObservations()"></td>
+                    <td><input type="text" name="lc_out_res_${i}" class="table-input lc-rout" value="" oninput="updateObservations()"></td>
+                    <td><input type="text" name="lc_unbalance_${i}" class="table-input lc-zero" value="" oninput="updateObservations()"></td>
+                `;
+                tbody.appendChild(tr);
+            }
+            updateObservations();
+        }
+
+        function updateObservations() {
+            const jbox = document.getElementById('chk_jbox').checked;
+            const loadcell = document.getElementById('chk_loadcell').checked;
+            const remote = document.getElementById('chk_remote').checked;
+            const indicator = document.getElementById('chk_indicator').checked;
+            const custom = document.getElementById('chk_custom').checked;
+
+            const modelInput = document.getElementById('model_no');
+            const slInput = document.getElementById('sl_no');
+            const descInput = document.getElementById('item_desc');
+            const qtyInput = document.getElementById('qty');
+            const obsArea = document.getElementById('readings_result');
+            const miscTypeInput = document.getElementById('misc_type');
+
+            let selectedCount = (jbox?1:0) + (loadcell?1:0) + (remote?1:0) + (indicator?1:0) + (custom?1:0);
+            let obsList = [];
+
+            if (jbox) {
+                const jboxRows = document.querySelectorAll('#jboxRowsContainer .jbox-row');
+                let jboxModels = [];
+                let jboxSerialsList = [];
+                let jboxPhrases = [];
+                let totalQty = 0;
+
+                jboxRows.forEach(row => {
+                    const m = row.querySelector('.jbox-model').value.trim();
+                    const s = row.querySelector('.jbox-serials').value.trim();
+                    if (m) jboxModels.push(m);
+                    if (s) {
+                        jboxSerialsList.push(s);
+                        totalQty += s.includes(',') ? s.split(',').length : 1;
+                    }
+                    if (m && s) jboxPhrases.push(`${m} [${s}]`);
+                });
+
+                if (selectedCount === 1) {
+                    modelInput.value = jboxModels.join(' / ');
+                    slInput.value = jboxSerialsList.join(', ');
+                    descInput.value = 'Junction Box Subsystem';
+                    qtyInput.value = (totalQty || 1) + ' Nos';
+                    miscTypeInput.value = jboxRows.length > 1 ? 'jb_multiple' : 'jb_single';
+                }
+                
+                let jboxDetailText = jboxPhrases.length > 1 ? ` (${jboxPhrases.join('; ')})` : '';
+                obsList.push(`The above mentioned junction boxes${jboxDetailText} were checked for cross continuity and insulation, and found OK.`);
+            }
+
+            if (loadcell) {
+                const lcCount = document.getElementById('lcCountSelect').value;
+                const rows = document.querySelectorAll('#lcRowsBody tr');
+                let lcSerials = [];
+                let lcDetails = [];
+                rows.forEach((row, idx) => {
+                    const sl = row.querySelector('.lc-sl').value;
+                    const rin = row.querySelector('.lc-rin').value;
+                    const rout = row.querySelector('.lc-rout').value;
+                    const zero = row.querySelector('.lc-zero').value;
+                    if (sl) lcSerials.push(sl);
+                    if (sl || rin || rout || zero) {
+                        lcDetails.push(`LC ${idx+1} [${sl||'N/A'}]: Rin=${rin||'-'} Ω, Rout=${rout||'-'} Ω, Zero Unbalance=${zero||'-'} mV/V`);
+                    }
+                });
+
+                if (selectedCount === 1) {
+                    modelInput.value = 'Load Cell (3 Boxes Test)';
+                    slInput.value = lcSerials.join(', ');
+                    descInput.value = 'Load Cell Subsystem';
+                    qtyInput.value = lcCount + ' Nos';
+                    miscTypeInput.value = 'load_cell';
+                }
+                let detailsText = lcDetails.length > 0 ? `LOAD CELL RESISTANCE & UNBALANCE MEASUREMENTS:\n` + lcDetails.join('\n') + `\n\n` : '';
+                obsList.push(detailsText + `The above mentioned load cells 3 boxes (sl no, input resistance, output resistance, and initial unbalance) were checked and found OK.`);
+            }
+
+            if (remote) {
+                const rduModel = document.getElementById('remote_model_input').value.trim();
+                const rduSerial = document.getElementById('remote_serial_input').value.trim();
+                const indRef = document.getElementById('remote_ind_ref').value.trim();
+                if (selectedCount === 1) {
+                    modelInput.value = rduModel;
+                    slInput.value = rduSerial;
+                    descInput.value = 'Remote Display Unit';
+                    qtyInput.value = '1 Nos';
+                    miscTypeInput.value = 'remote_display';
+                }
+                obsList.push(`The above mentioned remote display was checked with Digital Indicator ${indRef || 'DI-200'} and found OK.`);
+            }
+
+            if (indicator) {
+                const indModel = document.getElementById('ind_model_input').value.trim();
+                const indSerial = document.getElementById('ind_serial_input').value.trim();
+                if (selectedCount === 1) {
+                    modelInput.value = indModel;
+                    slInput.value = indSerial;
+                    descInput.value = 'Digital Indicator Unit';
+                    qtyInput.value = '1 Nos';
+                    miscTypeInput.value = 'general';
+                }
+                obsList.push(`The above mentioned indicator was checked for display annunciation, keyboard responsiveness, and zero balance, and found OK.`);
+            }
+
+            if (custom) {
+                const cDesc = document.getElementById('custom_desc_input').value.trim();
+                const cModel = document.getElementById('custom_model_input').value.trim();
+                const cSl = document.getElementById('custom_sl_input').value.trim();
+                const cQty = document.getElementById('custom_qty_input').value.trim();
+
+                if (selectedCount === 1) {
+                    if (cDesc) descInput.value = cDesc;
+                    if (cModel) modelInput.value = cModel;
+                    if (cSl) slInput.value = cSl;
+                    if (cQty) qtyInput.value = cQty;
+                    miscTypeInput.value = 'general';
+                }
+                obsList.push(`The above custom equipment/items and parameter measurements were inspected, tested, and verified according to standard specifications and found OK.`);
+            }
+
+            if (selectedCount > 1) {
+                modelInput.value = 'Multiple Systems (See Observations Below)';
+                slInput.value = 'Multiple Serials (See Observations Below)';
+                descInput.value = 'Multiple Subsystems';
+                qtyInput.value = 'Multiple';
+                miscTypeInput.value = 'general';
+            } else if (selectedCount === 0) {
+                miscTypeInput.value = 'general';
+            }
+
+            obsArea.value = obsList.join('\n\n');
+        }
+
+        function fillMiscDemoData() {
+            const randJob = Math.floor(100 + Math.random() * 900);
+            const clients = ['UltraTech Cement Ltd', 'Tata Steel Plant', 'JSW Steel Mining', 'Adani Power Ltd', 'Jindal Steel & Power Ltd'];
+            const chosenClient = clients[Math.floor(Math.random() * clients.length)];
+
+            document.getElementById('job_no').value = `JOB-MISC-2026-${randJob}`;
+            document.getElementById('customer').value = chosenClient;
+            document.getElementById('date').value = new Date().toISOString().split('T')[0];
+            document.getElementById('tested_by').value = 'Field Inspection Engineer';
+            document.getElementById('approved_by').value = 'HOD-PDN';
+
+            const jbChk = document.getElementById('chk_jbox');
+            const lcChk = document.getElementById('chk_loadcell');
+            const rdChk = document.getElementById('chk_remote');
+            const indChk = document.getElementById('chk_indicator');
+            const customChk = document.getElementById('chk_custom');
+
+            // Default demo: populate load cell measurements
+            if (!lcChk.checked && !jbChk.checked && !rdChk.checked && !indChk.checked && !customChk.checked) {
+                lcChk.checked = true;
+            }
+
+            toggleSubsystemPanels();
+
+            if (lcChk.checked) {
+                document.getElementById('lcCountSelect').value = '4';
+                renderLCTable();
+                const nominalIn = 385.0;
+                const nominalOut = 350.0;
+                for (let i = 1; i <= 4; i++) {
+                    const sl = document.querySelector(`input[name="lc_serial_${i}"]`);
+                    const rin = document.querySelector(`input[name="lc_in_res_${i}"]`);
+                    const rout = document.querySelector(`input[name="lc_out_res_${i}"]`);
+                    const zero = document.querySelector(`input[name="lc_unbalance_${i}"]`);
+                    if (sl) sl.value = `SN-LC-${100 + i}`;
+                    if (rin) rin.value = (nominalIn + (Math.random() * 0.4 - 0.2)).toFixed(1);
+                    if (rout) rout.value = (nominalOut + (Math.random() * 0.4 - 0.2)).toFixed(1);
+                    if (zero) zero.value = (0.01 + Math.random() * 0.02).toFixed(2);
+                }
+            }
+
+            if (jbChk.checked) {
+                const jbModel = document.querySelector('input[name="jbox_model_1"]');
+                const jbSerials = document.querySelector('input[name="jbox_serials_1"]');
+                if (jbModel) jbModel.value = 'JB-4WAY-IP67';
+                if (jbSerials) jbSerials.value = `SN-JB-${randJob}-A, SN-JB-${randJob}-B`;
+            }
+
+            if (rdChk.checked) {
+                const rdModel = document.getElementById('remote_model_input');
+                const rdSerial = document.getElementById('remote_serial_input');
+                const rdInd = document.getElementById('remote_ind_ref');
+                if (rdModel) rdModel.value = 'RDU-500-LED';
+                if (rdSerial) rdSerial.value = `SN-RD-${randJob}`;
+                if (rdInd) rdInd.value = 'DI-200';
+            }
+
+            if (indChk.checked) {
+                const indModel = document.getElementById('ind_model_input');
+                const indSerial = document.getElementById('ind_serial_input');
+                if (indModel) indModel.value = 'DI-200 Digital Indicator';
+                if (indSerial) indSerial.value = `SN-DI-${randJob}`;
+            }
+
+            if (customChk && customChk.checked) {
+                const cDesc = document.getElementById('custom_desc_input');
+                const cModel = document.getElementById('custom_model_input');
+                const cSl = document.getElementById('custom_sl_input');
+                const cQty = document.getElementById('custom_qty_input');
+                if (cDesc) cDesc.value = 'General Speed Sensor & Transducer Unit';
+                if (cModel) cModel.value = 'ST-900-IND';
+                if (cSl) cSl.value = `SN-ST-${randJob}-A, SN-ST-${randJob}-B`;
+                if (cQty) cQty.value = '2 Nos';
+                applyCustomPreset('inspection5');
+                syncCustomDetails();
+            }
+
+            updateObservations();
+        }
+        window.pageCustomFiller = fillMiscDemoData;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            toggleSubsystemPanels();
+        });
+    </script>
+
+<!-- Universal DWG & Job Data Auto-Fill Engine -->
+<script>
+    if (typeof setFieldValue !== 'function') {
+        window.setFieldValue = function(id, val) {
+            if (val === undefined || val === null || val === '') return;
+            const el = document.getElementById(id) || document.getElementsByName(id)[0] || document.querySelector(`input[name="${id}"]`);
+            if (el) {
+                el.value = val;
+                try { el.dispatchEvent(new Event('change')); } catch(e){}
+                el.style.transition = 'all 0.3s ease';
+                el.style.border = '2px solid #10b981';
+                el.style.background = '#ecfdf5';
+                setTimeout(() => {
+                    el.style.border = '';
+                    el.style.background = '';
+                }, 3500);
+            }
+        };
+    }
+
+    async function fetchJobNoData() {
+        const jobNoInput = document.querySelector('input[name="job_no"], input[name="job_number"], input[id="job_no"]');
+        if (!jobNoInput || !jobNoInput.value.trim()) {
+            if (typeof showToast === 'function') showToast('Please enter a Job Number first.', 'warning');
+            else console.warn('No data found.');
+            return;
+        }
+        const jobNo = jobNoInput.value.trim();
+
+        try {
+            const res = await fetch(`/api/fetch-job-data?job_no=${encodeURIComponent(jobNo)}`);
+            const json = await res.json();
+
+            if (json.status === 'success' && json.extracted) {
+                const ext = json.extracted;
+                
+                // Set all extracted key-value pairs
+                for (const [key, val] of Object.entries(ext)) {
+                    if (val !== undefined && val !== null && val !== '') {
+                        setFieldValue(key, val);
+                    }
+                }
+
+                // If Excel source, map labels to fields
+                if (json.source === 'excel' && json.data) {
+                    document.querySelectorAll('label').forEach(label => {
+                        const cleanLabel = label.innerText.trim().toUpperCase().replace(/[^A-Z0-9 ]/g, '').trim();
+                        for (const [excelKey, excelVal] of Object.entries(json.data)) {
+                            const cleanKey = excelKey.replace(/[^A-Z0-9 ]/g, '').trim();
+                            if (cleanLabel === cleanKey || cleanLabel.includes(cleanKey)) {
+                                const parent = label.closest('.input-group') || label.parentElement;
+                                if (parent) {
+                                    const input = parent.querySelector('input[type="text"], input[type="number"], select');
+                                    if (input && !input.value) {
+                                        setFieldValue(input.id || input.name, excelVal);
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Auto calculate matrix if available
+                const capEl = document.getElementById('capacity');
+                const speedEl = document.getElementById('belt_speed');
+                if (typeof autoCalculateCalibrationMatrix === 'function' && capEl && capEl.value) {
+                    autoCalculateCalibrationMatrix(capEl.value, speedEl ? speedEl.value : null);
+                }
+
+                if (ext.jbox_model || ext.jbox_model1 || ext.jbox_model_1) {
+                    setFieldValue('jbox_model_1', ext.jbox_model_1 || ext.jbox_model1 || ext.jbox_model);
+                    const chkJbox = document.getElementById('chk_jbox');
+                    if (chkJbox) { chkJbox.checked = true; toggleSubsystemPanels(); }
+                }
+
+                if (typeof updateObservations === 'function') {
+                    updateObservations();
+                }
+
+                if (typeof showToast === 'function') {
+                    showToast(`✅ Auto-filled from ${json.filename} (${json.source.toUpperCase()})`, 'success');
+                } else {
+                    console.log(`Auto-filled from ${json.filename}`);
+                }
+            } else {
+                if (typeof showToast === 'function') showToast(json.message || 'No DWG/Excel data found.', 'error');
+                else console.warn('No data found.');
+            }
+        } catch (e) {
+            console.error("Job Data Fetch error:", e);
+            if (typeof showToast === 'function') showToast('Error fetching data: ' + e.message, 'error');
+        }
+    }
+
+    // Alias fetchExcelData to fetchJobNoData for backwards compatibility
+    window.fetchExcelData = fetchJobNoData;
+    window.fetchJobNoData = fetchJobNoData;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const jobNoInput = document.querySelector('input[name="job_no"], input[name="job_number"], input[id="job_no"]');
+        if (jobNoInput) {
+            let lastFetched_fetchJobNoData = '';
+            const autoTrigger_fetchJobNoData = () => {
+                const v = jobNoInput.value.trim();
+                if (v && v !== lastFetched_fetchJobNoData) {
+                    lastFetched_fetchJobNoData = v;
+                    fetchJobNoData();
+                }
+            };
+            jobNoInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    autoTrigger_fetchJobNoData();
+                }
+            });
+            jobNoInput.addEventListener('blur', autoTrigger_fetchJobNoData);
+            jobNoInput.addEventListener('change', autoTrigger_fetchJobNoData);
+        }
+    });
+</script>
+
+</body>
+</html>

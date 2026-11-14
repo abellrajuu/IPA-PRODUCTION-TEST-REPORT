@@ -1,0 +1,5 @@
+with open(r"C:\Users\Admin\OneDrive\Desktop\PDN TO QC REGISTER\app.py", "r", encoding="utf-8") as f:
+    text = f.read()
+
+idx = text.find("def create_job():")
+print(text[idx+2000:idx+4500])

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ODD System Test Report Form</title>
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#0284c7">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <meta name="app-build-version" content="{{ build_version }}">
+    <style>
+        .pdf-download-banner { background: linear-gradient(135deg, #0284c7, #0ea5e9); border-radius: 16px; padding: 20px 24px; margin-top: 24px; display: flex; justify-content: space-between; align-items: center; color: #ffffff; box-shadow: 0 10px 25px rgba(0, 158, 227, 0.3); }
+        .section-box { background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 18px; padding: 28px 24px; margin-bottom: 24px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04); display: none; }
+        .section-box.active-step { display: block; }
+        .section-box-title { font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 12px; }
+        .section-box-title i { color: #009ee3; font-size: 18px; }
+        .table-input { width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px 8px; font-size: 13px; }
+        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 16px; border-radius: 12px; }
+        .table-responsive .data-table { min-width: 680px; }
+        .stepper-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; background: #ffffff; padding: 12px 18px; border-radius: 16px; border: 1.5px solid #e2e8f0; gap: 8px; flex-wrap: wrap; }
+        .step-item { flex: 1; display: flex; align-items: center; gap: 8px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 700; color: #94a3b8; min-width: 130px; cursor: pointer; }
+        .step-num { width: 28px; height: 28px; border-radius: 50%; background: #f1f5f9; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; }
+        .step-item.active .step-num { background: linear-gradient(135deg, #009ee3, #0284c7); color: #ffffff; box-shadow: 0 4px 12px rgba(0, 158, 227, 0.3); }
+        .step-item.active { color: #0284c7; }
+        .step-item.completed .step-num { background: #10b981; color: #ffffff; }
+        .wizard-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; padding-top: 16px; border-top: 1.5px solid #f1f5f9; }
+        .btn-wizard-prev { padding: 12px 22px; border-radius: 12px; background: #f1f5f9; border: 1.5px solid #cbd5e1; color: #0f172a; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-wizard-next { padding: 12px 24px; border-radius: 12px; background: linear-gradient(135deg, #009ee3, #0284c7); border: none; color: #ffffff; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+    </style>
+</head>
+<body style="padding: 16px;">
+    <div class="app-container" style="max-width: 1080px; margin: 0 auto;">
+        <header class="app-header">
+            <div class="app-title">
+                <h1>ODD System (Alstom) Test Report</h1>
+            </div>
+            <div class="header-actions" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <button type="button" id="btnAutoFillHeader" class="header-nav-link btnFillDemoDataGlobal" onclick="triggerUniversalAutoFill();" style="background: linear-gradient(135deg, #0284c7, #0369a1); color: #ffffff !important; border: none; font-weight: 800; cursor: pointer; padding: 10px 18px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Auto-Fill Demo
+                </button>
+                <a href="/portal" class="header-nav-link">
+                    <i class="fa-solid fa-house"></i> Home
+                </a>
+            </div>
+        </header>
+
+        <main class="tab-content active">
+            <form id="recordForm" autocomplete="off">
+                <input type="hidden" name="report_type" value="odd_system">
+                <input type="file" id="gaFileInput" accept=".dwg,.dxf,.json" style="display:none;">
+
+                <div class="glass-form" style="padding: 28px;">
+                    <div class="stepper-bar" id="stepperBar">
+                        <div class="step-item active" id="st-1" onclick="goToStep(1)"><div class="step-num">1</div><span>1. Job Info</span></div>
+                        <div class="step-item" id="st-2" onclick="goToStep(2)"><div class="step-num">2</div><span>2. Hardware</span></div>
+                        <div class="step-item" id="st-3" onclick="goToStep(3)"><div class="step-num">3</div><span>3. Trials 1 &amp; 2</span></div>
+                        <div class="step-item" id="st-4" onclick="goToStep(4)"><div class="step-num">4</div><span>4. Checks &amp; Sign-Off</span></div>
+                    </div>
+
+                    <!-- STEP 1 -->
+                    <div class="section-box active-step" id="step-box-1">
+                        <div class="section-box-title"><i class="fa-solid fa-circle-info"></i> 1. System Metadata</div>
+                        <div class="grid-col-2">
+                            <div class="input-group">
+                                <label for="job_no">Job / Sales Order No.</label>
+                                <div style="display: flex; gap: 8px;">
+                                    <input type="text" name="job_no" id="job_no" placeholder="e.g. 2526-ODD01" required style="flex: 1;">
+                                    <button type="button" class="btn-secondary" onclick="fetchJobNoData()" style="padding: 8px 14px; border-radius: 8px; white-space: nowrap;">Fetch</button>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="customer">Customer Name</label>
+                                <input type="text" name="customer" id="customer" placeholder="e.g. ALSTOM TRANSPORT" required>
+                            </div>
+                        </div>
+                        <div class="wizard-actions" style="justify-content: flex-end;">
+                            <button type="button" class="btn-wizard-next" onclick="goToStep(2)">Next: Hardware</button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2 -->
+                    <div class="section-box" id="step-box-2">
+                        <div class="section-box-title"><i class="fa-solid fa-microchip"></i> 2. Hardware Component Matrix</div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>COMPONENT</th>
+                                        <th>MODEL / DETAIL</th>
+                                        <th>SERIAL NO.</th>
+                                        <th>BATCH NO.</th>
+                                        <th>PART NO.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Indicator / Controller</strong></td>
+                                        <td><input type="text" class="table-input" name="ind_model" id="ind_model"></td>
+                                        <td><input type="text" class="table-input" name="ind_serial" id="ind_serial"></td>
+                                        <td><input type="text" class="table-input" name="ind_batch" id="ind_batch"></td>
+                                        <td><input type="text" class="table-input" name="ind_part" id="ind_part"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Sensor / Weigh Beam</strong></td>
+                                        <td><span style="color:#64748b; font-size:12px;">Beam Serials (1 / 2)</span></td>
+                                        <td>
+                                            <div style="display:flex; gap:6px;">
+                                                <input type="text" class="table-input" name="beam_serial_1" id="beam_serial_1" placeholder="Beam 1">
+                                                <input type="text" class="table-input" name="beam_serial_2" id="beam_serial_2" placeholder="Beam 2">
+                                            </div>
+                                        </td>
+                                        <td><input type="text" class="table-input" name="beam_batch" id="beam_batch"></td>
+                                        <td><input type="text" class="table-input" name="beam_part" id="beam_part"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Left Load Cell</strong></td>
+                                        <td><input type="text" class="table-input" name="lcl_model" id="lcl_model"></td>
+                                        <td><input type="text" class="table-input" name="lcl_serial" id="lcl_serial"></td>
+                                        <td><input type="text" class="table-input" name="lcl_batch" id="lcl_batch"></td>
+                                        <td><input type="text" class="table-input" name="lcl_part" id="lcl_part"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Right Load Cell</strong></td>
+                                        <td><input type="text" class="table-input" name="lcr_model" id="lcr_model"></td>
+                                        <td><input type="text" class="table-input" name="lcr_serial" id="lcr_serial"></td>
+                                        <td><input type="text" class="table-input" name="lcr_batch" id="lcr_batch"></td>
+                                        <td><input type="text" class="table-input" name="lcr_part" id="lcr_part"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="wizard-actions">
+                            <button type="button" class="btn-wizard-prev" onclick="goToStep(1)">Previous</button>
+                            <button type="button" class="btn-wizard-next" onclick="goToStep(3)">Next: Trials</button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3 -->
+                    <div class="section-box" id="step-box-3">
+                        <div class="section-box-title"><i class="fa-solid fa-scale-balanced"></i> 3. Calibration Trials</div>
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #0284c7;">Trial 1 (Left / Center / Right Readings)</h4>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>STEP</th>
+                                        <th>APPLIED LOAD</th>
+                                        <th>LEFT</th>
+                                        <th>CENTER</th>
+                                        <th>RIGHT</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td><input type="text" class="table-input" name="t1_load_1" id="t1_load_1"></td>
+                                        <td><input type="text" class="table-input" name="t1_left_1" id="t1_left_1"></td>
+                                        <td><input type="text" class="table-input" name="t1_center_1" id="t1_center_1"></td>
+                                        <td><input type="text" class="table-input" name="t1_right_1" id="t1_right_1"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td><input type="text" class="table-input" name="t1_load_2" id="t1_load_2"></td>
+                                        <td><input type="text" class="table-input" name="t1_left_2" id="t1_left_2"></td>
+                                        <td><input type="text" class="table-input" name="t1_center_2" id="t1_center_2"></td>
+                                        <td><input type="text" class="table-input" name="t1_right_2" id="t1_right_2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td><input type="text" class="table-input" name="t1_load_3" id="t1_load_3"></td>
+                                        <td><input type="text" class="table-input" name="t1_left_3" id="t1_left_3"></td>
+                                        <td><input type="text" class="table-input" name="t1_center_3" id="t1_center_3"></td>
+                                        <td><input type="text" class="table-input" name="t1_right_3" id="t1_right_3"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4 style="margin: 18px 0 10px 0; font-size: 14px; color: #0284c7;">Trial 2 (Left / Right Verification)</h4>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>STEP</th>
+                                        <th>APPLIED LOAD</th>
+                                        <th>LEFT</th>
+                                        <th>RIGHT</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td><input type="text" class="table-input" name="t2_load_1" id="t2_load_1"></td>
+                                        <td><input type="text" class="table-input" name="t2_left_1" id="t2_left_1"></td>
+                                        <td><input type="text" class="table-input" name="t2_right_1" id="t2_right_1"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td><input type="text" class="table-input" name="t2_load_2" id="t2_load_2"></td>
+                                        <td><input type="text" class="table-input" name="t2_left_2" id="t2_left_2"></td>
+                                        <td><input type="text" class="table-input" name="t2_right_2" id="t2_right_2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td><input type="text" class="table-input" name="t2_load_3" id="t2_load_3"></td>
+                                        <td><input type="text" class="table-input" name="t2_left_3" id="t2_left_3"></td>
+                                        <td><input type="text" class="table-input" name="t2_right_3" id="t2_right_3"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="wizard-actions">
+                            <button type="button" class="btn-wizard-prev" onclick="goToStep(2)">Previous</button>
+                            <button type="button" class="btn-wizard-next" onclick="goToStep(4)">Next: Sign-Off</button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 4 -->
+                    <div class="section-box" id="step-box-4">
+                        <div class="section-box-title"><i class="fa-solid fa-check-double"></i> 4. Functional Checks &amp; Sign-Off</div>
+                        <div class="grid-col-2">
+                            <div class="input-group"><label for="odd_trip_output">ODD Trip Output Status</label><input type="text" name="odd_trip_output" id="odd_trip_output" placeholder="OK / VERIFIED"></div>
+                            <div class="input-group"><label for="ddd_trip_output">DDD Trip Output Status</label><input type="text" name="ddd_trip_output" id="ddd_trip_output" placeholder="OK / VERIFIED"></div>
+                            <div class="input-group"><label for="lc_fail_card">Load Cell Fail Card Output</label><input type="text" name="lc_fail_card" id="lc_fail_card" placeholder="OK / VERIFIED"></div>
+                            <div class="input-group"><label for="ps_fail_card">Power Supply Fail Card Output</label><input type="text" name="ps_fail_card" id="ps_fail_card" placeholder="OK / VERIFIED"></div>
+                            <div class="input-group" style="grid-column: span 2;"><label for="remarks">Remarks</label><input type="text" name="remarks" id="remarks" placeholder="Any observations"></div>
+                            <div class="input-group"><label for="date">Testing Date</label><input type="date" name="date" id="date" required></div>
+                            <div class="input-group"><label for="tested_by">Tested By</label><input type="text" name="tested_by" id="tested_by" required></div>
+                            <div class="input-group"><label for="approved_by">Approved By</label><input type="text" name="approved_by" id="approved_by"></div>
+                        </div>
+                        <div class="form-actions" style="margin-top: 28px; display: flex; gap: 16px; justify-content: space-between; align-items: center;">
+                            <button type="button" class="btn-wizard-prev" onclick="goToStep(3)">Previous</button>
+                            <button type="submit" id="btnSubmitPDF" class="btn-primary" style="display: inline-flex; padding: 14px 28px; font-size: 15px; border-radius: 12px;">Submit &amp; Generate Report</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div id="downloadBanner" class="pdf-download-banner" style="display: none; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+                <div>
+                    <h4 style="font-size: 16px; font-weight: 800; margin: 0 0 4px 0; color: #ffffff;">Report Generated Successfully!</h4>
+                    <p id="downloadFilename" style="font-size: 13px; opacity: 0.9; margin: 0; color: #e0f2fe;"></p>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <button type="button" id="btnBannerPreviewPDF" class="btn-secondary" style="padding: 10px 18px; font-size: 14px; font-weight: 700; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35); color: #ffffff; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">Preview PDF</button>
+                    <a id="btnDownloadDOCX" href="#" target="_blank" class="btn-secondary" style="background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35); color: #ffffff; font-weight: 700; padding: 10px 18px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">Download DOCX</a>
+                    <a id="btnDownloadPDF" href="#" target="_blank" class="btn-primary" style="background: #ffffff; color: #0284c7; font-weight: 800; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">Download PDF</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="pdfPreviewModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="width: 92%; max-width: 960px; height: 88vh; display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 style="margin: 0;">Report Preview</h3>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <a id="btnModalDownloadPDF" href="#" target="_blank" class="btn-primary" style="padding: 8px 16px; border-radius: 8px; text-decoration: none;">Download PDF</a>
+                    <button type="button" id="btnClosePreviewModal" class="btn-secondary" style="padding: 8px 14px; border-radius: 8px;">&times;</button>
+                </div>
+            </div>
+            <iframe id="pdfPreviewIframe" style="flex: 1; width: 100%; border: 1px solid #cbd5e1; border-radius: 10px;"></iframe>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        window.goToStep = function (stepNum) {
+            for (let i = 1; i <= 4; i++) {
+                const box = document.getElementById('step-box-' + i);
+                const st = document.getElementById('st-' + i);
+                if (box) {
+                    box.classList.toggle('active-step', i === stepNum);
+                    box.style.display = (i === stepNum) ? 'block' : 'none';
+                }
+                if (st) {
+                    st.classList.toggle('active', i === stepNum);
+                    st.classList.toggle('completed', i < stepNum);
+                }
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.pageCustomFiller = function () {
+            if (typeof setFieldValue !== 'function') return;
+            const demo = {
+                job_no: '2526-ODD01', customer: 'ALSTOM TRANSPORT INDIA LTD.',
+                ind_model: 'ODD-400', ind_serial: 'IND-9012', ind_batch: 'B-26A', ind_part: 'P-ODD-100',
+                beam_serial_1: 'BM-101', beam_serial_2: 'BM-102', beam_batch: 'B-26B', beam_part: 'P-BM-200',
+                lcl_model: 'LC-500N', lcl_serial: 'LCL-441', lcl_batch: 'B-26L', lcl_part: 'P-LC-301',
+                lcr_model: 'LC-500N', lcr_serial: 'LCR-442', lcr_batch: 'B-26R', lcr_part: 'P-LC-302',
+                t1_load_1: '0 kg', t1_left_1: '0.0', t1_center_1: '0.0', t1_right_1: '0.0',
+                t1_load_2: '25 kg', t1_left_2: '25.0', t1_center_2: '25.0', t1_right_2: '25.0',
+                t1_load_3: '50 kg', t1_left_3: '50.0', t1_center_3: '50.0', t1_right_3: '50.0',
+                t2_load_1: '0 kg', t2_left_1: '0.0', t2_right_1: '0.0',
+                t2_load_2: '25 kg', t2_left_2: '25.0', t2_right_2: '25.0',
+                t2_load_3: '50 kg', t2_left_3: '50.0', t2_right_3: '50.0',
+                odd_trip_output: 'OK', ddd_trip_output: 'OK',
+                lc_fail_card: 'OK', ps_fail_card: 'OK',
+                remarks: 'All functional trips and zero checks within tolerance.',
+                date: new Date().toISOString().split('T')[0],
+                tested_by: 'R. Sharma', approved_by: 'S. Kumar'
+            };
+            Object.entries(demo).forEach(([k, v]) => setFieldValue(k, v));
+        };
+
+        async function fetchJobNoData() {
+            const jobNoInput = document.getElementById('job_no');
+            if (!jobNoInput || !jobNoInput.value.trim()) {
+                if (typeof showToast === 'function') showToast('Please enter a Job Number first.', 'warning');
+                return;
+            }
+            const jobNo = jobNoInput.value.trim();
+            try {
+                const res = await fetch(`/api/fetch-job-data?job_no=${encodeURIComponent(jobNo)}`);
+                const json = await res.json();
+                if (json.status === 'success' && json.extracted) {
+                    for (const [key, val] of Object.entries(json.extracted)) {
+                        if (val !== undefined && val !== null && val !== '' && typeof setFieldValue === 'function') {
+                            setFieldValue(key, val);
+                        }
+                    }
+                    if (typeof showToast === 'function') showToast(`Auto-filled from ${json.filename}`, 'success');
+                } else if (typeof showToast === 'function') {
+                    showToast(json.message || 'No DWG/Excel data found.', 'error');
+                }
+            } catch (e) {
+                console.error('Job Data Fetch error:', e);
+                if (typeof showToast === 'function') showToast('Error fetching data: ' + e.message, 'error');
+            }
+        }
+        window.fetchExcelData = fetchJobNoData;
+        window.fetchJobNoData = fetchJobNoData;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const jobNoInput = document.getElementById('job_no');
+            if (jobNoInput) {
+                let lastFetched = '';
+                const autoTrigger = () => {
+                    const v = jobNoInput.value.trim();
+                    if (v && v !== lastFetched) {
+                        lastFetched = v;
+                        fetchJobNoData();
+                    }
+                };
+                jobNoInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        autoTrigger();
+                    }
+                });
+                jobNoInput.addEventListener('blur', autoTrigger);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Production Test Report System</title>
+    <meta name="app-build-version" content="{{ build_version }}">
+    <meta http-equiv="refresh" content="0; url=/portal">
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#0284c7">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body style="padding: 24px; display: flex; align-items: center; justify-content: center; min-height: 100vh;">
+    <div class="glass-form" style="max-width: 460px; padding: 32px; text-align: center;">
+        <h1 style="font-size: 20px; margin-bottom: 10px;">Production Test Report System</h1>
+        <p style="color: #64748b; margin-bottom: 20px;">Redirecting to the main portal...</p>
+        <a href="/portal" class="btn-primary" style="display: inline-flex; padding: 12px 24px; border-radius: 10px; text-decoration: none;">Open Portal</a>
+    </div>
+    <script>
+        if (window.location.pathname === '/' || window.location.pathname.endsWith('/index.html')) {
+            window.location.replace('/portal');
+        }
+    </script>
+</body>
+</html>

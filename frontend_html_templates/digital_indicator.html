@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Digital Indicator Test Report Form</title>
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#0284c7">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <meta name="app-build-version" content="{{ build_version }}">
+    <style>
+        .pdf-download-banner {
+            background: linear-gradient(135deg, #0284c7, #0ea5e9);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #ffffff;
+            box-shadow: 0 10px 25px rgba(0, 158, 227, 0.3);
+        }
+        .section-box {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 28px 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+            display: none;
+        }
+        .section-box.active-step {
+            display: block;
+        }
+        .section-box-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1.5px solid #e2e8f0;
+            padding-bottom: 12px;
+        }
+        .table-input {
+            width: 100%;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 13px;
+        }
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 16px;
+            border-radius: 12px;
+        }
+        .table-responsive .data-table {
+            min-width: 800px;
+        }
+        
+        .stepper-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            background: #ffffff;
+            padding: 12px 18px;
+            border-radius: 16px;
+            border: 1.5px solid #e2e8f0;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .step-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #94a3b8;
+            min-width: 120px;
+        }
+        .step-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+        }
+        .step-item.active .step-num {
+            background: linear-gradient(135deg, #009ee3, #0284c7);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 158, 227, 0.3);
+        }
+        .step-item.active {
+            color: #0284c7;
+        }
+        .step-item.completed .step-num {
+            background: #10b981;
+            color: #ffffff;
+        }
+
+        .wizard-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1.5px solid #f1f5f9;
+        }
+        .btn-wizard-prev {
+            padding: 12px 22px;
+            border-radius: 12px;
+            background: #f1f5f9;
+            border: 1.5px solid #cbd5e1;
+            color: #0f172a;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+        .btn-wizard-prev:hover {
+            background: #e2e8f0;
+        }
+        .btn-wizard-next {
+            padding: 12px 24px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #009ee3, #0284c7);
+            border: none;
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0, 158, 227, 0.25);
+            transition: all 0.2s ease;
+        }
+        .btn-wizard-next:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 158, 227, 0.35);
+        }
+    
+        /* Top Toggle Selector Controls */
+        .btn-toggle-opt {
+            flex: 1;
+            padding: 9px 16px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: #475569;
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        .btn-toggle-opt:hover {
+            color: #0284c7;
+        }
+        .btn-toggle-opt.active {
+            background: #0284c7;
+            color: #ffffff;
+            box-shadow: 0 3px 10px rgba(0, 158, 227, 0.35);
+        }
+
+        /* Matrix Column Visibility Controls */
+        .col-lc-1, .col-lc-2, .col-lc-3, .col-lc-4 {
+            display: table-cell !important;
+        }
+        .col-lc-5, .col-lc-6, .col-lc-7, .col-lc-8, .col-lc-extra {
+            display: none;
+        }
+        .col-lc-5.show-lc, .col-lc-6.show-lc, .col-lc-7.show-lc, .col-lc-8.show-lc, .col-lc-extra.show-lc {
+            display: table-cell !important;
+        }
+
+        .col-out-ma {
+            display: table-cell !important;
+        }
+        .col-out-ma.hide-ma {
+            display: none !important;
+        }
+
+        .calib-row {
+            display: table-row !important;
+        }
+
+    
+        /* Professional Enterprise Calibration Matrix Table */
+        #calibMatrixTable {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1.5px solid #e2e8f0;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+        }
+        #calibMatrixTable th {
+            background: #f8fafc;
+            color: #475569;
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 14px 16px;
+            border-bottom: 2px solid #e2e8f0;
+            text-align: center;
+        }
+        #calibMatrixTable td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
+        #calibMatrixTable tr:last-child td {
+            border-bottom: none;
+        }
+        #calibMatrixTable tr:nth-child(even) td {
+            background-color: #fafafa;
+        }
+        #calibMatrixTable tr:hover td {
+            background-color: #f0f9ff;
+        }
+        #calibMatrixTable .table-input {
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 10px 14px !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-size: 13.5px !important;
+            font-weight: 600 !important;
+            color: #0f172a !important;
+            background: #ffffff !important;
+            border: 1.5px solid #cbd5e1 !important;
+            border-radius: 10px !important;
+            text-align: center !important;
+            transition: all 0.2s ease !important;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+        }
+        #calibMatrixTable .table-input:focus {
+            border-color: #0284c7 !important;
+            background: #ffffff !important;
+            outline: none !important;
+            box-shadow: 0 0 0 3px rgba(0, 158, 227, 0.15) !important;
+        }
+        #calibMatrixTable .table-input::placeholder {
+            color: #94a3b8;
+            font-weight: 500;
+            font-size: 12.5px;
+        }
+
+            .section-box-title i {
+            color: #009ee3;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body style="padding: 16px;">
+
+    <div class="app-container" style="max-width: 1080px; margin: 0 auto;">
+
+        <!-- TOP HEADER -->
+        <header class="app-header">
+            <div class="app-title">
+                <h1>Digital Indicator Test Report Form</h1>
+            </div>
+            <div class="header-actions" style="display: flex; align-items: center; gap: 10px;">
+                <button type="button" id="btnAutoFillHeader" class="header-nav-link btnFillDemoDataGlobal" onclick="if(typeof triggerUniversalAutoFill==='function'){triggerUniversalAutoFill();}else if(typeof fillSampleTestData==='function'){fillSampleTestData();}" style="background: linear-gradient(135deg, #0284c7, #0369a1); color: #ffffff !important; border: none; font-weight: 800; cursor: pointer; padding: 10px 18px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Auto-Fill Demo
+                </button>
+                <a href="/portal" class="header-nav-link">
+                    <i class="fa-solid fa-house"></i> Home
+                </a>
+            </div>
+        </header>
+
+        <!-- MAIN FORM -->
+        <main class="tab-content active">
+            <form id="recordForm" autocomplete="off">
+                <input type="hidden" name="report_type" value="digital_indicator">
+                
+                <div class="glass-form" style="padding: 28px;">
+                    
+                    
+
+                    <!-- STEP PROGRESS BAR -->
+                    <div class="stepper-bar" id="stepperBar">
+                        <div class="step-item active" id="st-1" onclick="goToStep(1)" style="cursor: pointer;">
+                            <div class="step-num">1</div>
+                            <span>1. System & Tag</span>
+                        </div>
+                        <div class="step-item" id="st-2" onclick="goToStep(2)" style="cursor: pointer;">
+                            <div class="step-num">2</div>
+                            <span>2. Hardware Specs</span>
+                        </div>
+                        <div class="step-item" id="st-3" onclick="goToStep(3)" style="cursor: pointer;">
+                            <div class="step-num">3</div>
+                            <span>3. Checklist</span>
+                        </div>
+                        <div class="step-item" id="st-4" onclick="goToStep(4)" style="cursor: pointer;">
+                            <div class="step-num">4</div>
+                            <span>4. Load Cell Matrix</span>
+                        </div>
+                        <div class="step-item" id="st-5" onclick="goToStep(5)" style="cursor: pointer;">
+                            <div class="step-num">5</div>
+                            <span>5. Sign-Off</span>
+                        </div>
+                    </div>
+
+                    <!-- STEP 1: SYSTEM METADATA & TAG -->
+                    <div class="section-box active-step" id="step-box-1">
+                        <div class="section-box-title">1. System Metadata & Tag</div>
+
+                        <!-- SYSTEM & CALIBRATION CONFIGURATION SELECTORS -->
+                        <div class="calib-config-card" style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 18px 20px; margin-bottom: 22px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; align-items: start;">
+                            <input type="hidden" name="calib_mode" id="calib_mode" value="mv">
+                            <input type="hidden" name="lc_system" id="lc_system" value="4">
+                            <input type="hidden" name="current_output" id="current_output" value="yes">
+
+                            <!-- CALIBRATION MODE SELECTOR -->
+                            <div>
+                                <label style="display: block; font-family: 'Outfit', sans-serif; font-size: 11.5px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px;">
+                                    <i class="fa-solid fa-sliders" style="color: #0284c7; margin-right: 4px;"></i> Calibration Type
+                                </label>
+                                <div style="display: flex; background: #e2e8f0; padding: 4px; border-radius: 10px; gap: 4px;">
+                                    <button type="button" id="btnModeMv" class="btn-toggle-opt active" onclick="setCalibMode('mv')">
+                                        <i class="fa-solid fa-bolt"></i> mV Calib
+                                    </button>
+                                    <button type="button" id="btnModeLoad" class="btn-toggle-opt" onclick="setCalibMode('load')">
+                                        <i class="fa-solid fa-weight-hanging"></i> Load Cell
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- LOAD CELL SYSTEM SELECTOR -->
+                            <div>
+                                <label style="display: block; font-family: 'Outfit', sans-serif; font-size: 11.5px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px;">
+                                    <i class="fa-solid fa-microchip" style="color: #0284c7; margin-right: 4px;"></i> Load Cell System
+                                </label>
+                                <div style="display: flex; background: #e2e8f0; padding: 4px; border-radius: 10px; gap: 4px;">
+                                    <button type="button" id="btnLc4" class="btn-toggle-opt active" onclick="setLcSystem('4')">
+                                        4 Load Cells
+                                    </button>
+                                    <button type="button" id="btnLc8" class="btn-toggle-opt" onclick="setLcSystem('8')">
+                                        8 Load Cells
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- CURRENT OUTPUT YES/NO SELECTOR -->
+                            <div>
+                                <label style="display: block; font-family: 'Outfit', sans-serif; font-size: 11.5px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px;">
+                                    <i class="fa-solid fa-wave-square" style="color: #0284c7; margin-right: 4px;"></i> Current Output (mA)
+                                </label>
+                                <div style="display: flex; background: #e2e8f0; padding: 4px; border-radius: 10px; gap: 4px;">
+                                    <button type="button" id="btnCurOutYes" class="btn-toggle-opt active" onclick="setCurrentOutput('yes')">
+                                        YES
+                                    </button>
+                                    <button type="button" id="btnCurOutNo" class="btn-toggle-opt" onclick="setCurrentOutput('no')">
+                                        NO
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid-col-2">
+                            <div class="input-group"><label>Job No.</label><input type="text" name="job_no" id="job_no"></div>
+                            <div class="input-group"><label>Customer</label><input type="text" name="customer" id="customer"></div>
+                            <div class="input-group"><label>Capacity (Kg/Tonnes)</label><input type="text" name="capacity" id="capacity"></div>
+                            <div class="input-group"><label>Tag No.</label><input type="text" name="conveyor_no" id="conveyor_no"></div>
+                        </div>
+                        <div class="wizard-actions">
+                            <div></div>
+                            <button type="button" class="btn-wizard-next" onclick="goToStep(2)">
+                                Next: Hardware Specs </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: HARDWARE COMPONENTS -->
+                    <div class="section-box" id="step-box-2">
+                        <div class="section-box-title">2. Hardware Components & Serial Nos.</div>
+                        <div class="grid-col-2">
+                            <div class="input-group"><label>Digital Indicator Model</label><input type="text" name="di_model" id="di_model"></div>
+                            <div class="input-group"><label>Digital Indicator Serial No.</label><input type="text" name="di_serial" id="di_serial"></div>
+                            <div class="input-group"><label>Firmware SW Version</label><input type="text" name="sw_version" id="sw_version"></div>
+                            <div class="input-group"><label>Load Cell Model No.</label><input type="text" name="lc_model" id="lc_model"></div>
+                            <div class="input-group"><label>Load Cell S1 Serial</label><input type="text" name="s1" id="s1"></div>
+                            <div class="input-group"><label>Load Cell S2 Serial</label><input type="text" name="s2" id="s2"></div>
+                            <div class="input-group"><label>Load Cell S3 Serial</label><input type="text" name="s3" id="s3"></div>
+                            <div class="input-group"><label>Load Cell S4 Serial</label><input type="text" name="s4" id="s4"></div>
+                            <div class="input-group extra-lc-serial" style="display: none;"><label>Load Cell S5 Serial</label><input type="text" name="s5" id="s5"></div>
+                            <div class="input-group extra-lc-serial" style="display: none;"><label>Load Cell S6 Serial</label><input type="text" name="s6" id="s6"></div>
+                            <div class="input-group extra-lc-serial" style="display: none;"><label>Load Cell S7 Serial</label><input type="text" name="s7" id="s7"></div>
+                            <div class="input-group extra-lc-serial" style="display: none;"><label>Load Cell S8 Serial</label><input type="text" name="s8" id="s8"></div>
+                            <div class="input-group"><label>Junction Box Model</label><input type="text" name="jbox_model" id="jbox_model"></div>
+                            <div class="input-group"><label>Junction Box Serial</label><input type="text" name="jbox_serial" id="jbox_serial"></div>
+                        </div>
+                        <div class="wizard-actions">
+                            <button type="button" class="btn-wizard-prev" onclick="goToStep(1)">
+                                Previous
+                            </button>
+                            <button type="button" class="btn-wizard-next" onclick="goToStep(3)">
+                                Next: Checklist </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: ROUTINE TEST CHECKLIST -->
+                    <div class="section-box" id="step-box-3">
+                        <div class="section-box-title">3. Routine Test Checklist</div>
+                        <div class="input-group" style="margin-bottom: 14px;">
+                            <label>Short Circuit Insulation Check (Line & Neutral, Neutral & Earth, Line & Earth)</label>
+                            <input type="text" name="short_check" id="short_check" value="OK (>100M Ohm)">
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40px; text-align: center;">Sl.</th>
+                                        <th>Test Performed</th>
+                                        <th>Specified Values</th>
+                                        <th>Actual / Checked Values</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td style="text-align: center;">1</td><td>Input Supply Voltage (+/-10%)</td><td><input type="text" name="spec_1" id="spec_1" class="table-input" value="230V AC"></td><td><input type="text" name="act_1" id="act_1" class="table-input" value="230V AC"></td></tr>
+                                    <tr><td style="text-align: center;">2</td><td>Derived DC Voltages (+/-5%)</td><td><input type="text" name="spec_2" id="spec_2" class="table-input" value="24V DC"></td><td><input type="text" name="act_2" id="act_2" class="table-input" value="24V DC"></td></tr>
+                                    <tr><td style="text-align: center;">3</td><td>Power on display & Keyboard function</td><td><input type="text" name="spec_3" id="spec_3" class="table-input" value="OK"></td><td><input type="text" name="act_3" id="act_3" class="table-input" value="OK"></td></tr>
+                                    <tr><td style="text-align: center;">4</td><td>Load on Load cell as specified in G.A.</td><td><input type="text" name="spec_4" id="spec_4" class="table-input" value="10.00 mV" placeholder="e.g. 10.00 mV / 2000 Kg"></td><td><input type="text" name="act_4" id="act_4" class="table-input" value="10.00 mV" placeholder="e.g. 10.00 mV / 2000 Kg"></td></tr>
+                                    <tr><td style="text-align: center;">5</td><td>Tare weight as specified in G.A.</td><td><input type="text" name="spec_5" id="spec_5" class="table-input" value="NA"></td><td><input type="text" name="act_5" id="act_5" class="table-input" value="NA"></td></tr>
+                                    <tr><td style="text-align: center;">6</td><td>PF / Relay Contacts (Relay changeover for set points)</td><td><input type="text" name="spec_6" id="spec_6" class="table-input" value="OK"></td><td><input type="text" name="check_6" id="check_6" class="table-input" value="OK"></td></tr>
+                                    <tr><td style="text-align: center;">7</td><td>Display Annunciation (As per software details)</td><td><input type="text" name="spec_7" id="spec_7" class="table-input" value="OK"></td><td><input type="text" name="check_7" id="check_7" class="table-input" value="OK"></td></tr>
+                                    <tr><td style="text-align: center;">8</td><td>Communication: RS232 / RS485 / BCD / Other Protocols</td><td><input type="text" name="spec_8" id="spec_8" class="table-input" value="RS485"></td><td><input type="text" name="check_8" id="check_8" class="table-input" value="OK"></td></tr>
+                                    <tr><td style="text-align: center;">9</td><td>Any other parameters (If Any)</td><td><input type="text" name="spec_9" id="spec_9" class="table-input" value="NA"></td><td><input type="text" name="check_9" id="check_9" class="table-input" value="NA"></td></tr>
+                                    <tr><td style="text-align: center;">10</td><td>Rating of the fuse used in the system</td><td><input type="text" name="spec_10" id="spec_10" class="table-input" value="1A"></td><td><input type="text" name="check_10" id="check_10" class="table-input" value="YES"></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="wizard-actions">
+                            <button type="button" class="btn-wizard-prev" onclick="goToStep(2)">
+                                Previous
+                            </button>
+                            <button type="button" class="btn-wizard-next" onclick="goToStep(4)">
+                                Next: Load Cell Matrix </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 4: MULTI-LOAD CELL CALIBRATION MATRIX -->
+                    <div class="section-box" id="step-box-4">
+                        <!-- CALIBRATION MATRIX HEADER -->
+                        <div class="section-box-title" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                            <div>
+                                4. Load Cell Calibration Matrix
+                            </div>
+                            <span class="doc-badge" style="margin: 0; background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd;">
+                                Auto-Configured
+                            </span>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table" id="calibMatrixTable" style="font-size: 12px; text-align: center;">
+                                <thead>
+                                    <tr style="background: #f1f5f9; color: #0f172a; font-weight: 800;">
+                                        <th style="min-width: 120px;">Load (Kg / mV)</th>
+                                        <th class="col-lc col-lc-1">LC 1</th>
+                                        <th class="col-lc col-lc-2">LC 2</th>
+                                        <th class="col-lc col-lc-3">LC 3</th>
+                                        <th class="col-lc col-lc-4">LC 4</th>
+                                        <th class="col-out-ma" style="background: #e2e8f0;">Out mA</th>
+                                        <th class="col-lc col-lc-5">LC 5</th>
+                                        <th class="col-lc col-lc-6">LC 6</th>
+                                        <th class="col-lc col-lc-7">LC 7</th>
+                                        <th class="col-lc col-lc-8">LC 8</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="calib-row calib-row-1">
+                                        <td><input type="text" name="g1_0" id="g1_0" class="table-input" placeholder="Step 1 Load" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-1"><input type="text" name="g1_1" id="g1_1" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-2"><input type="text" name="g1_2" id="g1_2" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-3"><input type="text" name="g1_3" id="g1_3" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-4"><input type="text" name="g1_4" id="g1_4" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-out-ma"><input type="text" name="g1_5" id="g1_5" class="table-input" style="background:#f8fafc; padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-5"><input type="text" name="g1_6" id="g1_6" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-6"><input type="text" name="g1_7" id="g1_7" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-7"><input type="text" name="g1_8" id="g1_8" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-8"><input type="text" name="g1_9" id="g1_9" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                    </tr>
+                                    <tr class="calib-row calib-row-2">
+                                        <td><input type="text" name="g2_0" id="g2_0" class="table-input" placeholder="Step 2 Load" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-1"><input type="text" name="g2_1" id="g2_1" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-2"><input type="text" name="g2_2" id="g2_2" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-3"><input type="text" name="g2_3" id="g2_3" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-4"><input type="text" name="g2_4" id="g2_4" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-out-ma"><input type="text" name="g2_5" id="g2_5" class="table-input" style="background:#f8fafc; padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-5"><input type="text" name="g2_6" id="g2_6" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-6"><input type="text" name="g2_7" id="g2_7" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-7"><input type="text" name="g2_8" id="g2_8" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-8"><input type="text" name="g2_9" id="g2_9" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                    </tr>
+                                    <tr class="calib-row calib-row-3">
+                                        <td><input type="text" name="g3_0" id="g3_0" class="table-input" placeholder="Step 3 Load" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-1"><input type="text" name="g3_1" id="g3_1" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-2"><input type="text" name="g3_2" id="g3_2" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-3"><input type="text" name="g3_3" id="g3_3" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-4"><input type="text" name="g3_4" id="g3_4" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-out-ma"><input type="text" name="g3_5" id="g3_5" class="table-input" style="background:#f8fafc; padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-5"><input type="text" name="g3_6" id="g3_6" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-6"><input type="text" name="g3_7" id="g3_7" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-7"><input type="text" name="g3_8" id="g3_8" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-8"><input type="text" name="g3_9" id="g3_9" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                    </tr>
+                                    <tr class="calib-row calib-row-4">
+                                        <td><input type="text" name="g4_0" id="g4_0" class="table-input" placeholder="Step 4 Load" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-1"><input type="text" name="g4_1" id="g4_1" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-2"><input type="text" name="g4_2" id="g4_2" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-3"><input type="text" name="g4_3" id="g4_3" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-4"><input type="text" name="g4_4" id="g4_4" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-out-ma"><input type="text" name="g4_5" id="g4_5" class="table-input" style="background:#f8fafc; padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-5"><input type="text" name="g4_6" id="g4_6" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-6"><input type="text" name="g4_7" id="g4_7" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-7"><input type="text" name="g4_8" id="g4_8" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-8"><input type="text" name="g4_9" id="g4_9" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                    </tr>
+                                    <tr class="calib-row calib-row-5">
+                                        <td><input type="text" name="g5_0" id="g5_0" class="table-input" placeholder="Step 5 Load" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-1"><input type="text" name="g5_1" id="g5_1" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-2"><input type="text" name="g5_2" id="g5_2" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-3"><input type="text" name="g5_3" id="g5_3" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-4"><input type="text" name="g5_4" id="g5_4" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-out-ma"><input type="text" name="g5_5" id="g5_5" class="table-input" style="background:#f8fafc; padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-5"><input type="text" name="g5_6" id="g5_6" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-6"><input type="text" name="g5_7" id="g5_7" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-7"><input type="text" name="g5_8" id="g5_8" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-8"><input type="text" name="g5_9" id="g5_9" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                    </tr>
+                                    <tr class="calib-row calib-row-6">
+                                        <td><input type="text" name="g6_0" id="g6_0" class="table-input" placeholder="Step 6 Load" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-1"><input type="text" name="g6_1" id="g6_1" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-2"><input type="text" name="g6_2" id="g6_2" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-3"><input type="text" name="g6_3" id="g6_3" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-4"><input type="text" name="g6_4" id="g6_4" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-out-ma"><input type="text" name="g6_5" id="g6_5" class="table-input" style="background:#f8fafc; padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-5"><input type="text" name="g6_6" id="g6_6" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-6"><input type="text" name="g6_7" id="g6_7" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-7"><input type="text" name="g6_8" id="g6_8" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-8"><input type="text" name="g6_9" id="g6_9" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                    </tr>
+                                    <tr class="calib-row calib-row-7">
+                                        <td><input type="text" name="g7_0" id="g7_0" class="table-input" placeholder="Step 7 Load" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-1"><input type="text" name="g7_1" id="g7_1" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-2"><input type="text" name="g7_2" id="g7_2" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-3"><input type="text" name="g7_3" id="g7_3" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-4"><input type="text" name="g7_4" id="g7_4" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-out-ma"><input type="text" name="g7_5" id="g7_5" class="table-input" style="background:#f8fafc; padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-5"><input type="text" name="g7_6" id="g7_6" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-6"><input type="text" name="g7_7" id="g7_7" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-7"><input type="text" name="g7_8" id="g7_8" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-8"><input type="text" name="g7_9" id="g7_9" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                    </tr>
+                                    <tr class="calib-row calib-row-8">
+                                        <td><input type="text" name="g8_0" id="g8_0" class="table-input" placeholder="Step 8 Load" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-1"><input type="text" name="g8_1" id="g8_1" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-2"><input type="text" name="g8_2" id="g8_2" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-3"><input type="text" name="g8_3" id="g8_3" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-4"><input type="text" name="g8_4" id="g8_4" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-out-ma"><input type="text" name="g8_5" id="g8_5" class="table-input" style="background:#f8fafc; padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-5"><input type="text" name="g8_6" id="g8_6" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-6"><input type="text" name="g8_7" id="g8_7" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-7"><input type="text" name="g8_8" id="g8_8" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-8"><input type="text" name="g8_9" id="g8_9" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                    </tr>
+                                    <tr class="calib-row calib-row-9">
+                                        <td><input type="text" name="g9_0" id="g9_0" class="table-input" placeholder="Step 9 Load" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-1"><input type="text" name="g9_1" id="g9_1" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-2"><input type="text" name="g9_2" id="g9_2" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-3"><input type="text" name="g9_3" id="g9_3" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-4"><input type="text" name="g9_4" id="g9_4" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-out-ma"><input type="text" name="g9_5" id="g9_5" class="table-input" style="background:#f8fafc; padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-5"><input type="text" name="g9_6" id="g9_6" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-6"><input type="text" name="g9_7" id="g9_7" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-7"><input type="text" name="g9_8" id="g9_8" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-8"><input type="text" name="g9_9" id="g9_9" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                    </tr>
+                                    <tr class="calib-row calib-row-10">
+                                        <td><input type="text" name="g10_0" id="g10_0" class="table-input" placeholder="Step 10 Load" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-1"><input type="text" name="g10_1" id="g10_1" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-2"><input type="text" name="g10_2" id="g10_2" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-3"><input type="text" name="g10_3" id="g10_3" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-4"><input type="text" name="g10_4" id="g10_4" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-out-ma"><input type="text" name="g10_5" id="g10_5" class="table-input" style="background:#f8fafc; padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-5"><input type="text" name="g10_6" id="g10_6" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-6"><input type="text" name="g10_7" id="g10_7" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-7"><input type="text" name="g10_8" id="g10_8" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-8"><input type="text" name="g10_9" id="g10_9" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                    </tr>
+                                    <tr class="calib-row calib-row-11">
+                                        <td><input type="text" name="g11_0" id="g11_0" class="table-input" placeholder="Step 11 Load" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-1"><input type="text" name="g11_1" id="g11_1" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-2"><input type="text" name="g11_2" id="g11_2" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-3"><input type="text" name="g11_3" id="g11_3" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-4"><input type="text" name="g11_4" id="g11_4" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-out-ma"><input type="text" name="g11_5" id="g11_5" class="table-input" style="background:#f8fafc; padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-5"><input type="text" name="g11_6" id="g11_6" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-6"><input type="text" name="g11_7" id="g11_7" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-7"><input type="text" name="g11_8" id="g11_8" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-8"><input type="text" name="g11_9" id="g11_9" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                    </tr>
+                                    <tr class="calib-row calib-row-12">
+                                        <td><input type="text" name="g12_0" id="g12_0" class="table-input" placeholder="Step 12 Load" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-1"><input type="text" name="g12_1" id="g12_1" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-2"><input type="text" name="g12_2" id="g12_2" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-3"><input type="text" name="g12_3" id="g12_3" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-4"><input type="text" name="g12_4" id="g12_4" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-out-ma"><input type="text" name="g12_5" id="g12_5" class="table-input" style="background:#f8fafc; padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-5"><input type="text" name="g12_6" id="g12_6" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-6"><input type="text" name="g12_7" id="g12_7" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-7"><input type="text" name="g12_8" id="g12_8" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                        <td class="col-lc col-lc-8"><input type="text" name="g12_9" id="g12_9" class="table-input" style="padding:4px 6px; font-size:12px;"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="wizard-actions">
+                            <button type="button" class="btn-wizard-prev" onclick="goToStep(3)">
+                                Previous
+                            </button>
+                            <button type="button" class="btn-wizard-next" onclick="goToStep(5)">
+                                Next: Sign-Off </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 5: TEST EQUIPMENT & FINAL SIGN-OFF -->
+                    <div class="section-box" id="step-box-5">
+                        <div class="section-box-title">5. Test Equipment & Final Sign-Off</div>
+
+                        <!-- LOAD CELL CALIBRATION REMARKS TABLE (SPAN, TARE, EXC V) -->
+                        <div id="spanTareExcvContainer" style="display: none; margin-bottom: 24px;">
+                            <div style="font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 800; color: #0284c7; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-table-cells"></i> Remarks Table: Load Cell Parameters (SPAN / TARE / EXC V)
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table" id="tableSpanTareExcv" style="font-size: 12.5px; text-align: center; border-collapse: collapse; width: 100%;">
+                                    <thead>
+                                        <tr style="background: #f1f5f9; color: #0f172a; font-weight: 800;">
+                                            <th style="min-width: 90px; text-align: left; padding: 10px 14px;">Parameter</th>
+                                            <th>LC 1</th>
+                                            <th>LC 2</th>
+                                            <th>LC 3</th>
+                                            <th>LC 4</th>
+                                            <th class="col-lc-5 col-lc-extra">LC 5</th>
+                                            <th class="col-lc-6 col-lc-extra">LC 6</th>
+                                            <th class="col-lc-7 col-lc-extra">LC 7</th>
+                                            <th class="col-lc-8 col-lc-extra">LC 8</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="font-weight: 800; text-align: left; padding: 8px 14px; background: #f8fafc;">SPAN</td>
+                                            <td><input type="text" name="span_lc1" id="span_lc1" class="table-input" placeholder="SPAN 1"></td>
+                                            <td><input type="text" name="span_lc2" id="span_lc2" class="table-input" placeholder="SPAN 2"></td>
+                                            <td><input type="text" name="span_lc3" id="span_lc3" class="table-input" placeholder="SPAN 3"></td>
+                                            <td><input type="text" name="span_lc4" id="span_lc4" class="table-input" placeholder="SPAN 4"></td>
+                                            <td class="col-lc-5 col-lc-extra"><input type="text" name="span_lc5" id="span_lc5" class="table-input" placeholder="SPAN 5"></td>
+                                            <td class="col-lc-6 col-lc-extra"><input type="text" name="span_lc6" id="span_lc6" class="table-input" placeholder="SPAN 6"></td>
+                                            <td class="col-lc-7 col-lc-extra"><input type="text" name="span_lc7" id="span_lc7" class="table-input" placeholder="SPAN 7"></td>
+                                            <td class="col-lc-8 col-lc-extra"><input type="text" name="span_lc8" id="span_lc8" class="table-input" placeholder="SPAN 8"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: 800; text-align: left; padding: 8px 14px; background: #f8fafc;">TARE</td>
+                                            <td><input type="text" name="tare_lc1" id="tare_lc1" class="table-input" placeholder="TARE 1"></td>
+                                            <td><input type="text" name="tare_lc2" id="tare_lc2" class="table-input" placeholder="TARE 2"></td>
+                                            <td><input type="text" name="tare_lc3" id="tare_lc3" class="table-input" placeholder="TARE 3"></td>
+                                            <td><input type="text" name="tare_lc4" id="tare_lc4" class="table-input" placeholder="TARE 4"></td>
+                                            <td class="col-lc-5 col-lc-extra"><input type="text" name="tare_lc5" id="tare_lc5" class="table-input" placeholder="TARE 5"></td>
+                                            <td class="col-lc-6 col-lc-extra"><input type="text" name="tare_lc6" id="tare_lc6" class="table-input" placeholder="TARE 6"></td>
+                                            <td class="col-lc-7 col-lc-extra"><input type="text" name="tare_lc7" id="tare_lc7" class="table-input" placeholder="TARE 7"></td>
+                                            <td class="col-lc-8 col-lc-extra"><input type="text" name="tare_lc8" id="tare_lc8" class="table-input" placeholder="TARE 8"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: 800; text-align: left; padding: 8px 14px; background: #f8fafc;">EXC V</td>
+                                            <td><input type="text" name="excv_lc1" id="excv_lc1" class="table-input" placeholder="EXC 1"></td>
+                                            <td><input type="text" name="excv_lc2" id="excv_lc2" class="table-input" placeholder="EXC 2"></td>
+                                            <td><input type="text" name="excv_lc3" id="excv_lc3" class="table-input" placeholder="EXC 3"></td>
+                                            <td><input type="text" name="excv_lc4" id="excv_lc4" class="table-input" placeholder="EXC 4"></td>
+                                            <td class="col-lc-5 col-lc-extra"><input type="text" name="excv_lc5" id="excv_lc5" class="table-input" placeholder="EXC 5"></td>
+                                            <td class="col-lc-6 col-lc-extra"><input type="text" name="excv_lc6" id="excv_lc6" class="table-input" placeholder="EXC 6"></td>
+                                            <td class="col-lc-7 col-lc-extra"><input type="text" name="excv_lc7" id="excv_lc7" class="table-input" placeholder="EXC 7"></td>
+                                            <td class="col-lc-8 col-lc-extra"><input type="text" name="excv_lc8" id="excv_lc8" class="table-input" placeholder="EXC 8"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="grid-col-2">
+                            <div class="input-group" style="grid-column: span 2;">
+                                <label>REMARKS (If Any)</label>
+                                <input type="text" name="remarks" id="remarks">
+                            </div>
+                            <div class="input-group">
+                                <label>Instrument Used</label>
+                                <input type="text" name="instrument_used" id="instrument_used" value="">
+                            </div>
+                            <div class="input-group">
+                                <label>Testing Date</label>
+                                <input type="date" name="date" id="date">
+                            </div>
+                            <div class="input-group">
+                                <label>Tested By</label>
+                                <input type="text" name="tested_by" id="tested_by">
+                            </div>
+                            <div class="input-group">
+                                <label>Approved By</label>
+                                <input type="text" name="approved_by" id="approved_by">
+                            </div>
+                        </div>
+
+                        <div class="form-actions" style="margin-top: 32px; display: flex; gap: 16px; justify-content: flex-end; align-items: center;">
+                            <button type="button" class="btn-wizard-prev" onclick="goToStep(4)">
+                                Previous
+                            </button>
+                            <button type="submit" id="btnSubmitPDF" class="btn-primary" style="display: inline-flex; padding: 14px 28px; font-size: 15px; border-radius: 12px; box-shadow: 0 6px 18px rgba(0, 158, 227, 0.3);">
+                                Submit & Generate Report
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                <input type="file" id="gaFileInput" accept=".dwg,.dxf,.json" style="display:none;">
+            </form>
+
+            <!-- DOWNLOAD SUCCESS BANNER -->
+            <div id="downloadBanner" class="pdf-download-banner" style="display: none; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+                <div>
+                    <h4 style="font-size: 16px; font-weight: 800; margin: 0 0 4px 0; color: #ffffff;">Report Generated Successfully!</h4>
+                    <p id="downloadFilename" style="font-size: 13px; opacity: 0.9; margin: 0; color: #e0f2fe;"></p>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button type="button" id="btnBannerPreviewPDF" class="btn-secondary" style="padding: 10px 18px; font-size: 14px; font-weight: 700; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35); color: #ffffff; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+                        Preview PDF
+                    </button>
+                    <a id="btnDownloadPDF" href="#" target="_blank" class="btn-primary" style="background: #ffffff; color: #0284c7; font-weight: 800; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                        Download PDF
+                    </a>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- PDF PREVIEW MODAL -->
+    <div id="pdfPreviewModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(6px); z-index: 9999; justify-content: center; align-items: center;">
+        <div style="background: #1e293b; width: 92%; max-width: 900px; height: 88vh; border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; border: 1px solid #334155;">
+            <div style="padding: 14px 20px; background: #0f172a; display: flex; justify-content: space-between; align-items: center;">
+                <h3 id="modalPreviewTitle" style="color: #fff; margin: 0; font-size: 16px;">PDF Document Preview</h3>
+                <div style="display: flex; gap: 10px;">
+                    <a id="btnModalDownloadPDF" href="#" download class="btn" style="background: #0284c7; color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none;">
+                        Download
+                    </a>
+                    <button type="button" id="btnClosePreviewModal" style="background: transparent; border: none; color: #94a3b8; font-size: 20px; cursor: pointer;">
+                        &times;</button>
+                </div>
+            </div>
+            <iframe id="pdfPreviewIframe" style="width: 100%; height: 100%; border: none;"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // --- GLOBAL SELECTOR / TOGGLE HANDLERS (DEFINED AT TOP FOR IMMEDIATE ACCESS) ---
+        function setCalibMode(mode) {
+            const isLoad = String(mode).toLowerCase().includes('load');
+            const normalizedMode = isLoad ? 'load' : 'mv';
+            const input = document.getElementById('calib_mode');
+            if (input) input.value = normalizedMode;
+
+            const btnMv = document.getElementById('btnModeMv');
+            const btnLoad = document.getElementById('btnModeLoad');
+            const spanBox = document.getElementById('spanTareExcvContainer');
+            const spec4Input = document.getElementById('spec_4');
+            const act4Input = document.getElementById('act_4');
+            const capInput = document.getElementById('capacity');
+
+            if (isLoad) {
+                if (btnLoad) btnLoad.classList.add('active');
+                if (btnMv) btnMv.classList.remove('active');
+                if (spanBox) spanBox.style.display = 'block';
+
+                let currentVal = (spec4Input ? spec4Input.value : '') || '';
+                if (!currentVal || currentVal.toLowerCase().includes('mv')) {
+                    let capStr = capInput && capInput.value ? capInput.value.trim() : '';
+                    if (capStr) {
+                        let num = parseFloat(capStr.replace(/[^0-9.]/g, ''));
+                        let unit = capStr.toUpperCase().includes('T') ? 'T' : 'Kg';
+                        let lcSys = document.getElementById('lc_system');
+                        let is8 = lcSys && String(lcSys.value).includes('8');
+                        let numCells = is8 ? 8 : 4;
+                        if (!isNaN(num) && num > 0) {
+                            let cellLoad = (num / numCells).toFixed(unit === 'T' ? 1 : 0);
+                            currentVal = `${cellLoad} ${unit}`;
+                        } else {
+                            currentVal = '1000.0 Kg';
+                        }
+                    } else {
+                        currentVal = '1000.0 Kg';
+                    }
+                    if (spec4Input) spec4Input.value = currentVal;
+                    if (act4Input) act4Input.value = currentVal;
+                }
+                if (typeof autoCalculateCalibrationMatrix === 'function') {
+                    autoCalculateCalibrationMatrix(currentVal, true);
+                }
+            } else {
+                if (btnMv) btnMv.classList.add('active');
+                if (btnLoad) btnLoad.classList.remove('active');
+                if (spanBox) spanBox.style.display = 'none';
+
+                let mvVal = '10.00 mV';
+                if (spec4Input) spec4Input.value = mvVal;
+                if (act4Input) act4Input.value = mvVal;
+                if (typeof autoCalculateCalibrationMatrix === 'function') {
+                    autoCalculateCalibrationMatrix(mvVal, true);
+                }
+            }
+        }
+        window.setCalibMode = setCalibMode;
+
+        function setLcSystem(count) {
+            const m = String(count).match(/(\d+)/);
+            const num = m ? parseInt(m[1], 10) : 4;
+            const isMoreThan4 = num > 4;
+            const input = document.getElementById('lc_system');
+            if (input) {
+                input.value = String(count);
+                input.dataset.numCells = String(num);
+            }
+
+            const btn4 = document.getElementById('btnLc4');
+            const btn8 = document.getElementById('btnLc8');
+            const extraSerials = document.querySelectorAll('.extra-lc-serial');
+            const extraCols = document.querySelectorAll('.col-lc-5, .col-lc-6, .col-lc-7, .col-lc-8, .col-lc-extra');
+
+            if (isMoreThan4) {
+                if (btn8) btn8.classList.add('active');
+                if (btn4) btn4.classList.remove('active');
+                extraSerials.forEach(el => el.style.display = 'block');
+                extraCols.forEach(el => {
+                    el.classList.add('show-lc');
+                    el.style.display = 'table-cell';
+                });
+            } else {
+                if (btn4) btn4.classList.add('active');
+                if (btn8) btn8.classList.remove('active');
+                extraSerials.forEach(el => el.style.display = 'none');
+                extraCols.forEach(el => {
+                    el.classList.remove('show-lc');
+                    el.style.display = 'none';
+                });
+            }
+
+            // If currently in load calibration mode, recalculate single-cell span from total capacity
+            const modeInput = document.getElementById('calib_mode');
+            if (modeInput && modeInput.value === 'load') {
+                const capInput = document.getElementById('capacity');
+                if (capInput && capInput.value) {
+                    let capStr = capInput.value.trim();
+                    let cNum = parseFloat(capStr.replace(/[^0-9.]/g, ''));
+                    let unit = capStr.toUpperCase().includes('T') ? 'T' : 'Kg';
+                    let numCells = num;
+                    if (!isNaN(cNum) && cNum > 0) {
+                        let cellLoad = (cNum / numCells).toFixed(unit === 'T' ? 1 : 0);
+                        const spec4Input = document.getElementById('spec_4');
+                        const act4Input = document.getElementById('act_4');
+                        if (spec4Input) spec4Input.value = `${cellLoad} ${unit}`;
+                        if (act4Input) act4Input.value = `${cellLoad} ${unit}`;
+                        if (typeof autoCalculateCalibrationMatrix === 'function') {
+                            autoCalculateCalibrationMatrix(`${cellLoad} ${unit}`, true);
+                        }
+                    }
+                }
+            }
+        }
+        window.setLcSystem = setLcSystem;
+
+        function setCurrentOutput(val) {
+            const isNo = String(val).toLowerCase().includes('no');
+            const strVal = isNo ? 'no' : 'yes';
+            const input = document.getElementById('current_output');
+            if (input) input.value = strVal;
+
+            const btnYes = document.getElementById('btnCurOutYes');
+            const btnNo = document.getElementById('btnCurOutNo');
+            const maCols = document.querySelectorAll('.col-out-ma');
+
+            if (isNo) {
+                if (btnNo) btnNo.classList.add('active');
+                if (btnYes) btnYes.classList.remove('active');
+                maCols.forEach(el => {
+                    el.classList.add('hide-ma');
+                    el.style.display = 'none';
+                });
+            } else {
+                if (btnYes) btnYes.classList.add('active');
+                if (btnNo) btnNo.classList.remove('active');
+                maCols.forEach(el => {
+                    el.classList.remove('hide-ma');
+                    el.style.display = 'table-cell';
+                });
+            }
+        }
+        window.setCurrentOutput = setCurrentOutput;
+
+        function getLoadCellModelCode(capStr, rawText) {
+            let txt = (rawText || '').toUpperCase();
+            if (txt.includes('BR32') || txt.includes('BR-32') || txt.includes('BR3200')) return 'BR3200H0';
+            if (txt.includes('BR52') || txt.includes('BR-52') || txt.includes('BR5200')) return 'BR5200H0';
+            if (txt.includes('BR')) {
+                let m = txt.match(/BR[A-Z0-9\-]+/);
+                if (m) return m[0];
+            }
+
+            if (!capStr) return 'BR3200H0';
+            let capNum = parseFloat(String(capStr).replace(/[^0-9.]/g, ''));
+
+            // BR & CR Load Cell Series mapping
+            if (capNum === 300 || capStr.includes('300')) return 'BR3200H0';
+            if (capNum === 500 || capStr.includes('500')) return 'BR5200H0';
+            if (capNum === 700 || capStr.includes('700')) return 'BR7200H0';
+            if (capNum === 1000 || capStr.includes('1000') || capStr.includes('1T')) return 'BR1000H0';
+            if (capNum === 2000 || capStr.includes('2000') || capStr.includes('2T')) return 'BR2000H0';
+            if (capNum > 0) return `BR3200H0-${capNum}KG`;
+
+            return 'BR3200H0';
+        }
+
+        function openGaModal() {
+            const modal = document.getElementById('gaUploadModal');
+            if (modal) modal.style.display = 'flex';
+        }
+        function closeGaModal() {
+            const modal = document.getElementById('gaUploadModal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function setFieldValue(id, val) {
+            if (val === undefined || val === null || val === '') return;
+            const el = document.getElementById(id) || document.getElementsByName(id)[0];
+            if (el) {
+                // If this is the active input element being typed in by the user, do not overwrite cursor
+                if (document.activeElement === el) return;
+                el.value = val;
+                el.style.transition = 'all 0.3s ease';
+                el.style.border = '2px solid #10b981';
+                el.style.background = '#ecfdf5';
+                setTimeout(() => {
+                    el.style.border = '';
+                    el.style.background = '';
+                }, 3500);
+            }
+        }
+
+        // 5-Step Load & mV Calibration Matrix Calculator
+        function autoCalculateCalibrationMatrix(sourceVal, isExplicitRow4) {
+            const modeInput = document.getElementById('calib_mode');
+            const isLoad = modeInput && modeInput.value === 'load';
+            const capInput = document.getElementById('capacity');
+            const spec4Input = document.getElementById('spec_4');
+            const act4Input = document.getElementById('act_4');
+            const lcSys = document.getElementById('lc_system');
+            let numCells = 4;
+            if (lcSys) {
+                if (lcSys.dataset && lcSys.dataset.numCells) {
+                    numCells = parseInt(lcSys.dataset.numCells, 10) || 4;
+                } else if (lcSys.value) {
+                    const m = String(lcSys.value).match(/(\d+)/);
+                    if (m) numCells = parseInt(m[1], 10) || 4;
+                }
+            }
+
+            // Determine raw input string to use for span
+            let rawStr = '';
+            let isFromCapInput = false;
+            if (isExplicitRow4 && sourceVal !== undefined && sourceVal !== null) {
+                rawStr = String(sourceVal).trim();
+            } else if (sourceVal !== undefined && sourceVal !== null && String(sourceVal).trim()) {
+                rawStr = String(sourceVal).trim();
+                if (capInput && rawStr === capInput.value.trim()) isFromCapInput = true;
+            } else if (spec4Input && spec4Input.value && spec4Input.value.trim() && !spec4Input.value.toLowerCase().includes('sample') && !spec4Input.value.toLowerCase().includes('span')) {
+                rawStr = spec4Input.value.trim();
+            } else if (act4Input && act4Input.value && act4Input.value.trim() && !act4Input.value.toLowerCase().includes('passed')) {
+                rawStr = act4Input.value.trim();
+            } else if (capInput && capInput.value.trim()) {
+                rawStr = capInput.value.trim();
+                isFromCapInput = true;
+            }
+
+            let spanVal = isLoad ? 1000.0 : 10.0;
+            let unit = isLoad ? 'Kg' : 'mV';
+
+            if (rawStr) {
+                const num = parseFloat(rawStr.replace(/[^0-9.]/g, ''));
+                if (!isNaN(num) && num > 0) {
+                    const up = rawStr.toUpperCase();
+                    if (up.includes('TON') || up.includes(' T') || up.endsWith('T')) unit = 'T';
+                    else if (up.includes('KG')) unit = 'Kg';
+                    else if (up.includes('G') && !up.includes('KG')) unit = 'g';
+                    else if (up.includes('MV')) unit = 'mV';
+                    else {
+                        unit = isLoad ? 'Kg' : 'mV';
+                    }
+
+                    // If in Load mode and value is derived from system capacity, divide by number of cells
+                    if (isLoad && isFromCapInput) {
+                        spanVal = num / numCells;
+                    } else {
+                        spanVal = num;
+                    }
+                }
+            }
+
+            // Respect the user's selected mode toggle
+            if (!isLoad) {
+                unit = 'mV';
+                spanVal = (unit === 'mV' && spanVal > 50) ? 10.0 : spanVal;
+            } else {
+                if (unit === 'mV') unit = 'Kg';
+            }
+
+            const dec = (unit === 'mV') ? 2 : (spanVal < 100 ? 1 : 0);
+            const formattedSpan = `${spanVal.toFixed(dec)} ${unit}`;
+
+            // 1. Synchronize Routine Test Table Row 4 & Row 5
+            if (isExplicitRow4) {
+                if (document.activeElement === spec4Input) {
+                    if (act4Input) act4Input.value = spec4Input.value;
+                } else if (document.activeElement === act4Input) {
+                    if (spec4Input) spec4Input.value = act4Input.value;
+                } else {
+                    if (spec4Input) spec4Input.value = formattedSpan;
+                    if (act4Input) act4Input.value = formattedSpan;
+                }
+            } else {
+                setFieldValue('spec_4', formattedSpan);
+                setFieldValue('act_4', formattedSpan);
+            }
+            setFieldValue('spec_5', 'NA');
+            setFieldValue('act_5', 'NA');
+
+            // Extract Total System Capacity (e.g. 268.0 T)
+            let sysCapVal = 0;
+            let sysCapUnit = '';
+            if (capInput && capInput.value) {
+                const rawCap = capInput.value.trim();
+                const cNum = parseFloat(rawCap.replace(/[^0-9.]/g, ''));
+                if (!isNaN(cNum) && cNum > 0) {
+                    sysCapVal = cNum;
+                    const up = rawCap.toUpperCase();
+                    if (up.includes('TON') || up.includes(' T') || up.endsWith('T')) sysCapUnit = 'T';
+                    else if (up.includes('KG')) sysCapUnit = 'Kg';
+                    else if (up.includes('G') && !up.includes('KG')) sysCapUnit = 'g';
+                }
+            }
+
+            // Normalize System Capacity to match the step unit
+            let effectiveSysCap = sysCapVal > 0 ? sysCapVal : (spanVal * numCells);
+            if (sysCapVal > 0) {
+                if (sysCapUnit === 'T' && (unit === 'Kg' || unit === 'KG')) {
+                    effectiveSysCap = sysCapVal * 1000.0;
+                } else if ((sysCapUnit === 'Kg' || sysCapUnit === 'KG') && unit === 'T') {
+                    effectiveSysCap = sysCapVal / 1000.0;
+                }
+            }
+
+            // 2. Compute 5-Step Readings (20%, 40%, 60%, 80%, 100% of Span)
+            const stepRatio = spanVal / 5.0;
+            const pcts = [0.20, 0.40, 0.60, 0.80, 1.00];
+
+            pcts.forEach((pct, idx) => {
+                const r = idx + 1; // Rows 1 to 5
+                const stepNum = stepRatio * (idx + 1);
+                const stepNumeric = stepNum.toFixed(dec);
+                const stepDisplay = `${stepNumeric} ${unit}`;
+
+                // Left column: Applied Step Load / mV
+                setFieldValue(`g${r}_0`, stepDisplay);
+
+                // Load Cells 1 through 4 (columns g{r}_1 to g{r}_4)
+                for (let lc = 1; lc <= 4; lc++) {
+                    setFieldValue(`g${r}_${lc}`, stepNumeric);
+                }
+
+                // Current output mA: User formula: 4.00 + (16.0 / System Capacity) * Load
+                let maVal;
+                if (isLoad && effectiveSysCap > 0) {
+                    const ma = 4.00 + (16.0 / effectiveSysCap) * stepNum;
+                    maVal = ma.toFixed(2);
+                } else {
+                    maVal = (4.00 + pct * 16.0).toFixed(2);
+                }
+                setFieldValue(`g${r}_5`, maVal);
+                setFieldValue(`g${r}_5_ao1`, maVal);
+                setFieldValue(`g${r}_5_ao2`, maVal);
+
+                // Load Cells 5 through 8 (columns g{r}_6 to g{r}_9)
+                for (let lc = 6; lc <= 9; lc++) {
+                    setFieldValue(`g${r}_${lc}`, stepNumeric);
+                }
+            });
+
+            // 3. Clear extra rows 6 to 12 if not customized
+            for (let r = 6; r <= 12; r++) {
+                const g0 = document.getElementById(`g${r}_0`);
+                if (g0 && (!g0.value || g0.value.includes('%'))) {
+                    g0.value = '';
+                }
+            }
+
+            // 4. Populate Span / Tare / Excitation table
+            for (let lc = 1; lc <= 8; lc++) {
+                setFieldValue(`span_lc${lc}`, spanVal.toFixed(dec));
+                setFieldValue(`tare_lc${lc}`, '0.00');
+                setFieldValue(`excv_lc${lc}`, '10.0V');
+            }
+        }
+        window.autoCalculateCalibrationMatrix = autoCalculateCalibrationMatrix;
+
+        // Recalculate Current for a specific row when load or load cell value changes
+        function recalculateRowCurrent(r) {
+            const modeInput = document.getElementById('calib_mode');
+            const isLoad = modeInput && modeInput.value === 'load';
+
+            const g0 = document.getElementById(`g${r}_0`);
+            const g1 = document.getElementById(`g${r}_1`);
+            let rawStr = '';
+            if (g0 && g0.value.trim()) rawStr = g0.value.trim();
+            else if (g1 && g1.value.trim()) rawStr = g1.value.trim();
+
+            if (!rawStr) return;
+            const num = parseFloat(rawStr.replace(/[^0-9.]/g, ''));
+            if (isNaN(num)) return;
+
+            let curVal = '';
+            if (isLoad) {
+                let sysCapVal = 0;
+                let sysCapUnit = '';
+                const capInput = document.getElementById('capacity');
+                if (capInput && capInput.value) {
+                    const rawCap = capInput.value.trim();
+                    const cNum = parseFloat(rawCap.replace(/[^0-9.]/g, ''));
+                    if (!isNaN(cNum) && cNum > 0) {
+                        sysCapVal = cNum;
+                        const up = rawCap.toUpperCase();
+                        if (up.includes('TON') || up.includes(' T') || up.endsWith('T')) sysCapUnit = 'T';
+                        else if (up.includes('KG')) sysCapUnit = 'Kg';
+                    }
+                }
+
+                let unit = '';
+                const up = rawStr.toUpperCase();
+                if (up.includes('TON') || up.includes(' T') || up.endsWith('T')) unit = 'T';
+                else if (up.includes('KG')) unit = 'Kg';
+                if (!unit) {
+                    const spec4 = document.getElementById('spec_4');
+                    if (spec4 && spec4.value) {
+                        const up4 = spec4.value.toUpperCase();
+                        if (up4.includes('TON') || up4.includes(' T') || up4.endsWith('T')) unit = 'T';
+                        else if (up4.includes('KG')) unit = 'Kg';
+                    }
+                }
+                if (!unit) unit = sysCapUnit || 'Kg';
+
+                const lcSys = document.getElementById('lc_system');
+                let numCells = 4;
+                if (lcSys) {
+                    if (lcSys.dataset && lcSys.dataset.numCells) {
+                        numCells = parseInt(lcSys.dataset.numCells, 10) || 4;
+                    } else if (lcSys.value) {
+                        const m = String(lcSys.value).match(/(\d+)/);
+                        if (m) numCells = parseInt(m[1], 10) || 4;
+                    }
+                }
+                let effectiveSysCap = sysCapVal > 0 ? sysCapVal : 0;
+                if (effectiveSysCap > 0) {
+                    if (sysCapUnit === 'T' && (unit === 'Kg' || unit === 'KG')) effectiveSysCap *= 1000.0;
+                    else if ((sysCapUnit === 'Kg' || sysCapUnit === 'KG') && unit === 'T') effectiveSysCap /= 1000.0;
+                } else {
+                    const spec4 = document.getElementById('spec_4');
+                    if (spec4 && spec4.value) {
+                        const s4Num = parseFloat(spec4.value.replace(/[^0-9.]/g, ''));
+                        if (!isNaN(s4Num) && s4Num > 0) effectiveSysCap = s4Num * numCells;
+                    }
+                }
+
+                if (effectiveSysCap > 0) {
+                    const ma = 4.00 + (16.0 / effectiveSysCap) * num;
+                    curVal = ma.toFixed(2);
+                }
+            } else {
+                let pct = num / 10.0;
+                if (pct > 1.0) pct = 1.0;
+                const ma = 4.00 + (16.0 * pct);
+                curVal = ma.toFixed(2);
+            }
+
+            if (curVal) {
+                const outEl = document.getElementById(`g${r}_5`);
+                if (outEl) outEl.value = curVal;
+                const ao1El = document.getElementById(`g${r}_5_ao1`);
+                if (ao1El) ao1El.value = curVal;
+                const ao2El = document.getElementById(`g${r}_5_ao2`);
+                if (ao2El) ao2El.value = curVal;
+            }
+        }
+        window.recalculateRowCurrent = recalculateRowCurrent;
+
+        window.applyExtractedDigitalIndicatorSpecs = function(data) {
+            if (!data) return;
+            setFieldValue('job_no', data.job_no);
+            setFieldValue('customer', data.customer || data.customer_name);
+            setFieldValue('capacity', data.capacity);
+            setFieldValue('conveyor_no', data.conveyor_no || data.tag_no);
+
+            if (data.di_model || data.indicator_model || data.bs_model) {
+                setFieldValue('di_model', data.di_model || data.indicator_model || data.bs_model);
+            }
+            if (data.jbox_model || data.jbox_model1) {
+                setFieldValue('jbox_model', data.jbox_model || data.jbox_model1);
+            }
+            if (data.remote_model) {
+                setFieldValue('remote_model', data.remote_model);
+            }
+            if (data.sensor_model || data.lc_model || data.load_cell_model) {
+                setFieldValue('lc_model', data.sensor_model || data.lc_model || data.load_cell_model);
+            }
+            // Routine test checklist defaults and overrides
+            for (let i = 1; i <= 10; i++) {
+                if (data[`spec_${i}`]) setFieldValue(`spec_${i}`, data[`spec_${i}`]);
+                if (data[`act_${i}`]) setFieldValue(`act_${i}`, data[`act_${i}`]);
+                if (data[`check_${i}`]) setFieldValue(`check_${i}`, data[`check_${i}`]);
+            }
+            // Default 230V AC input supply & 24V DC derived voltage
+            if (!data.spec_1) setFieldValue('spec_1', '230V AC');
+            if (!data.act_1) setFieldValue('act_1', '230V AC');
+            if (!data.spec_2) setFieldValue('spec_2', '24V DC');
+            if (!data.act_2) setFieldValue('act_2', '24V DC');
+            if (!data.spec_10) setFieldValue('spec_10', '1A');
+            if (!data.check_10) setFieldValue('check_10', 'YES');
+
+            if (data.calib_mode && typeof setCalibMode === 'function') {
+                setCalibMode(data.calib_mode);
+            }
+            if (data.lc_system && typeof setLcSystem === 'function') {
+                setLcSystem(data.lc_system);
+            } else if (data.lc_qty && typeof setLcSystem === 'function') {
+                setLcSystem(data.lc_qty + 'LC');
+            }
+            if (data.current_output && typeof setCurrentOutput === 'function') {
+                setCurrentOutput(data.current_output);
+            }
+
+            if (typeof autoCalculateCalibrationMatrix === 'function') {
+                autoCalculateCalibrationMatrix(data.spec_4 || data.act_4 || data.capacity, true);
+            }
+        };
+
+        async function handleGaFileUpload(file) {
+            if (!file) return;
+
+            const btnHeader = document.getElementById('btnUploadGAHeader');
+            const statusDiv = document.getElementById('gaModalStatus');
+            const statusText = document.getElementById('gaModalStatusText');
+
+            if (btnHeader) {
+                btnHeader.disabled = true;
+                btnHeader.innerHTML = 'Extracting GA...';
+            }
+            if (statusDiv) statusDiv.style.display = 'block';
+            if (statusText) statusText.textContent = `Extracting parameters from ${file.name}...`;
+
+            const formData = new FormData();
+            formData.append('ga_file', file);
+
+            try {
+                const res = await fetch('/api/extract-ga', {
+                    method: 'POST',
+                    body: formData
+                });
+                const json = await res.json();
+
+                if (btnHeader) {
+                    btnHeader.disabled = false;
+                    btnHeader.innerHTML = 'Upload GA (.dwg)';
+                }
+                if (statusDiv) statusDiv.style.display = 'none';
+
+                if (json.status === 'success' && json.extracted) {
+                    const ext = json.extracted;
+                    window.applyExtractedDigitalIndicatorSpecs(ext);
+
+                    if (json.has_multiple_systems && json.multi_systems && typeof window.renderMultiSystemSelector === 'function') {
+                        window.renderMultiSystemSelector(json.multi_systems, (sysData, sysName) => {
+                            window.applyExtractedDigitalIndicatorSpecs(sysData);
+                            if (typeof showToast === 'function') showToast(`Switched to ${sysName}`, 'info');
+                        }, json.systems_meta);
+                    }
+
+                    closeGaModal();
+                    if (typeof showToast === 'function') showToast('GA drawing parameters extracted successfully!', 'success');
+                } else {
+                    alert('GA Extraction notice: ' + (json.message || 'Could not parse DWG entities.'));
+                }
+            } catch (err) {
+                console.error(err);
+                if (btnHeader) {
+                    btnHeader.disabled = false;
+                    btnHeader.innerHTML = 'Upload GA (.dwg)';
+                }
+                if (statusDiv) statusDiv.style.display = 'none';
+                alert('Network or processing error during GA parsing.');
+            }
+        }
+
+        window.goToStep = function(stepNum) {
+            const hasStepBoxes = document.getElementById('step-box-1') || document.getElementById('step-box-2');
+            if (hasStepBoxes) {
+                for (let i = 1; i <= 10; i++) {
+                    const box = document.getElementById('step-box-' + i) || document.getElementById('step-' + i);
+                    const st = document.getElementById('st-' + i) || document.querySelector(`.step-indicator[data-step="${i}"]`);
+                    if (box) {
+                        if (i === stepNum) {
+                            box.classList.add('active-step');
+                            box.classList.add('active');
+                            box.style.display = 'block';
+                        } else {
+                            box.classList.remove('active-step');
+                            box.classList.remove('active');
+                            box.style.display = 'none';
+                        }
+                    }
+                    if (st) {
+                        if (i === stepNum) {
+                            st.classList.add('active');
+                            st.classList.remove('completed');
+                        } else if (i < stepNum) {
+                            st.classList.remove('active');
+                            st.classList.add('completed');
+                        } else {
+                            st.classList.remove('active');
+                            st.classList.remove('completed');
+                        }
+                    }
+                }
+            } else {
+                const panels = document.querySelectorAll('.step-panel');
+                panels.forEach((p, idx) => {
+                    if (idx + 1 === stepNum) {
+                        p.classList.add('active');
+                        p.style.display = 'block';
+                    } else {
+                        p.classList.remove('active');
+                        p.style.display = 'none';
+                    }
+                });
+            }
+            if (stepNum === 4 && typeof autoCalculateCalibrationMatrix === 'function') {
+                const spec4El = document.getElementById('spec_4');
+                const act4El = document.getElementById('act_4');
+                const currentVal = (spec4El && spec4El.value) ? spec4El.value : ((act4El && act4El.value) ? act4El.value : null);
+                if (currentVal) {
+                    autoCalculateCalibrationMatrix(currentVal, true);
+                }
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.fillSampleTestData = function() {
+            setFieldValue('job_no', 'JOB-DI-2026-901');
+            setFieldValue('customer', 'Tata Steel Limited');
+            setFieldValue('capacity', '100 Tonnes');
+            setFieldValue('conveyor_no', 'DI-TAG-01');
+
+            setFieldValue('di_model', 'DI-3000');
+            setFieldValue('di_serial', 'SN-DI-8821');
+            setFieldValue('sw_version', 'v3.2.0');
+            setFieldValue('lc_model', 'LC-CZ50T');
+            setFieldValue('s1', 'LC-SN-001');
+            setFieldValue('s2', 'LC-SN-002');
+            setFieldValue('s3', 'LC-SN-003');
+            setFieldValue('s4', 'LC-SN-004');
+            setFieldValue('s5', 'LC-SN-005');
+            setFieldValue('s6', 'LC-SN-006');
+            setFieldValue('s7', 'LC-SN-007');
+            setFieldValue('s8', 'LC-SN-008');
+
+            setFieldValue('jbox_model', 'JB-8P');
+            setFieldValue('jbox_serial', 'JB-SN-441');
+
+            setFieldValue('short_check', 'OK (>100M Ohm)');
+
+            setFieldValue('spec_1', '230V AC +/-10%');
+            setFieldValue('act_1', '230V AC');
+            setFieldValue('spec_2', '+24V DC, +5V DC');
+            setFieldValue('act_2', '+24.1V, +5.01V');
+            setFieldValue('spec_3', 'Display OK, Keys Responsive');
+            setFieldValue('act_3', 'Passed');
+            setFieldValue('spec_4', '10.00 mV');
+            setFieldValue('act_4', '10.00 mV');
+            setFieldValue('spec_5', 'Zero Balance OK');
+            setFieldValue('act_5', 'Passed');
+
+            setFieldValue('check_6', 'Checked: YES');
+            setFieldValue('check_7', 'Checked: YES');
+            setFieldValue('check_8', 'Checked: YES');
+            setFieldValue('check_9', 'N/A');
+            setFieldValue('spec_10', '1A');
+            setFieldValue('check_10', 'YES');
+
+            setCalibMode('mv');
+            setLcSystem('4');
+            setCurrentOutput('yes');
+
+            setFieldValue('remarks', 'Calibration completed within acceptable industrial limits.');
+            setFieldValue('instrument_used', 'Digital Multimeter / Precision mV Source');
+            setFieldValue('tested_by', 'Senior QC Engineer');
+            setFieldValue('approved_by', 'HOD - PDN');
+            const today = new Date().toISOString().split('T')[0];
+            setFieldValue('date', today);
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.goToStep(1);
+            window.setCalibMode('mv');
+            window.setLcSystem('4');
+            window.setCurrentOutput('yes');
+
+            const btnFill = document.getElementById('btnFillSampleData');
+            if (btnFill) btnFill.addEventListener('click', window.fillSampleTestData);
+            const btnFillHdr = document.getElementById('btnAutoFillHeader');
+            if (btnFillHdr) btnFillHdr.addEventListener('click', window.fillSampleTestData);
+
+            const capInput = document.getElementById('capacity');
+            if (capInput) {
+                capInput.addEventListener('input', () => {
+                    if (typeof autoCalculateCalibrationMatrix === 'function') autoCalculateCalibrationMatrix(capInput.value, false);
+                });
+                capInput.addEventListener('change', () => {
+                    if (typeof autoCalculateCalibrationMatrix === 'function') autoCalculateCalibrationMatrix(capInput.value, false);
+                });
+            }
+
+            const spec4Input = document.getElementById('spec_4');
+            const act4Input = document.getElementById('act_4');
+            if (spec4Input) {
+                spec4Input.addEventListener('input', (e) => {
+                    if (typeof autoCalculateCalibrationMatrix === 'function') autoCalculateCalibrationMatrix(e.target.value, true);
+                });
+                spec4Input.addEventListener('change', (e) => {
+                    if (typeof autoCalculateCalibrationMatrix === 'function') autoCalculateCalibrationMatrix(e.target.value, true);
+                });
+            }
+            if (act4Input) {
+                act4Input.addEventListener('input', (e) => {
+                    if (typeof autoCalculateCalibrationMatrix === 'function') autoCalculateCalibrationMatrix(e.target.value, true);
+                });
+                act4Input.addEventListener('change', (e) => {
+                    if (typeof autoCalculateCalibrationMatrix === 'function') autoCalculateCalibrationMatrix(e.target.value, true);
+                });
+            }
+
+            // Matrix reactive listeners for user manual edits across all 12 rows
+            for (let r = 1; r <= 12; r++) {
+                const g0 = document.getElementById(`g${r}_0`);
+                const g1 = document.getElementById(`g${r}_1`);
+                if (g0) {
+                    g0.addEventListener('input', (e) => {
+                        const val = e.target.value.trim();
+                        const num = parseFloat(val.replace(/[^0-9.]/g, ''));
+                        if (!isNaN(num)) {
+                            for (let lc = 1; lc <= 4; lc++) {
+                                const lcEl = document.getElementById(`g${r}_${lc}`);
+                                if (lcEl && document.activeElement !== lcEl) {
+                                    lcEl.value = num.toString();
+                                }
+                            }
+                            for (let lc = 6; lc <= 9; lc++) {
+                                const lcEl = document.getElementById(`g${r}_${lc}`);
+                                if (lcEl && document.activeElement !== lcEl) {
+                                    lcEl.value = num.toString();
+                                }
+                            }
+                        }
+                        if (typeof recalculateRowCurrent === 'function') recalculateRowCurrent(r);
+                    });
+                    g0.addEventListener('change', () => {
+                        if (typeof recalculateRowCurrent === 'function') recalculateRowCurrent(r);
+                    });
+                }
+                if (g1) {
+                    g1.addEventListener('input', (e) => {
+                        const val = e.target.value.trim();
+                        const num = parseFloat(val.replace(/[^0-9.]/g, ''));
+                        if (!isNaN(num)) {
+                            for (let lc = 2; lc <= 4; lc++) {
+                                const lcEl = document.getElementById(`g${r}_${lc}`);
+                                if (lcEl && document.activeElement !== lcEl) {
+                                    lcEl.value = num.toString();
+                                }
+                            }
+                            for (let lc = 6; lc <= 9; lc++) {
+                                const lcEl = document.getElementById(`g${r}_${lc}`);
+                                if (lcEl && document.activeElement !== lcEl) {
+                                    lcEl.value = num.toString();
+                                }
+                            }
+                            const g0El = document.getElementById(`g${r}_0`);
+                            if (g0El && (!g0El.value || !g0El.value.trim())) {
+                                g0El.value = num.toString();
+                            }
+                        }
+                        if (typeof recalculateRowCurrent === 'function') recalculateRowCurrent(r);
+                    });
+                    g1.addEventListener('change', () => {
+                        if (typeof recalculateRowCurrent === 'function') recalculateRowCurrent(r);
+                    });
+                }
+            }
+
+            // Initial calculation for default values
+            if (typeof autoCalculateCalibrationMatrix === 'function') {
+                autoCalculateCalibrationMatrix();
+            }
+
+            const gaInput = document.getElementById('gaFileInput');
+            const modalFileInput = document.getElementById('gaFileInputModal');
+            if (gaInput) {
+                gaInput.dataset.gaBound = '1';
+                gaInput.addEventListener('change', (e) => handleGaFileUpload(e.target.files[0]));
+            }
+            if (modalFileInput) modalFileInput.addEventListener('change', (e) => handleGaFileUpload(e.target.files[0]));
+        });
+    </script>
+
+<!-- Universal DWG & Job Data Auto-Fill Engine -->
+<script>
+    if (typeof setFieldValue !== 'function') {
+        window.setFieldValue = function(id, val) {
+            if (val === undefined || val === null || val === '') return;
+            const el = document.getElementById(id) || document.getElementsByName(id)[0] || document.querySelector(`input[name="${id}"]`);
+            if (el) {
+                el.value = val;
+                try { el.dispatchEvent(new Event('change')); } catch(e){}
+                el.style.transition = 'all 0.3s ease';
+                el.style.border = '2px solid #10b981';
+                el.style.background = '#ecfdf5';
+                setTimeout(() => {
+                    el.style.border = '';
+                    el.style.background = '';
+                }, 3500);
+            }
+        };
+    }
+
+    async function fetchJobNoData() {
+        const jobNoInput = document.querySelector('input[name="job_no"], input[name="job_number"], input[id="job_no"]');
+        if (!jobNoInput || !jobNoInput.value.trim()) {
+            if (typeof showToast === 'function') showToast('Please enter a Job Number first.', 'warning');
+            else console.warn('No data found.');
+            return;
+        }
+        const jobNo = jobNoInput.value.trim();
+
+        try {
+            const res = await fetch(`/api/fetch-job-data?job_no=${encodeURIComponent(jobNo)}`);
+            const json = await res.json();
+
+            if (json.status === 'success' && json.extracted) {
+                const ext = json.extracted;
+                
+                if (typeof window.applyExtractedDigitalIndicatorSpecs === 'function') {
+                    window.applyExtractedDigitalIndicatorSpecs(ext);
+                } else {
+                    for (const [key, val] of Object.entries(ext)) {
+                        if (val !== undefined && val !== null && val !== '') {
+                            setFieldValue(key, val);
+                        }
+                    }
+                }
+
+                if (json.has_multiple_systems && json.multi_systems && typeof window.renderMultiSystemSelector === 'function') {
+                    window.renderMultiSystemSelector(json.multi_systems, (sysData, sysName) => {
+                        if (typeof window.applyExtractedDigitalIndicatorSpecs === 'function') {
+                            window.applyExtractedDigitalIndicatorSpecs(sysData);
+                        } else {
+                            for (const [k, v] of Object.entries(sysData)) {
+                                if (v !== undefined && v !== null && v !== '') setFieldValue(k, v);
+                            }
+                        }
+                        if (typeof showToast === 'function') showToast(`✅ Switched to ${sysName}`, 'info');
+                    }, json.systems_meta);
+                }
+
+                // If Excel source, map labels to fields
+                if (json.source === 'excel' && json.data) {
+                    document.querySelectorAll('label').forEach(label => {
+                        const cleanLabel = label.innerText.trim().toUpperCase().replace(/[^A-Z0-9 ]/g, '').trim();
+                        for (const [excelKey, excelVal] of Object.entries(json.data)) {
+                            const cleanKey = excelKey.replace(/[^A-Z0-9 ]/g, '').trim();
+                            if (cleanLabel === cleanKey || cleanLabel.includes(cleanKey)) {
+                                const parent = label.closest('.input-group') || label.parentElement;
+                                if (parent) {
+                                    const input = parent.querySelector('input[type="text"], input[type="number"], select');
+                                    if (input && !input.value) {
+                                        setFieldValue(input.id || input.name, excelVal);
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                if (typeof showToast === 'function') {
+                    showToast(`✅ Auto-filled from ${json.filename} (${json.source.toUpperCase()})`, 'success');
+                } else {
+                    console.log(`Auto-filled from ${json.filename}`);
+                }
+            } else {
+                if (typeof showToast === 'function') showToast(json.message || 'No DWG/Excel data found.', 'error');
+                else console.warn('No data found.');
+            }
+        } catch (e) {
+            console.error("Job Data Fetch error:", e);
+            if (typeof showToast === 'function') showToast('Error fetching data: ' + e.message, 'error');
+        }
+    }
+
+    // Alias fetchExcelData to fetchJobNoData for backwards compatibility
+    window.fetchExcelData = fetchJobNoData;
+    window.fetchJobNoData = fetchJobNoData;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const jobNoInput = document.querySelector('input[name="job_no"], input[name="job_number"], input[id="job_no"]');
+        if (jobNoInput) {
+            let lastFetched_fetchJobNoData = '';
+            const autoTrigger_fetchJobNoData = () => {
+                const v = jobNoInput.value.trim();
+                if (v && v !== lastFetched_fetchJobNoData) {
+                    lastFetched_fetchJobNoData = v;
+                    fetchJobNoData();
+                }
+            };
+            jobNoInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    autoTrigger_fetchJobNoData();
+                }
+            });
+            jobNoInput.addEventListener('blur', autoTrigger_fetchJobNoData);
+            jobNoInput.addEventListener('change', autoTrigger_fetchJobNoData);
+        }
+    });
+</script>
+
+    <script src="/static/js/app.js"></script>
+</body>
+
+
+</html>
+

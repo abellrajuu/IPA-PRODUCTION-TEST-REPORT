@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Work Instructions Form</title>
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#0284c7">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <meta name="app-build-version" content="{{ build_version }}">
+    <style>
+        .pdf-download-banner { background: linear-gradient(135deg, #0284c7, #0ea5e9); border-radius: 16px; padding: 20px 24px; margin-top: 24px; display: flex; justify-content: space-between; align-items: center; color: #ffffff; box-shadow: 0 10px 25px rgba(0, 158, 227, 0.3); }
+        .section-box { background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 18px; padding: 28px 24px; margin-bottom: 24px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04); display: block; }
+        .section-box-title { font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 12px; }
+        .section-box-title i { color: #009ee3; font-size: 18px; }
+    </style>
+</head>
+<body style="padding: 16px;">
+    <div class="app-container" style="max-width: 1020px; margin: 0 auto;">
+        <header class="app-header">
+            <div class="app-title">
+                <h1>Work Instructions Document</h1>
+            </div>
+            <div class="header-actions" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <button type="button" id="btnAutoFillHeader" class="header-nav-link btnFillDemoDataGlobal" onclick="triggerUniversalAutoFill();" style="background: linear-gradient(135deg, #0284c7, #0369a1); color: #ffffff !important; border: none; font-weight: 800; cursor: pointer; padding: 10px 18px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Auto-Fill Demo
+                </button>
+                <a href="/portal" class="header-nav-link">
+                    <i class="fa-solid fa-house"></i> Home
+                </a>
+            </div>
+        </header>
+
+        <main class="tab-content active">
+            <form id="recordForm" autocomplete="off">
+                <input type="hidden" name="report_type" value="work_instructions">
+                <input type="file" id="gaFileInput" accept=".dwg,.dxf,.json" style="display:none;">
+
+                <div class="glass-form" style="padding: 28px;">
+                    <div class="section-box">
+                        <div class="section-box-title"><i class="fa-solid fa-book-open"></i> 1. Document Reference &amp; Compliance</div>
+                        <div class="grid-col-2">
+                            <div class="input-group">
+                                <label for="job_no">Job / Reference No.</label>
+                                <div style="display: flex; gap: 8px;">
+                                    <input type="text" name="job_no" id="job_no" placeholder="e.g. 2526-WI01" required style="flex: 1;">
+                                    <button type="button" class="btn-secondary" onclick="fetchJobNoData()" style="padding: 8px 14px; border-radius: 8px; white-space: nowrap;">Fetch</button>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="date">Document / Verification Date</label>
+                                <input type="date" name="date" id="date" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="customer">Customer / Project</label>
+                                <input type="text" name="customer" id="customer" placeholder="Customer or internal division" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="doc_no">Work Instruction Document No.</label>
+                                <input type="text" name="doc_no" id="doc_no" placeholder="e.g. WI-PDN-04" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="rev_no">Revision No.</label>
+                                <input type="text" name="rev_no" id="rev_no" placeholder="e.g. Rev 02">
+                            </div>
+                            <div class="input-group">
+                                <label for="compliance_status">Compliance Status</label>
+                                <select name="compliance_status" id="compliance_status">
+                                    <option value="COMPLIED">COMPLIED</option>
+                                    <option value="IN PROGRESS">IN PROGRESS</option>
+                                    <option value="DEVIATION NOTED">DEVIATION NOTED</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-box">
+                        <div class="section-box-title"><i class="fa-solid fa-signature"></i> 2. Verification &amp; Approval</div>
+                        <div class="grid-col-2">
+                            <div class="input-group">
+                                <label for="tested_by">Prepared / Verified By</label>
+                                <input type="text" name="tested_by" id="tested_by" placeholder="Engineer name" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="approved_by">Approved By</label>
+                                <input type="text" name="approved_by" id="approved_by" placeholder="QA / Manager name">
+                            </div>
+                        </div>
+
+                        <div class="form-actions" style="margin-top: 24px; display: flex; gap: 16px; justify-content: flex-end; align-items: center;">
+                            <button type="submit" id="btnSubmitPDF" class="btn-primary" style="display: inline-flex; padding: 14px 28px; font-size: 15px; border-radius: 12px;">Submit &amp; Generate Report</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div id="downloadBanner" class="pdf-download-banner" style="display: none; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+                <div>
+                    <h4 style="font-size: 16px; font-weight: 800; margin: 0 0 4px 0; color: #ffffff;">Report Generated Successfully!</h4>
+                    <p id="downloadFilename" style="font-size: 13px; opacity: 0.9; margin: 0; color: #e0f2fe;"></p>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <button type="button" id="btnBannerPreviewPDF" class="btn-secondary" style="padding: 10px 18px; font-size: 14px; font-weight: 700; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35); color: #ffffff; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">Preview PDF</button>
+                    <a id="btnDownloadDOCX" href="#" target="_blank" class="btn-secondary" style="background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35); color: #ffffff; font-weight: 700; padding: 10px 18px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">Download DOCX</a>
+                    <a id="btnDownloadPDF" href="#" target="_blank" class="btn-primary" style="background: #ffffff; color: #0284c7; font-weight: 800; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">Download PDF</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="pdfPreviewModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="width: 92%; max-width: 960px; height: 88vh; display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 style="margin: 0;">Report Preview</h3>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <a id="btnModalDownloadPDF" href="#" target="_blank" class="btn-primary" style="padding: 8px 16px; border-radius: 8px; text-decoration: none;">Download PDF</a>
+                    <button type="button" id="btnClosePreviewModal" class="btn-secondary" style="padding: 8px 14px; border-radius: 8px;">&times;</button>
+                </div>
+            </div>
+            <iframe id="pdfPreviewIframe" style="flex: 1; width: 100%; border: 1px solid #cbd5e1; border-radius: 10px;"></iframe>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        window.pageCustomFiller = function () {
+            if (typeof setFieldValue === 'function') {
+                setFieldValue('job_no', '2526-WI01');
+                setFieldValue('date', new Date().toISOString().split('T')[0]);
+                setFieldValue('customer', 'INTERNAL PRODUCTION');
+                setFieldValue('doc_no', 'WI-PDN-04');
+                setFieldValue('rev_no', 'Rev 03');
+                setFieldValue('compliance_status', 'COMPLIED');
+                setFieldValue('tested_by', 'R. Sharma');
+                setFieldValue('approved_by', 'S. Kumar');
+            }
+        };
+
+        async function fetchJobNoData() {
+            const jobNoInput = document.querySelector('input[name="job_no"], input[name="job_number"], input[id="job_no"]');
+            if (!jobNoInput || !jobNoInput.value.trim()) {
+                if (typeof showToast === 'function') showToast('Please enter a Job Number first.', 'warning');
+                return;
+            }
+            const jobNo = jobNoInput.value.trim();
+            try {
+                const res = await fetch(`/api/fetch-job-data?job_no=${encodeURIComponent(jobNo)}`);
+                const json = await res.json();
+                if (json.status === 'success' && json.extracted) {
+                    for (const [key, val] of Object.entries(json.extracted)) {
+                        if (val !== undefined && val !== null && val !== '' && typeof setFieldValue === 'function') {
+                            setFieldValue(key, val);
+                        }
+                    }
+                    if (typeof showToast === 'function') showToast(`Auto-filled from ${json.filename}`, 'success');
+                } else if (typeof showToast === 'function') {
+                    showToast(json.message || 'No DWG/Excel data found.', 'error');
+                }
+            } catch (e) {
+                console.error('Job Data Fetch error:', e);
+                if (typeof showToast === 'function') showToast('Error fetching data: ' + e.message, 'error');
+            }
+        }
+        window.fetchExcelData = fetchJobNoData;
+        window.fetchJobNoData = fetchJobNoData;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const jobNoInput = document.getElementById('job_no');
+            if (jobNoInput) {
+                let lastFetched = '';
+                const autoTrigger = () => {
+                    const v = jobNoInput.value.trim();
+                    if (v && v !== lastFetched) {
+                        lastFetched = v;
+                        fetchJobNoData();
+                    }
+                };
+                jobNoInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        autoTrigger();
+                    }
+                });
+                jobNoInput.addEventListener('blur', autoTrigger);
+            }
+        });
+    </script>
+</body>
+</html>

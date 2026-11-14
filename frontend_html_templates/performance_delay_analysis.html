@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Performance Delay Analysis Report | Production Report</title>
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#0284c7">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <meta name="app-build-version" content="{{ build_version }}">
+    <style>
+        .pdf-download-banner { background: linear-gradient(135deg, #0284c7, #0ea5e9); border-radius: 16px; padding: 20px 24px; margin-top: 24px; display: flex; justify-content: space-between; align-items: center; color: #ffffff; box-shadow: 0 10px 25px rgba(0, 158, 227, 0.3); }
+        .section-box { background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 18px; padding: 28px 24px; margin-bottom: 24px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04); display: block; }
+        .section-box-title { font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 12px; }
+        .section-box-title i { color: #009ee3; font-size: 18px; }
+        .table-input { width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px 8px; font-size: 13px; }
+        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 16px; border-radius: 12px; }
+        .table-responsive .data-table { min-width: 860px; }
+    </style>
+</head>
+<body style="padding: 16px;">
+    <div class="app-container" style="max-width: 1180px; margin: 0 auto;">
+        <header class="app-header">
+            <div class="app-title">
+                <h1>Performance Delay Analysis Report</h1>
+            </div>
+            <div class="header-actions" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <button type="button" id="btnAutoFillHeader" class="header-nav-link btnFillDemoDataGlobal" onclick="triggerUniversalAutoFill();" style="background: linear-gradient(135deg, #0284c7, #0369a1); color: #ffffff !important; border: none; font-weight: 800; cursor: pointer; padding: 10px 18px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Auto-Fill Demo
+                </button>
+                <a href="/portal" class="header-nav-link">
+                    <i class="fa-solid fa-house"></i> Home
+                </a>
+            </div>
+        </header>
+
+        <main class="tab-content active">
+            <form id="recordForm" autocomplete="off">
+                <input type="hidden" name="report_type" value="performance_delay_analysis">
+                <input type="hidden" name="tested_by" id="tested_by" value="">
+                <input type="hidden" name="job_no" id="job_no" value="">
+                <input type="file" id="gaFileInput" accept=".dwg,.dxf,.json" style="display:none;">
+
+                <div class="glass-form" style="padding: 28px;">
+                    <div class="section-box">
+                        <div class="section-box-title"><i class="fa-solid fa-calendar-days"></i> 1. Overall Summary</div>
+                        <div class="grid-col-2">
+                            <div class="input-group"><label for="month_year">Period (Month / Year)</label><input type="text" name="month_year" id="month_year" placeholder="e.g. FY 2026 / NOV-2026" required></div>
+                            <div class="input-group"><label for="date">Report Date</label><input type="date" name="date" id="date" required></div>
+                            <div class="input-group"><label for="total_scheduled">Total Scheduled</label><input type="number" step="any" min="0" name="total_scheduled" id="total_scheduled"></div>
+                            <div class="input-group"><label for="total_executed">Total Executed</label><input type="number" step="any" min="0" name="total_executed" id="total_executed"></div>
+                            <div class="input-group"><label for="total_delay">Total Delayed</label><input type="number" step="any" min="0" name="total_delay" id="total_delay"></div>
+                        </div>
+                    </div>
+
+                    <div class="section-box">
+                        <div class="section-box-title"><i class="fa-solid fa-table"></i> 2. 12-Month Delay Breakdown Matrix</div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>MONTH</th>
+                                        <th>SCHED.</th>
+                                        <th>COMP.</th>
+                                        <th>REWORK</th>
+                                        <th>MANPOWER</th>
+                                        <th>SHORTAGE</th>
+                                        <th>TESTING</th>
+                                        <th>DESIGN</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="delayMatrixBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="section-box">
+                        <div class="section-box-title"><i class="fa-solid fa-circle-exclamation"></i> 3. Key Delay Root-Cause Detail &amp; Sign-Off</div>
+                        <div class="grid-col-2">
+                            <div class="input-group"><label for="sl_no">Sl. No.</label><input type="text" name="sl_no" id="sl_no" value="1"></div>
+                            <div class="input-group"><label for="jo_no">Job Order (JO) No.</label><input type="text" name="jo_no" id="jo_no" placeholder="e.g. 2526-J105"></div>
+                            <div class="input-group"><label for="customer">Customer Name</label><input type="text" name="customer" id="customer"></div>
+                            <div class="input-group"><label for="department">Responsible Department</label><input type="text" name="department" id="department" placeholder="e.g. Material Stores / Design"></div>
+                            <div class="input-group" style="grid-column: span 2;"><label for="reason">Delay Reason / Action Taken</label><textarea name="reason" id="reason" rows="3" placeholder="Explain root cause of delay"></textarea></div>
+                            <div class="input-group"><label for="prepared_by">Prepared By</label><input type="text" name="prepared_by" id="prepared_by" required></div>
+                            <div class="input-group"><label for="approved_by">Approved By</label><input type="text" name="approved_by" id="approved_by"></div>
+                        </div>
+
+                        <div class="form-actions" style="margin-top: 24px; display: flex; gap: 16px; justify-content: flex-end; align-items: center;">
+                            <button type="submit" id="btnSubmitPDF" class="btn-primary" style="display: inline-flex; padding: 14px 28px; font-size: 15px; border-radius: 12px;">Submit &amp; Generate Report</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div id="downloadBanner" class="pdf-download-banner" style="display: none; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+                <div>
+                    <h4 style="font-size: 16px; font-weight: 800; margin: 0 0 4px 0; color: #ffffff;">Report Generated Successfully!</h4>
+                    <p id="downloadFilename" style="font-size: 13px; opacity: 0.9; margin: 0; color: #e0f2fe;"></p>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <button type="button" id="btnBannerPreviewPDF" class="btn-secondary" style="padding: 10px 18px; font-size: 14px; font-weight: 700; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35); color: #ffffff; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">Preview PDF</button>
+                    <a id="btnDownloadDOCX" href="#" target="_blank" class="btn-secondary" style="background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35); color: #ffffff; font-weight: 700; padding: 10px 18px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">Download DOCX</a>
+                    <a id="btnDownloadPDF" href="#" target="_blank" class="btn-primary" style="background: #ffffff; color: #0284c7; font-weight: 800; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">Download PDF</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="pdfPreviewModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="width: 92%; max-width: 960px; height: 88vh; display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 style="margin: 0;">Report Preview</h3>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <a id="btnModalDownloadPDF" href="#" target="_blank" class="btn-primary" style="padding: 8px 16px; border-radius: 8px; text-decoration: none;">Download PDF</a>
+                    <button type="button" id="btnClosePreviewModal" class="btn-secondary" style="padding: 8px 14px; border-radius: 8px;">&times;</button>
+                </div>
+            </div>
+            <iframe id="pdfPreviewIframe" style="flex: 1; width: 100%; border: 1px solid #cbd5e1; border-radius: 10px;"></iframe>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        (function buildDelayMatrix() {
+            const tbody = document.getElementById('delayMatrixBody');
+            if (!tbody) return;
+            const defaultMonths = ['APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC', 'JAN', 'FEB', 'MAR'];
+            for (let i = 1; i <= 12; i++) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><input type="text" class="table-input" name="month_${i}" id="month_${i}" value="${defaultMonths[i - 1]}"></td>
+                    <td><input type="number" min="0" class="table-input" name="sched_${i}" id="sched_${i}"></td>
+                    <td><input type="number" min="0" class="table-input" name="comp_${i}" id="comp_${i}"></td>
+                    <td><input type="number" min="0" class="table-input" name="rework_${i}" id="rework_${i}"></td>
+                    <td><input type="number" min="0" class="table-input" name="manpower_${i}" id="manpower_${i}"></td>
+                    <td><input type="number" min="0" class="table-input" name="shortage_${i}" id="shortage_${i}"></td>
+                    <td><input type="number" min="0" class="table-input" name="testing_${i}" id="testing_${i}"></td>
+                    <td><input type="number" min="0" class="table-input" name="design_${i}" id="design_${i}"></td>
+                `;
+                tbody.appendChild(tr);
+            }
+        })();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const sync = (s, d) => {
+                const src = document.getElementById(s);
+                const dst = document.getElementById(d);
+                if (src && dst) {
+                    const fn = () => { dst.value = src.value; };
+                    src.addEventListener('input', fn);
+                    src.addEventListener('change', fn);
+                }
+            };
+            sync('prepared_by', 'tested_by');
+            sync('jo_no', 'job_no');
+        });
+
+        window.pageCustomFiller = function () {
+            if (typeof setFieldValue !== 'function') return;
+            const today = new Date().toISOString().split('T')[0];
+            setFieldValue('month_year', 'FY 2026 / NOV-2026');
+            setFieldValue('date', today);
+            setFieldValue('total_scheduled', '120');
+            setFieldValue('total_executed', '112');
+            setFieldValue('total_delay', '8');
+            for (let i = 1; i <= 12; i++) {
+                setFieldValue(`sched_${i}`, '10');
+                setFieldValue(`comp_${i}`, i <= 8 ? '9' : '10');
+                setFieldValue(`rework_${i}`, i % 3 === 0 ? '1' : '0');
+                setFieldValue(`manpower_${i}`, '0');
+                setFieldValue(`shortage_${i}`, i <= 4 ? '1' : '0');
+                setFieldValue(`testing_${i}`, '0');
+                setFieldValue(`design_${i}`, '0');
+            }
+            setFieldValue('sl_no', '1');
+            setFieldValue('jo_no', '2526-J105');
+            setFieldValue('job_no', '2526-J105');
+            setFieldValue('customer', 'HINDALCO INDUSTRIES');
+            setFieldValue('department', 'Material Stores');
+            setFieldValue('reason', 'Delay in specialized stainless-steel load cell mounting bracket procurement.');
+            setFieldValue('prepared_by', 'R. Sharma');
+            setFieldValue('tested_by', 'R. Sharma');
+            setFieldValue('approved_by', 'S. Kumar');
+        };
+    </script>
+</body>
+</html>
