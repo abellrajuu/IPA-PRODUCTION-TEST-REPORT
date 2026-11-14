@@ -71,8 +71,8 @@ def publish_to_github(public_url):
 
     payload = {
         "url": public_url,
-        "version_code": 4,
-        "version_name": "3.1.4",
+        "version_code": 5,
+        "version_name": "3.1.5",
         "updated_at": time.strftime("%Y-%m-%d %H:%M:%S")
     }
     content_b64 = base64.b64encode(json.dumps(payload, indent=2).encode('utf-8')).decode('utf-8')
