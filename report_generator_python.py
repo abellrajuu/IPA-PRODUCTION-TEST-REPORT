@@ -15,7 +15,13 @@ import json
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMPLATES_DIR = os.path.join(BASE_DIR, "backend_docx_templates")
 EXPORTS_DIR = os.path.join(BASE_DIR, "backend_report_outputs")
+SERVER_TEST_REPORT_DIR = r"\\192.168.100.248\prdndata\TEST REPORT"
 os.makedirs(EXPORTS_DIR, exist_ok=True)
+if not os.path.exists(SERVER_TEST_REPORT_DIR):
+    try:
+        os.makedirs(SERVER_TEST_REPORT_DIR, exist_ok=True)
+    except Exception:
+        pass
 
 TEMPLATE_MAP = {
     "job_traveller_card": "PP-05_02 Job Traveller Card.docx",
@@ -187,7 +193,14 @@ def convert_docx_to_pdf(docx_path, pdf_path=None):
         except Exception as e3:
             print(f"[PDF CONVERT WARNING] LibreOffice headless fallback note: {e3}")
 
-    if not os.path.exists(pdf_path):
+    if os.path.exists(pdf_path):
+        try:
+            if os.path.exists(SERVER_TEST_REPORT_DIR):
+                import shutil
+                shutil.copyfile(pdf_path, os.path.join(SERVER_TEST_REPORT_DIR, os.path.basename(pdf_path)))
+        except Exception as e_cp:
+            print(f"[NOTE] Could not mirror PDF to SERVER_TEST_REPORT_DIR: {e_cp}")
+    else:
         print(f"[PDF CONVERT ERROR] PDF file was not created: {pdf_path}")
     return pdf_path
 
@@ -3631,6 +3644,15 @@ def generate_docx_record(data, output_path):
 
     # Output path is passed from app.py
     doc.save(output_path)
+
+    # Mirror DOCX directly into \\192.168.100.248\prdndata\TEST REPORT
+    if os.path.exists(output_path):
+        try:
+            if os.path.exists(SERVER_TEST_REPORT_DIR):
+                import shutil
+                shutil.copyfile(output_path, os.path.join(SERVER_TEST_REPORT_DIR, os.path.basename(output_path)))
+        except Exception:
+            pass
 
     pdf_path = output_path.replace(".docx", ".pdf")
     convert_docx_to_pdf(output_path, pdf_path)

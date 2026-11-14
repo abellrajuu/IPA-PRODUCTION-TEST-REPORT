@@ -23,8 +23,14 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 EXPORTS_DIR = os.path.join(BASE_DIR, "backend_report_outputs")
+SERVER_TEST_REPORT_DIR = r"\\192.168.100.248\prdndata\TEST REPORT"
 STATIC_DIR = os.path.join(BASE_DIR, "frontend_static_assets")
 APKS_DIR = os.path.join(BASE_DIR, "frontend_mobile_apks")
+if not os.path.exists(SERVER_TEST_REPORT_DIR):
+    try:
+        os.makedirs(SERVER_TEST_REPORT_DIR, exist_ok=True)
+    except Exception:
+        pass
 
 # Persistent dynamic secret key
 def _load_or_generate_secret_key():
@@ -1378,12 +1384,12 @@ def get_version():
     return jsonify({
         "status": "online",
         "app": "PRODUCTION TEST REPORT",
-        "version": "3.1.4",
-        "version_code": 4,
+        "version": "3.1.5",
+        "version_code": 5,
         "build_version": "2026.11.14",
         "download_url": "/download-app",
         "apk_filename": "ProductionReportApp.apk",
-        "release_notes": "Zero-configuration Cloud auto-discovery via GitHub & seamless auto-update over personal mobile data.",
+        "release_notes": "Automatic report saving directly to \\\\192.168.100.248\\prdndata\\TEST REPORT.",
         "timestamp": datetime.now().isoformat()
     })
 
@@ -1466,6 +1472,16 @@ def submit_record():
 
         pdf_path = os.path.join(EXPORTS_DIR, pdf_filename)
         pdf_exists = os.path.exists(pdf_path)
+
+        # Mirror both DOCX and PDF directly to \\192.168.100.248\prdndata\TEST REPORT
+        if os.path.exists(SERVER_TEST_REPORT_DIR):
+            try:
+                if os.path.exists(output_path):
+                    shutil.copyfile(output_path, os.path.join(SERVER_TEST_REPORT_DIR, docx_filename))
+                if pdf_exists and os.path.exists(pdf_path):
+                    shutil.copyfile(pdf_path, os.path.join(SERVER_TEST_REPORT_DIR, pdf_filename))
+            except Exception as e_mirror:
+                app.logger.warning(f"Mirror to SERVER_TEST_REPORT_DIR failed: {e_mirror}")
 
         # Save to SQLite Database
         record_id = database.save_record(
@@ -1568,11 +1584,13 @@ def download_file(filename):
             if os.path.exists(cand_path):
                 return send_from_directory(APKS_DIR, cand, as_attachment=True, download_name=clean_name)
 
-    # 2. Check EXPORTS_DIR / backend_report_outputs
-    for cand in candidates:
-        cand_path = os.path.join(EXPORTS_DIR, cand)
-        if os.path.exists(cand_path):
-            return send_from_directory(EXPORTS_DIR, cand, as_attachment=use_attach, download_name=clean_name)
+    # 2. Check SERVER_TEST_REPORT_DIR and EXPORTS_DIR
+    for search_dir in [SERVER_TEST_REPORT_DIR, EXPORTS_DIR]:
+        if os.path.exists(search_dir):
+            for cand in candidates:
+                cand_path = os.path.join(search_dir, cand)
+                if os.path.exists(cand_path):
+                    return send_from_directory(search_dir, cand, as_attachment=use_attach, download_name=clean_name)
 
     # 2b. On-demand PDF conversion when a matching DOCX exists in EXPORTS_DIR
     if ext == ".pdf":
