@@ -7,6 +7,7 @@ import time
 import socket
 import os
 import sys
+import threading
 
 def get_github_token():
     token = os.environ.get("GITHUB_TOKEN")
@@ -71,8 +72,8 @@ def publish_to_github(public_url):
 
     payload = {
         "url": public_url,
-        "version_code": 5,
-        "version_name": "3.1.5",
+        "version_code": 7,
+        "version_name": "3.2.0",
         "updated_at": time.strftime("%Y-%m-%d %H:%M:%S")
     }
     content_b64 = base64.b64encode(json.dumps(payload, indent=2).encode('utf-8')).decode('utf-8')
@@ -125,8 +126,54 @@ Employees on personal 4G/5G mobile data simply open the app to connect.
     except Exception as e:
         print(f"[!] Warning writing link file: {e}")
 
+active_tunnel_url = None
+
+def adb_reverse_worker():
+    adb_candidates = [
+        r"C:\Users\Admin\AppData\Local\Android\Sdk\platform-tools\adb.exe",
+        os.path.join(BASE_DIR, "ANDROID APP", "platform-tools", "adb.exe"),
+        "adb"
+    ]
+    adb_bin = None
+    for cand in adb_candidates:
+        if os.path.exists(cand):
+            adb_bin = cand
+            break
+    if not adb_bin:
+        adb_bin = "adb"
+
+    while True:
+        try:
+            res = subprocess.run([adb_bin, "devices"], capture_output=True, text=True, timeout=5)
+            lines = [l for l in res.stdout.splitlines() if "\tdevice" in l]
+            for line in lines:
+                dev_id = line.split("\t")[0].strip()
+                subprocess.run([adb_bin, "-s", dev_id, "reverse", "tcp:5005", "tcp:5005"], capture_output=True, timeout=5)
+        except Exception:
+            pass
+        time.sleep(4)
+
+def keepalive_worker(proc_ref):
+    global active_tunnel_url
+    while proc_ref.poll() is None:
+        time.sleep(15)
+        if active_tunnel_url:
+            try:
+                base = active_tunnel_url.replace("/portal", "")
+                ping_url = f"{base}/api/version"
+                req = urllib.request.Request(ping_url, headers={"User-Agent": "Antigravity-KeepAlive/1.0"})
+                with urllib.request.urlopen(req, timeout=5) as resp:
+                    pass
+            except Exception:
+                pass
+
 def run_tunnel_loop():
+    global active_tunnel_url
     ensure_server_running()
+
+    t_adb = threading.Thread(target=adb_reverse_worker, daemon=True)
+    t_adb.start()
+
     ssh_exe = r"C:\Windows\System32\OpenSSH\ssh.exe"
     if not os.path.exists(ssh_exe):
         ssh_exe = "ssh"
@@ -135,12 +182,13 @@ def run_tunnel_loop():
         ssh_exe,
         "-R", "80:127.0.0.1:5005",
         "-o", "StrictHostKeyChecking=no",
-        "-o", "ServerAliveInterval=30",
+        "-o", "ServerAliveInterval=15",
+        "-o", "ServerAliveCountMax=10",
         "nokey@localhost.run"
     ]
 
     while True:
-        print("\n[...] Establishing secure public tunnel over port 443/80...")
+        print("\n[...] Establishing secure public tunnel over port 443/80...", flush=True)
         try:
             proc = subprocess.Popen(
                 cmd,
@@ -149,29 +197,33 @@ def run_tunnel_loop():
                 text=True,
                 bufsize=1
             )
-            tunnel_url = None
+            t = threading.Thread(target=keepalive_worker, args=(proc,), daemon=True)
+            t.start()
+
             for line in proc.stdout:
                 line_str = line.strip()
                 if line_str:
-                    print("[Tunnel]", line_str)
+                    print("[Tunnel]", line_str, flush=True)
                 m = re.search(r'(https://[a-zA-Z0-9.-]+\.(?:lhr\.life|lhrtunnel\.link|lhr\.rocks))', line_str)
-                if m and not tunnel_url:
+                if m:
                     base_url = m.group(1)
                     tunnel_url = base_url + "/portal"
-                    print("\n" + "="*65)
-                    print("  🎉 GLOBAL MOBILE DATA LINK IS LIVE!")
-                    print("="*65)
-                    print(f"  Public Portal URL : {tunnel_url}")
-                    print(f"  APK Download URL  : {base_url}/download-app")
-                    print("="*65)
-                    update_local_text_file(tunnel_url)
-                    publish_to_github(tunnel_url)
-                    print("="*65 + "\n")
+                    if tunnel_url != active_tunnel_url:
+                        active_tunnel_url = tunnel_url
+                        print("\n" + "="*65, flush=True)
+                        print("  🎉 GLOBAL MOBILE DATA LINK IS LIVE!", flush=True)
+                        print("="*65, flush=True)
+                        print(f"  Public Portal URL : {tunnel_url}", flush=True)
+                        print(f"  APK Download URL  : {base_url}/download-app", flush=True)
+                        print("="*65, flush=True)
+                        update_local_text_file(tunnel_url)
+                        publish_to_github(tunnel_url)
+                        print("="*65 + "\n", flush=True)
             proc.wait()
-            print("[!] Tunnel disconnected. Reconnecting in 5 seconds...")
+            print("[!] Tunnel disconnected. Reconnecting in 5 seconds...", flush=True)
             time.sleep(5)
         except Exception as e:
-            print(f"[!] Tunnel loop error: {e}. Retrying in 5 seconds...")
+            print(f"[!] Tunnel loop error: {e}. Retrying in 5 seconds...", flush=True)
             time.sleep(5)
 
 if __name__ == "__main__":

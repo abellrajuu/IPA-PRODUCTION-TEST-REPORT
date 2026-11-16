@@ -17,7 +17,7 @@ echo.
 echo ===================================================================
 echo.
 
-python tunnel_publisher.py
+python -u tunnel_publisher.py
 
 popd
 pause

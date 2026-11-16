@@ -353,6 +353,10 @@ for idx, (route_path, template_name) in enumerate(SYSTEM_ROUTES.items()):
     endpoint = f"sys_{idx}_" + (route_path.replace("/", "").replace("-", "_") or "index")
     app.add_url_rule(route_path, endpoint=endpoint, view_func=make_view(template_name))
 
+@app.route("/pc")
+def pc_redirect():
+    return redirect(url_for("sys_1_portal"))
+
 @app.route("/admin/portal")
 @admin_required
 def admin_portal():
@@ -1384,12 +1388,12 @@ def get_version():
     return jsonify({
         "status": "online",
         "app": "PRODUCTION TEST REPORT",
-        "version": "3.1.5",
-        "version_code": 5,
-        "build_version": "2026.11.14",
+        "version": "3.2.0",
+        "version_code": 7,
+        "build_version": "2026.11.16",
         "download_url": "/download-app",
         "apk_filename": "ProductionReportApp.apk",
-        "release_notes": "Automatic report saving directly to \\\\192.168.100.248\\prdndata\\TEST REPORT.",
+        "release_notes": "Native USB direct high-speed APK v3.2.0 with auto-reconnect and instant report saving to \\\\192.168.100.248\\prdndata\\TEST REPORT.",
         "timestamp": datetime.now().isoformat()
     })
 
@@ -1474,14 +1478,17 @@ def submit_record():
         pdf_exists = os.path.exists(pdf_path)
 
         # Mirror both DOCX and PDF directly to \\192.168.100.248\prdndata\TEST REPORT
-        if os.path.exists(SERVER_TEST_REPORT_DIR):
-            try:
-                if os.path.exists(output_path):
-                    shutil.copyfile(output_path, os.path.join(SERVER_TEST_REPORT_DIR, docx_filename))
-                if pdf_exists and os.path.exists(pdf_path):
-                    shutil.copyfile(pdf_path, os.path.join(SERVER_TEST_REPORT_DIR, pdf_filename))
-            except Exception as e_mirror:
-                app.logger.warning(f"Mirror to SERVER_TEST_REPORT_DIR failed: {e_mirror}")
+        try:
+            if not os.path.exists(SERVER_TEST_REPORT_DIR):
+                os.makedirs(SERVER_TEST_REPORT_DIR, exist_ok=True)
+            if os.path.exists(output_path):
+                shutil.copy2(output_path, os.path.join(SERVER_TEST_REPORT_DIR, docx_filename))
+            if pdf_exists and os.path.exists(pdf_path):
+                shutil.copy2(pdf_path, os.path.join(SERVER_TEST_REPORT_DIR, pdf_filename))
+            print(f"[OK] Successfully saved report to {SERVER_TEST_REPORT_DIR}: {docx_filename}", flush=True)
+        except Exception as e_mirror:
+            app.logger.warning(f"Mirror to SERVER_TEST_REPORT_DIR failed: {e_mirror}")
+            print(f"[WARNING] Mirror to SERVER_TEST_REPORT_DIR failed: {e_mirror}", flush=True)
 
         # Save to SQLite Database
         record_id = database.save_record(

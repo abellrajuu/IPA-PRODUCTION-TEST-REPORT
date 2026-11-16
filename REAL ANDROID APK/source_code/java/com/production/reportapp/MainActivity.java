@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String PREFS_NAME = "ReportAppPrefs";
     private static final String KEY_SERVER_URL = "server_url";
-    private static final String DEFAULT_HOST = "192.168.1.20";
+    private static final String DEFAULT_HOST = "192.168.99.116";
     private static final String DEFAULT_PORT = "5005";
     private static final int FILE_CHOOSER_REQUEST_CODE = 1001;
 
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences prefs;
     private ValueCallback<Uri[]> uploadMessage;
     private boolean hasCheckedUpdateThisSession = false;
+    private boolean isPageError = false;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -87,22 +89,21 @@ public class MainActivity extends AppCompatActivity {
 
         Button btnRetry = findViewById(R.id.btnRetry);
         if (btnRetry != null) {
-            btnRetry.setText("Auto-Sync from Cloud / Retry");
-            btnRetry.setOnClickListener(v -> syncFromCloudAndConnect(true));
+            btnRetry.setText("Connect / Retry");
+            btnRetry.setOnClickListener(v -> connectToProductionServer(true));
         }
 
         configureWebView();
 
-        // Zero-configuration auto-discovery:
-        String currentUrl = getServerUrl();
-        if (currentUrl == null || currentUrl.isEmpty() || currentUrl.contains("192.168.1.20")) {
-            // First install or default: automatically resolve live server via GitHub cloud
-            syncFromCloudAndConnect(false);
-        } else {
-            // Already has cached working URL: load immediately with zero lag
-            loadCurrentServer();
-            // In the background, check if server URL or tunnel updated
-            syncFromCloudInBackground();
+        // Connect immediately on startup
+        connectToProductionServer(false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (errorLayout != null && errorLayout.getVisibility() == View.VISIBLE) {
+            connectToProductionServer(false);
         }
     }
 
@@ -129,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         settings.setSupportZoom(true);
 
         String baseUa = settings.getUserAgentString();
-        settings.setUserAgentString(baseUa + " ProductionReportApp/3.1.4 (Android; NativeApp; CloudSync)");
+        settings.setUserAgentString(baseUa + " ProductionReportApp/3.2.0 (Android; NativeApp; OnlineMobileData)");
 
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptCookie(true);
@@ -139,8 +140,21 @@ public class MainActivity extends AppCompatActivity {
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                if (!"about:blank".equals(url)) {
+                    isPageError = false;
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
             public void onPageFinished(WebView view, String url) {
                 progressBar.setVisibility(View.GONE);
+                if (isPageError || "about:blank".equals(url)) {
+                    webView.setVisibility(View.GONE);
+                    errorLayout.setVisibility(View.VISIBLE);
+                    return;
+                }
                 errorLayout.setVisibility(View.GONE);
                 webView.setVisibility(View.VISIBLE);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -152,12 +166,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 if (request.isForMainFrame()) {
+                    isPageError = true;
                     progressBar.setVisibility(View.GONE);
+                    view.loadUrl("about:blank");
                     webView.setVisibility(View.GONE);
                     errorLayout.setVisibility(View.VISIBLE);
-                    String url = getServerUrl();
-                    errorTextView.setText("Cannot connect to server at:\n" + url + "\n\nTip: On mobile data? Tap 'Auto-Sync from Cloud' to re-fetch the live link.");
+                    errorTextView.setText("Could not reach Production System.\n\nPlease check your mobile data (4G/5G) or Wi-Fi, then tap 'Connect / Retry'.");
                 }
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                isPageError = true;
+                progressBar.setVisibility(View.GONE);
+                view.loadUrl("about:blank");
+                webView.setVisibility(View.GONE);
+                errorLayout.setVisibility(View.VISIBLE);
+                errorTextView.setText("Could not reach Production System.\n\nPlease check your mobile data (4G/5G) or Wi-Fi, then tap 'Connect / Retry'.");
             }
         });
 
@@ -265,67 +290,78 @@ public class MainActivity extends AppCompatActivity {
         prefs.edit().putString(KEY_SERVER_URL, url).apply();
     }
 
-    private void loadCurrentServer() {
-        String url = getServerUrl();
-        if (url == null || url.isEmpty()) {
-            syncFromCloudAndConnect(false);
-            return;
-        }
+    private void loadUrlDirectly(String url) {
         if (!url.contains("is_app=1")) {
             url += (url.contains("?") ? "&" : "?") + "is_app=1";
         }
+        isPageError = false;
         progressBar.setVisibility(View.VISIBLE);
         errorLayout.setVisibility(View.GONE);
         webView.setVisibility(View.VISIBLE);
         webView.loadUrl(url);
     }
 
-    // --- GitHub Cloud Registry Auto-Discovery ---
-    public void syncFromCloudAndConnect(final boolean manual) {
+    // --- Smart Multi-Path Connection Logic (Optimized for Mobile Data) ---
+    public void connectToProductionServer(final boolean manual) {
         progressBar.setVisibility(View.VISIBLE);
         if (manual) {
-            Toast.makeText(this, "Fetching live server address from Cloud...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Connecting to Production Server...", Toast.LENGTH_SHORT).show();
         }
 
         new Thread(() -> {
-            String resolvedUrl = fetchCloudServerUrl();
-            runOnUiThread(() -> {
-                if (resolvedUrl != null && !resolvedUrl.isEmpty()) {
-                    saveServerUrl(resolvedUrl);
-                    loadCurrentServer();
-                    Toast.makeText(MainActivity.this, "Connected via Cloud: " + resolvedUrl, Toast.LENGTH_SHORT).show();
-                } else {
-                    progressBar.setVisibility(View.GONE);
-                    String existing = getServerUrl();
-                    if (existing != null && !existing.isEmpty() && !existing.contains("192.168.1.20")) {
-                        loadCurrentServer();
-                    } else if (manual) {
-                        Toast.makeText(MainActivity.this, "Could not fetch Cloud Link. Opening Settings...", Toast.LENGTH_SHORT).show();
-                        showServerConfigDialog();
-                    } else {
-                        webView.setVisibility(View.GONE);
-                        errorLayout.setVisibility(View.VISIBLE);
-                        errorTextView.setText("Could not reach Cloud Registry or Server.\nCheck your mobile data connection, then tap Retry.");
-                    }
-                }
-            });
-        }).start();
-    }
+            // Path 1: USB Direct (if connected via USB to laptop)
+            if (isPortOpen("127.0.0.1", 5005, 200)) {
+                String localUsb = "http://127.0.0.1:5005/portal?is_app=1";
+                runOnUiThread(() -> {
+                    saveServerUrl(localUsb);
+                    loadUrlDirectly(localUsb);
+                    Toast.makeText(MainActivity.this, "Connected via USB", Toast.LENGTH_SHORT).show();
+                });
+                return;
+            }
 
-    private void syncFromCloudInBackground() {
-        new Thread(() -> {
+            // Path 2: Office Wi-Fi (if connected to office Wi-Fi network)
+            if (isPortOpen("192.168.99.116", 5005, 300)) {
+                String localWifi = "http://192.168.99.116:5005/portal?is_app=1";
+                runOnUiThread(() -> {
+                    saveServerUrl(localWifi);
+                    loadUrlDirectly(localWifi);
+                    Toast.makeText(MainActivity.this, "Connected via Office Wi-Fi", Toast.LENGTH_SHORT).show();
+                });
+                return;
+            }
+
+            // Path 3: Live Cloud Discovery via GitHub (Fast Mobile Data Path)
             String cloudUrl = fetchCloudServerUrl();
             if (cloudUrl != null && !cloudUrl.isEmpty()) {
-                String current = getServerUrl();
-                if (!cloudUrl.equalsIgnoreCase(current)) {
+                runOnUiThread(() -> {
                     saveServerUrl(cloudUrl);
-                    runOnUiThread(() -> {
-                        if (errorLayout.getVisibility() == View.VISIBLE) {
-                            loadCurrentServer();
-                        }
-                    });
-                }
+                    loadUrlDirectly(cloudUrl);
+                    Toast.makeText(MainActivity.this, "Connected Online via Mobile Data", Toast.LENGTH_SHORT).show();
+                });
+                return;
             }
+
+            // Path 4: Previously saved cloud URL (fallback)
+            String savedUrl = getServerUrl();
+            if (savedUrl != null && !savedUrl.isEmpty() && !savedUrl.contains("127.0.0.1") && !savedUrl.contains("192.168.")) {
+                runOnUiThread(() -> {
+                    loadUrlDirectly(savedUrl);
+                    Toast.makeText(MainActivity.this, "Connecting to saved link...", Toast.LENGTH_SHORT).show();
+                });
+                return;
+            }
+
+            // If ALL fail: DO NOT load failed URL into WebView (prevents Chromium error screen)
+            runOnUiThread(() -> {
+                progressBar.setVisibility(View.GONE);
+                webView.setVisibility(View.GONE);
+                errorLayout.setVisibility(View.VISIBLE);
+                errorTextView.setText("Could not reach Production System.\n\nPlease check your mobile data (4G/5G) connection, then tap 'Connect / Retry'.");
+                if (manual) {
+                    Toast.makeText(MainActivity.this, "No internet or server connection detected.", Toast.LENGTH_LONG).show();
+                }
+            });
         }).start();
     }
 
@@ -404,14 +440,14 @@ public class MainActivity extends AppCompatActivity {
             String port = etPort.getText().toString().trim();
 
             if (host.isEmpty()) {
-                etHost.setError("Please enter Hostname, IP, or Cloudflare URL");
+                etHost.setError("Please enter Hostname or IP");
                 return;
             }
 
             String newUrl;
             if (host.startsWith("http://") || host.startsWith("https://")) {
                 newUrl = host.endsWith("/") ? host + "portal" : (host.contains("/portal") ? host : host + "/portal");
-            } else if (port.equals("443") || host.contains(".trycloudflare.com") || host.contains(".cloudflareaccess.com")) {
+            } else if (port.equals("443")) {
                 newUrl = "https://" + host + "/portal";
             } else {
                 if (port.isEmpty()) port = DEFAULT_PORT;
@@ -420,7 +456,7 @@ public class MainActivity extends AppCompatActivity {
             saveServerUrl(newUrl);
             dialog.dismiss();
             hasCheckedUpdateThisSession = false;
-            loadCurrentServer();
+            loadUrlDirectly(newUrl);
         });
 
         dialog.show();
@@ -462,7 +498,7 @@ public class MainActivity extends AppCompatActivity {
                     String releaseNotes = json.optString("release_notes", "Bug fixes and performance improvements.");
 
                     int myVersionCode = 1;
-                    String myVersionName = "3.1.4";
+                    String myVersionName = "3.2.0";
                     try {
                         android.content.pm.PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                         myVersionCode = pInfo.versionCode;
@@ -490,7 +526,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showUpdateDialog(String newVersion, String downloadUrl, String releaseNotes) {
         new AlertDialog.Builder(this)
-                .setTitle("🚀 New App Update Available!")
+                .setTitle("New App Update Available!")
                 .setMessage("A new version (" + newVersion + ") of Production Test Report is available on the server.\n\n" + releaseNotes + "\n\nWould you like to download and install it now?")
                 .setCancelable(true)
                 .setPositiveButton("Update Now", (d, w) -> downloadAndInstallApk(downloadUrl, newVersion))
@@ -582,7 +618,7 @@ public class MainActivity extends AppCompatActivity {
             checkForAppUpdate(true);
             return true;
         } else if (item.getItemId() == R.id.action_reload) {
-            loadCurrentServer();
+            connectToProductionServer(true);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -590,11 +626,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (webView.canGoBack()) {
+        if (webView != null && webView.canGoBack()) {
             webView.goBack();
         } else {
             super.onBackPressed();
         }
+    }
+
+    public static boolean isPortOpen(String host, int port, int timeoutMs) {
+        return SubnetScannerTask.isPortOpen(host, port, timeoutMs);
     }
 
     private static class SubnetScannerTask extends AsyncTask<Void, Void, String> {
@@ -609,13 +649,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... voids) {
             int port = Integer.parseInt(DEFAULT_PORT);
-            if (isPortOpen(DEFAULT_HOST, port, 600)) {
-                return DEFAULT_HOST;
-            }
-            if (isPortOpen("127.0.0.1", port, 300)) {
+            if (isPortOpen("127.0.0.1", port, 200)) {
                 return "127.0.0.1";
             }
-            String[] subnets = {"192.168.1.", "192.168.0.", "192.168.43."};
+            if (isPortOpen(DEFAULT_HOST, port, 400)) {
+                return DEFAULT_HOST;
+            }
+            String[] subnets = {"192.168.99.", "192.168.1.", "192.168.0.", "192.168.43."};
             for (String sub : subnets) {
                 for (int i = 2; i <= 254; i++) {
                     String candidate = sub + i;
@@ -627,7 +667,7 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
 
-        private boolean isPortOpen(String host, int port, int timeoutMs) {
+        public static boolean isPortOpen(String host, int port, int timeoutMs) {
             try (Socket socket = new Socket()) {
                 socket.connect(new InetSocketAddress(host, port), timeoutMs);
                 return true;
@@ -644,7 +684,7 @@ public class MainActivity extends AppCompatActivity {
                 etHost.setText(foundHost);
                 Toast.makeText(etHost.getContext(), "Found Server at: " + foundHost, Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(etHost.getContext(), "Could not auto-detect. Please enter IP manually.", Toast.LENGTH_LONG).show();
+                Toast.makeText(etHost.getContext(), "Server not found on Wi-Fi scan.", Toast.LENGTH_SHORT).show();
             }
         }
     }

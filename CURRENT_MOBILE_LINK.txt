@@ -3,12 +3,12 @@
 ===================================================================
 
 Active Public Server URL:
-  👉 https://b77c3e1d4a3385.app.lhr.life/portal
+  👉 https://0f21bd92b0122b.app.lhr.life/portal
 
 GitHub Cloud Registry (Auto-checked by Android APK):
-  👉 https://raw.githubusercontent.com/abellrajuu/production-test-report/gh-pages/live_url.json
+  👉 https://raw.githubusercontent.com/abellrajuu/IPA-PRODUCTION-TEST-REPORT/gh-pages/live_url.json
 
-Status: ONLINE (Updated: 2026-11-14 15:57:02)
+Status: ONLINE (Updated: 2026-11-16 20:25:52)
 ===================================================================
 Zero Link Pasting:
 The Android APK automatically discovers this address from GitHub.

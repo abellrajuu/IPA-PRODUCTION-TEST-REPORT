@@ -2,7 +2,9 @@ plugins {
     id 'com.android.application'
 }
 
-layout.buildDirectory.set(file("C:/Users/Admin/AppData/Local/Temp/android_build/app"))
+if (System.getProperty("os.name").toLowerCase().contains("windows") && new File("C:/Users/Admin").exists()) {
+    layout.buildDirectory.set(file("C:/Users/Admin/AppData/Local/Temp/android_build/app"))
+}
 
 android {
     namespace 'com.production.reportapp'
@@ -12,8 +14,19 @@ android {
         applicationId "com.production.reportapp"
         minSdk 21
         targetSdk 34
-        versionCode 5
-        versionName "3.1.5"
+        versionCode 7
+        versionName "3.2.0"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
     }
 
     buildFeatures {
@@ -22,8 +35,12 @@ android {
 
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
